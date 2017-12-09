@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/collectionbox_layout"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_marginTop="10dp"
+    android:background="@color/white_50"
+    android:paddingEnd="7dp"
+    android:paddingStart="10dp">
+
+    <com.woodsho.absoluteplan.widget.SimpleDraweeViewEx
+        android:id="@+id/side_item_icon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        fresco:actualImageScaleType="fitCenter"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/side_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="26dp"
+        android:layout_toEndOf="@+id/side_item_icon"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_14"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/side_item_count"
+        android:layout_width="20dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:text="4"
+        android:textColor="@color/black_30"
+        android:textSize="@dimen/text_size_12"
+        android:textStyle="bold" />
+</RelativeLayout>

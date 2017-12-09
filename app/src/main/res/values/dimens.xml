@@ -1,0 +1,28 @@
+<resources>
+    <dimen name="text_size_8">8sp</dimen>
+    <dimen name="text_size_9">9sp</dimen>
+    <dimen name="text_size_10">10sp</dimen>
+    <dimen name="text_size_11">11sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_13">13sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_15">15sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_17">17sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_19">19sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_21">21sp</dimen>
+
+    <dimen name="float_action_button_margin_end">10dp</dimen>
+    <dimen name="main_custom_edittext_margin_end">25dp</dimen>
+    <dimen name="build_scheduletask_time_right">23dp</dimen>
+    <dimen name="build_scheduletask_time_bottom">23dp</dimen>
+
+    <!-- 日历 -->
+    <dimen name="solarTextSize">16sp</dimen>//公历日期的文本大小
+    <dimen name="lunarTextSize">10sp</dimen>//农历日期的文本大小
+    <dimen name="calendarHeight">300dp</dimen>//日历高度，在NCalendar中使用
+    <dimen name="pointSize">3dp</dimen>//指示圆点大小
+    <!-- 日历 -->
+</resources>
