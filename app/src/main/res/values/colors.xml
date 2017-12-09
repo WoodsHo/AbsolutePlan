@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="common_color">#0ac6e7</color>
+    <color name="transparent">#00000000</color>//透明
+    <color name="translucent">#e0000000</color>//半透明
+
+    <color name="colorPrimary">@color/common_color</color>
+    <color name="colorPrimaryDark">#00000000</color>
+    <color name="colorAccent">@color/common_color</color>
+</resources>
