@@ -21,6 +21,9 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.woodsho.absoluteplan.bean.PlanTask;
+import com.woodsho.absoluteplan.data.CachePlanTaskStore;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,50 +55,50 @@ public class CommonUtil {
         return "";
     }
 
-//    public static List<ScheduleTask> getTodayScheduleTaskList() {
-//        List<ScheduleTask> allList = CacheScheduleTaskStore.getInstance().getCacheScheduleTaskList();
-//        List<ScheduleTask> list = new ArrayList<>();
-//        if (allList != null && allList.size() > 0) {
-//            SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy-MM-dd");
-//            String today = sdFormatter.format(System.currentTimeMillis());
-//            for (int i = 0; i < allList.size(); i++) {
-//                ScheduleTask task = allList.get(i);
-//                String strBD = sdFormatter.format(task.time);
-//                if (strBD.equals(today)) {
-//                    list.add(task);
-//                }
-//            }
-//        }
-//        return list;
-//    }
+    public static List<PlanTask> getTodayPlanTaskList() {
+        List<PlanTask> allList = CachePlanTaskStore.getInstance().getCachePlanTaskList();
+        List<PlanTask> list = new ArrayList<>();
+        if (allList != null && allList.size() > 0) {
+            SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy-MM-dd");
+            String today = sdFormatter.format(System.currentTimeMillis());
+            for (int i = 0; i < allList.size(); i++) {
+                PlanTask task = allList.get(i);
+                String strBD = sdFormatter.format(task.time);
+                if (strBD.equals(today)) {
+                    list.add(task);
+                }
+            }
+        }
+        return list;
+    }
 
-//    public static List<ScheduleTask> getTomorrowScheduleTaskList() {
-//        List<ScheduleTask> allList = CacheScheduleTaskStore.getInstance().getCacheScheduleTaskList();
-//        List<ScheduleTask> list = new ArrayList<>();
-//        if (allList != null && allList.size() > 0) {
-//            for (int i = 0; i < allList.size(); i++) {
-//                ScheduleTask task = allList.get(i);
-//                if (CalendarUtil.isTomorrow(task.time)) {
-//                    list.add(task);
-//                }
-//            }
-//        }
-//        return list;
-//    }
-//
-//    public static List<ScheduleTask> getFinishedScheduleTaskList() {
-//        List<ScheduleTask> allList = CacheScheduleTaskStore.getInstance().getCacheScheduleTaskList();
-//        List<ScheduleTask> list = new ArrayList<>();
-//        if (allList != null && allList.size() > 0) {
-//            for (int i = 0; i < allList.size(); i++) {
-//                ScheduleTask task = allList.get(i);
-//                if (task.state == 1) {
-//                    list.add(task);
-//                }
-//            }
-//        }
-//        return list;
-//    }
+    public static List<PlanTask> getTomorrowPlanTaskList() {
+        List<PlanTask> allList = CachePlanTaskStore.getInstance().getCachePlanTaskList();
+        List<PlanTask> list = new ArrayList<>();
+        if (allList != null && allList.size() > 0) {
+            for (int i = 0; i < allList.size(); i++) {
+                PlanTask task = allList.get(i);
+                if (CalendarUtil.isTomorrow(task.time)) {
+                    list.add(task);
+                }
+            }
+        }
+        return list;
+    }
+
+    public static List<PlanTask> getFinishedPlanTaskList() {
+        List<PlanTask> allList = CachePlanTaskStore.getInstance().getCachePlanTaskList();
+        List<PlanTask> list = new ArrayList<>();
+        if (allList != null && allList.size() > 0) {
+            for (int i = 0; i < allList.size(); i++) {
+                PlanTask task = allList.get(i);
+                if (task.state == 1) {
+                    list.add(task);
+                }
+            }
+        }
+        return list;
+    }
 
     public static boolean isToday(int year, int month, int day) {
         Calendar pre = Calendar.getInstance();

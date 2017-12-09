@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.woodsho.absoluteplan.adapter.SideAdapter;
 import com.woodsho.absoluteplan.bean.SideItem;
+import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 import com.woodsho.absoluteplan.widget.CenteredImageSpan;
@@ -232,15 +233,15 @@ public class MainActivity extends AppCompatActivity {
         int tomorrowCount = 0;
         int todayCount = 0;
         int finishedCount = 0;
-//        CacheScheduleTaskStore scheduleTaskStore = CacheScheduleTaskStore.getInstance();
-//        if (scheduleTaskStore.isScheduleTaskInitializedFinished()) {
-//            allCount = scheduleTaskStore.getCacheScheduleTaskList().size();
-//            if (allCount > 0) {
-//                todayCount = CommonUtil.getTodayScheduleTaskList().size();
-//                tomorrowCount = CommonUtil.getTomorrowScheduleTaskList().size();
-//                finishedCount = CommonUtil.getFinishedScheduleTaskList().size();
-//            }
-//        }
+        CachePlanTaskStore planTaskStore = CachePlanTaskStore.getInstance();
+        if (planTaskStore.isPlanTaskInitializedFinished()) {
+            allCount = planTaskStore.getCachePlanTaskList().size();
+            if (allCount > 0) {
+                todayCount = CommonUtil.getTodayPlanTaskList().size();
+                tomorrowCount = CommonUtil.getTomorrowPlanTaskList().size();
+                finishedCount = CommonUtil.getFinishedPlanTaskList().size();
+            }
+        }
 
         sideItemList.add(new SideItem(ID_TODAY, String.valueOf(getLocalUri(R.drawable.ic_side_today)), "今天", todayCount));
         sideItemList.add(new SideItem(ID_TOMORROW, String.valueOf(getLocalUri(R.drawable.ic_side_tomorrow)), "明天", tomorrowCount));
