@@ -24,6 +24,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
+        <provider
+            android:name=".database.AbsolutePlanProvider"
+            android:authorities="com.woodsho.absoluteplan"
+            android:exported="false" />
     </application>
 
 </manifest>
