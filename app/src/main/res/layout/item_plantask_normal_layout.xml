@@ -1,0 +1,25 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardBackgroundColor="#b3838181"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="0dp"
+    card_view:cardUseCompatPadding="true">
+
+    <com.mcxtzhang.swipemenulib.SwipeMenuLayout
+        android:id="@+id/item_plantask_normal_swipemenulayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <include layout="@layout/content_item_plantask_normal_layout" />
+
+        <include layout="@layout/delete_item_plantask_layout" />
+
+    </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
+</android.support.v7.widget.CardView>

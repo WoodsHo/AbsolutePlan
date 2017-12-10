@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/slide_content_item_plantask_finished"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+
+    <View
+        android:id="@+id/item_plantask_priority_view"
+        android:layout_width="5dp"
+        android:layout_height="match_parent" />
+
+    <CheckBox
+        android:id="@+id/item_plantask_checkbox"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_toEndOf="@+id/item_plantask_priority_view"
+        android:theme="@style/MyCheckBoxStyle" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/item_plantask_checkbox">
+
+        <RelativeLayout
+            android:id="@+id/item_plantask_title_time_layout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                android:id="@+id/item_plantask_time"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/item_plantask_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/item_plantask_time"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/item_plantask_describle"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/item_plantask_title_time_layout"
+            android:ellipsize="end"
+            android:gravity="top"
+            android:maxLines="3"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_13" />
+    </RelativeLayout>
+
+</RelativeLayout>

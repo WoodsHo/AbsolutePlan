@@ -9,6 +9,9 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
@@ -26,8 +30,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.woodsho.absoluteplan.adapter.SideAdapter;
+import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.bean.SideItem;
+import com.woodsho.absoluteplan.common.AbsPSharedPreference;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
+import com.woodsho.absoluteplan.ui.AllFragment;
+import com.woodsho.absoluteplan.ui.FinishedFragment;
+import com.woodsho.absoluteplan.ui.TodayFragment;
+import com.woodsho.absoluteplan.ui.TomorrowFragment;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 import com.woodsho.absoluteplan.widget.CenteredImageSpan;
@@ -37,7 +47,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SideAdapter.OnSideItemClickListener, CachePlanTaskStore.OnPlanTaskChangedListener {
     public static final String TAG = "MainActivity";
 
     public DrawerLayout mDrawerLayout;
@@ -53,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
     public TextView mSearchBt;
     public SideNavigationView mSideNavigationView;
 
+    public TodayFragment mTodayFragment;
+    public AllFragment mAllFragment;
+    public TomorrowFragment mTomorrowFragment;
+    public FinishedFragment mFinishedFragment;
     public SideAdapter mSideAdapter;
 
     public static final int ID_TODAY = 0;
@@ -143,7 +157,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mUIHandler = new UIHandler(this);
+        getLastSelectedSideId();
         initSideView();
+        changeMainView(mLastSelectedSideId);
+    }
+
+    public void getLastSelectedSideId() {
+        mLastSelectedSideId = AbsPSharedPreference.getInstanc().getLastSelectedSideId(ID_TODAY);
     }
 
     public void initSideView() {
@@ -156,12 +176,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.side_layout_relativelayout);
-        relativeLayout.setBackgroundResource(R.drawable.side_bg);
+        relativeLayout.setBackgroundResource(R.drawable.common_bg);
         final LinearLayout bottomLayout = (LinearLayout) view.findViewById(R.id.bottom_side_layout);
         mSideRecyclerView = (RecyclerView) view.findViewById(R.id.side_layout_recyclerview);
         mSideItemList = getAllSideItems();
         mSideAdapter = new SideAdapter(AbsolutePlanApplication.sAppContext, mSideItemList, mLastSelectedSideId);
-//        mSideAdapter.setOnSideItemClickListener(this);
+        mSideAdapter.setOnSideItemClickListener(this);
         mSideRecyclerView.setAdapter(mSideAdapter);
         mSideRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mSideRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
@@ -186,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                 // 得到组件显示内容
                 Bitmap bitmap = CommonUtil.drawableToBitmap(relativeLayout.getBackground());
                 // 局部模糊处理
-                CommonUtil.blur(getApplicationContext(), bitmap, bottomLayout, 18);
+                CommonUtil.blur(AbsolutePlanApplication.sAppContext, bitmap, bottomLayout, 18);
             }
         });
 
@@ -252,6 +272,150 @@ public class MainActivity extends AppCompatActivity {
         return sideItemList;
     }
 
+    public void changeMainView(int id) {
+        SideItem sideItem = null;
+        for (int i = 0; i < mSideItemList.size(); i++) {
+            if (mSideItemList.get(i).id == id) {
+                sideItem = mSideItemList.get(i);
+                break;
+            }
+        }
+        if (sideItem == null) {
+            Log.e(TAG, "error, id: " + id + ", can not find");
+            return;
+        }
+
+        mLastSelectedSideId = id;
+        if (id == ID_CALENDAR) {
+            mToolbarTitle.setText(mCurrentSelectMonth + "月");
+            mToolbarSubTitleDay.setText(mCurrentSelectDay + "日");
+            mToolbarSubTitleYear.setVisibility(View.VISIBLE);
+            mToolbarSubTitleDay.setVisibility(View.VISIBLE);
+            mToolbarToToday.setVisibility(View.VISIBLE);
+        } else {
+            mToolbarTitle.setText(sideItem.title);
+            mToolbarSubTitleYear.setVisibility(View.GONE);
+            mToolbarSubTitleDay.setVisibility(View.GONE);
+            mToolbarToToday.setVisibility(View.GONE);
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.content_frame_layout);
+        if (fragment != null && !fragment.isVisible()) {
+            List<Fragment> fragmentList = fragmentManager.getFragments();
+            if (fragmentList != null && fragmentList.size() > 0) {
+                for (Fragment fg : fragmentList) {
+                    if (fg != null && fg.isVisible()) {
+                        fragment = fg;
+                        break;
+                    }
+                }
+            }
+        }
+
+        switch (id) {
+            case ID_ALL:
+                if (!(fragment instanceof AllFragment)) {
+                    if (fragment != null) {
+                        fragmentTransaction.hide(fragment);
+                    }
+                    if (mAllFragment == null) {
+                        mAllFragment = new AllFragment();
+                    }
+                    Fragment allFragment = fragmentManager.findFragmentByTag(TAG_ALL_FRAGMENT);
+                    if (allFragment != mAllFragment) {
+                        if (allFragment != null) {
+                            fragmentTransaction.remove(allFragment);
+                        }
+                        fragmentTransaction.add(R.id.content_frame_layout, mAllFragment, TAG_ALL_FRAGMENT);
+                    }
+                    fragmentTransaction.show(mAllFragment);
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
+                break;
+            case ID_TODAY:
+                if (!(fragment instanceof TodayFragment)) {
+                    if (fragment != null) {
+                        fragmentTransaction.hide(fragment);
+                    }
+                    if (mTodayFragment == null) {
+                        mTodayFragment = new TodayFragment();
+                    }
+                    Fragment todayFragment = fragmentManager.findFragmentByTag(TAG_TODAY_FRAGMENT);
+                    if (todayFragment != mTodayFragment) {
+                        if (todayFragment != null) {
+                            fragmentTransaction.remove(todayFragment);
+                        }
+                        fragmentTransaction.add(R.id.content_frame_layout, mTodayFragment, TAG_TODAY_FRAGMENT);
+                    }
+                    fragmentTransaction.show(mTodayFragment);
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
+                break;
+            case ID_TOMORROW:
+                if (!(fragment instanceof TomorrowFragment)) {
+                    if (fragment != null) {
+                        fragmentTransaction.hide(fragment);
+                    }
+                    if (mTomorrowFragment == null) {
+                        mTomorrowFragment = new TomorrowFragment();
+                    }
+                    Fragment tomorrowFragment = fragmentManager.findFragmentByTag(TAG_TOMORROW_FRAGMENT);
+                    if (tomorrowFragment != mTomorrowFragment) {
+                        if (tomorrowFragment != null) {
+                            fragmentTransaction.remove(tomorrowFragment);
+                        }
+                        fragmentTransaction.add(R.id.content_frame_layout, mTomorrowFragment, TAG_TOMORROW_FRAGMENT);
+                    }
+                    fragmentTransaction.show(mTomorrowFragment);
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
+                break;
+            case ID_CALENDAR:
+//                if (!(fragment instanceof CalendarFragment)) {
+//                    if (fragment != null) {
+//                        fragmentTransaction.hide(fragment);
+//                    }
+//                    if (mCalendarFragment == null) {
+//                        mCalendarFragment = new CalendarFragment();
+//                    }
+//                    Fragment calendarFragment = fragmentManager.findFragmentByTag(TAG_CALENDAR_FRAGMENT);
+//                    if (calendarFragment != mCalendarFragment) {
+//                        if (calendarFragment != null) {
+//                            fragmentTransaction.remove(calendarFragment);
+//                        }
+//                        fragmentTransaction.add(R.id.content_frame_layout, mCalendarFragment, TAG_CALENDAR_FRAGMENT);
+//                    }
+//                    fragmentTransaction.show(mCalendarFragment);
+//                    fragmentTransaction.commitAllowingStateLoss();
+//                }
+                break;
+            case ID_FINISHED:
+                if (!(fragment instanceof FinishedFragment)) {
+                    if (fragment != null) {
+                        fragmentTransaction.hide(fragment);
+                    }
+                    if (mFinishedFragment == null) {
+                        mFinishedFragment = new FinishedFragment();
+                    }
+
+                    Fragment finishedFragment = fragmentManager.findFragmentByTag(TAG_FINISHED_FRAGMENT);
+                    if (finishedFragment != mFinishedFragment) {
+                        if (finishedFragment != null) {
+                            fragmentTransaction.remove(finishedFragment);
+                        }
+                        fragmentTransaction.add(R.id.content_frame_layout, mFinishedFragment, TAG_FINISHED_FRAGMENT);
+                    }
+                    fragmentTransaction.show(mFinishedFragment);
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
+                break;
+        }
+        mUIHandler.removeMessages(MSG_CLOSE_DRAWER);
+        mUIHandler.sendEmptyMessageDelayed(MSG_CLOSE_DRAWER, 50);
+    }
+
     protected Uri getLocalUri(int resId) {
         StringBuilder strBuilder = new StringBuilder("res://");
         strBuilder.append(AbsolutePlanApplication.sAppContext.getPackageName());
@@ -283,6 +447,82 @@ public class MainActivity extends AppCompatActivity {
 
             super.handleMessage(msg);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AbsPSharedPreference.getInstanc().saveLastSelectedSideId(mLastSelectedSideId);
+    }
+
+    @Override
+    public void onSideItemClick(SideItem sideItem) {
+        changeMainView(sideItem.id);
+    }
+
+    @Override
+    public void onPlanTaskChanged() {
+        mUIHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                CachePlanTaskStore scheduleTaskStore = CachePlanTaskStore.getInstance();
+                List<PlanTask> allTask = scheduleTaskStore.getCachePlanTaskList();
+                updateSideItemOfAll(allTask.size());
+
+                updateSideItemOfToday(CommonUtil.getTodayPlanTaskList().size());
+                updateSideItemOfTomorrow(CommonUtil.getTomorrowPlanTaskList().size());
+                updateSideItemOfFinished(CommonUtil.getFinishedPlanTaskList().size());
+            }
+        });
+    }
+
+    public void updateSideItemOfAll(int count) {
+        if (mSideItemList == null || mSideAdapter == null)
+            return;
+
+        SideItem item = mSideItemList.get(ID_ALL);
+        item.count = count;
+        mSideItemList.set(ID_ALL, item);
+        mSideAdapter.notifyItemChanged(ID_ALL, "pos: " + ID_ALL);
+    }
+
+    public void updateSideItemOfToday(int count) {
+        if (mSideItemList == null || mSideAdapter == null)
+            return;
+
+        SideItem item = mSideItemList.get(ID_TODAY);
+        item.count = count;
+        mSideItemList.set(ID_TODAY, item);
+        mSideAdapter.notifyItemChanged(ID_TODAY, "pos: " + ID_TODAY);
+    }
+
+    public void updateSideItemOfTomorrow(int count) {
+        if (mSideItemList == null || mSideAdapter == null)
+            return;
+
+        SideItem item = mSideItemList.get(ID_TOMORROW);
+        item.count = count;
+        mSideItemList.set(ID_TOMORROW, item);
+        mSideAdapter.notifyItemChanged(ID_TOMORROW, "pos: " + ID_TOMORROW);
+    }
+
+    public void updateSideItemOfFinished(int count) {
+        if (mSideItemList == null || mSideAdapter == null)
+            return;
+
+        SideItem item = mSideItemList.get(ID_FINISHED);
+        item.count = count;
+        mSideItemList.set(ID_FINISHED, item);
+        mSideAdapter.notifyItemChanged(ID_FINISHED, "pos: " + ID_FINISHED);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mSideAdapter != null) {
+            mSideAdapter.removeOnSideItemClickListener();
+        }
+        CachePlanTaskStore.getInstance().removePlanTaskChangedListener(this);
     }
 
     @Override
