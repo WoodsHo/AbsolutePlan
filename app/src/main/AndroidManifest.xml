@@ -28,6 +28,10 @@
             android:name=".database.AbsolutePlanProvider"
             android:authorities="com.woodsho.absoluteplan"
             android:exported="false" />
+
+        <service android:name=".service.UserActionService"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 
 </manifest>

@@ -12,6 +12,7 @@ import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilderSupp
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
+import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 import com.woodsho.absoluteplan.fresco.BitmapMemoryCacheParamsSupplier;
 import com.woodsho.absoluteplan.fresco.ImageNetworkFetcherEx;
 import com.woodsho.absoluteplan.utils.CommonUtil;
@@ -51,7 +52,7 @@ public class AbsolutePlanApplication extends Application {
                         long t2 = System.currentTimeMillis();
                         Log.d(TAG, "init app take about : " + (t2 - t1) + "ms");
                     }
-                    //CachePlanTaskStore.initialize(sAppContext);
+                    CachePlanTaskStore.initialize(sAppContext);
                 }
             }).start();
         }

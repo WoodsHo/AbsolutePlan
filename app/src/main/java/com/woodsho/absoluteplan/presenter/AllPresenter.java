@@ -36,12 +36,6 @@ public class AllPresenter implements CachePlanTaskStore.OnPlanTaskChangedListene
         }
     }
 
-    public void addPlanTask(PlanTask task) {
-        CachePlanTaskStore planTaskStore = CachePlanTaskStore.getInstance();
-        planTaskStore.addPlanTask(task, true);
-        // TODO: 17/8/20 add to database
-    }
-
     @Override
     public void onPlanTaskChanged() {
         mUIHandler.post(new Runnable() {

@@ -19,6 +19,7 @@ import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.common.PlanTaskState;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
+import com.woodsho.absoluteplan.service.UserActionService;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -273,11 +274,11 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
             return;
         }
         CachePlanTaskStore.getInstance().removePlanTask(planTask, true);
-//        Intent intent = new Intent(mContext, UserActionService.class);
-//        intent.setAction(UserActionService.INTENT_ACTION_REMOVE_ONE_PLANTASK);
-//        intent.putExtra(UserActionService.EXTRA_PLANTASK, planTask);
-//        Log.d(TAG, "removeItem , start intent service: UserActionService");
-//        mContext.startService(intent);
+        Intent intent = new Intent(mContext, UserActionService.class);
+        intent.setAction(UserActionService.INTENT_ACTION_REMOVE_ONE_PLANTASK);
+        intent.putExtra(UserActionService.EXTRA_PLANTASK, planTask);
+        Log.d(TAG, "removeItem , start intent service: UserActionService");
+        mContext.startService(intent);
     }
 
     private void changePlanItem(PlanTask planTask) {
@@ -334,11 +335,11 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
 
         planTaskStore.updatePlanTaskState(planTask, true);
-//        Intent intent = new Intent(mContext, UserActionService.class);
-//        intent.setAction(UserActionService.INTENT_ACTION_UPDATE_ONE_PLANTASK_STATE);
-//        intent.putExtra(UserActionService.EXTRA_PLANTASK, planTask);
-//        Log.d(TAG, "updatePlanTaskState , start intent service: UserActionService");
-//        mContext.startService(intent);
+        Intent intent = new Intent(mContext, UserActionService.class);
+        intent.setAction(UserActionService.INTENT_ACTION_UPDATE_ONE_PLANTASK_STATE);
+        intent.putExtra(UserActionService.EXTRA_PLANTASK, planTask);
+        Log.d(TAG, "updatePlanTaskState , start intent service: UserActionService");
+        mContext.startService(intent);
     }
 
     private void distinguishData(List<PlanTask> planTasks) {

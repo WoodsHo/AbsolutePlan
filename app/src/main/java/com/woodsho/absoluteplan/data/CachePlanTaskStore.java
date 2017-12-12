@@ -1,9 +1,11 @@
 package com.woodsho.absoluteplan.data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.woodsho.absoluteplan.bean.PlanTask;
+import com.woodsho.absoluteplan.service.UserActionService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -40,9 +42,9 @@ public class CachePlanTaskStore {
 
     public static void initialize(Context context) {
         Log.d(TAG, "initialize , start intent service: UserActionService");
-//        Intent intent = new Intent(context, UserActionService.class);
-//        intent.setAction(UserActionService.INTENT_ACTION_CACHEPLANTASK);
-//        context.startService(intent);
+        Intent intent = new Intent(context, UserActionService.class);
+        intent.setAction(UserActionService.INTENT_ACTION_CACHEPLANTASK);
+        context.startService(intent);
     }
 
     public CachePlanTaskStore() {

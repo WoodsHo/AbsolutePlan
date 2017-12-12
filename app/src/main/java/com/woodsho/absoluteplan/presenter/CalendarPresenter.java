@@ -36,12 +36,6 @@ public class CalendarPresenter implements CachePlanTaskStore.OnPlanTaskChangedLi
         }
     }
 
-    public void addPlanTask(PlanTask task) {
-        CachePlanTaskStore planTaskStore = CachePlanTaskStore.getInstance();
-        planTaskStore.addPlanTask(task, true);
-        // TODO: 17/12/12 add to database
-    }
-
     @Override
     public void onPlanTaskChanged() {
         mUIHandler.post(new Runnable() {
