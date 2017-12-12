@@ -26,4 +26,19 @@
 
     <color name="main_bg_color">#f1f2f4</color>
     <color name="side_selected_item_bg_color">#200ac6e7</color>
+
+    <!-- 日历 -->
+    <color name="calendar_empty_view_color">#838181</color>
+    <color name="solarTextColor">#000000</color>//公历日期的文本颜色
+    <color name="lunarTextColor">@color/black_20</color>//农历日期的文本颜色
+    <color name="hintColor">@color/lunarTextColor</color>//不是本月的日期文本颜色
+    <color name="selectCircleColor">@color/colorPrimary</color>//选中日期和当天的圆颜色
+    <color name="hollowCircleColor">#ffffffff</color>//选中空心圆中间的颜色
+    <color name="holidayColor">@color/colorPrimary</color>//节假日“休”字颜色
+    <color name="workdayColor">#e91c1c</color>//工作日日“班”字颜色
+    <color name="poinColor">#e91c1c</color>//指示圆点颜色
+    <!-- 日历 -->
+
+    <color name="guide_bg_color">#b2000000</color>
+    <color name="settings_bg_color">#f2f4f5</color>
 </resources>

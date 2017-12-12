@@ -1,0 +1,8 @@
+<resources>
+
+    <!-- 日历 -->
+    <integer name="selectCircleRadius">40</integer>//选中和当天圆环半径
+    <integer name="hollowCircleStroke">3</integer>//选中空心圆圆环粗细
+    <!-- 日历 -->
+
+</resources>

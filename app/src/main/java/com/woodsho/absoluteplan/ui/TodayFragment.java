@@ -78,9 +78,9 @@ public class TodayFragment extends BaseFragment implements TodayAdapter.OnItemCl
 
     @Override
     public void onContentItemClick(PlanTask task) {
-//        Intent intent = new Intent(getActivity(), ScheduleTaskDetailsActivity.class);
-//        intent.putExtra(ScheduleTaskDetailsActivity.KEY_SCHEDULETASK, task);
-//        intent.putExtra(ScheduleTaskDetailsActivity.KEY_SHOW_TYPE, ScheduleTaskDetailsActivity.TYPE_MODIFY);
+//        Intent intent = new Intent(getActivity(), PlanTaskDetailsActivity.class);
+//        intent.putExtra(PlanTaskDetailsActivity.KEY_PLANTASK, task);
+//        intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_MODIFY);
 //        startActivity(intent);
     }
 }

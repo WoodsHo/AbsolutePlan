@@ -51,7 +51,7 @@ public class AbsolutePlanApplication extends Application {
                         long t2 = System.currentTimeMillis();
                         Log.d(TAG, "init app take about : " + (t2 - t1) + "ms");
                     }
-                    //CacheScheduleTaskStore.initialize(sAppContext);
+                    //CachePlanTaskStore.initialize(sAppContext);
                 }
             }).start();
         }

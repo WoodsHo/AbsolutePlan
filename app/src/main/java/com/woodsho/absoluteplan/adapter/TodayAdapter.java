@@ -275,8 +275,8 @@ public class TodayAdapter extends RecyclerView.Adapter {
         }
 //        CachePlanTaskStore.getInstance().removePlanTask(planTask, true);
 //        Intent intent = new Intent(mContext, UserActionService.class);
-//        intent.setAction(UserActionService.INTENT_ACTION_REMOVE_ONE_SCHEDULETASK);
-//        intent.putExtra(UserActionService.EXTRA_SCHEDULETASK, planTask);
+//        intent.setAction(UserActionService.INTENT_ACTION_REMOVE_ONE_PLANTASK);
+//        intent.putExtra(UserActionService.EXTRA_PLANTASK, planTask);
 //        Log.d(TAG, "removeItem , start intent service: UserActionService");
 //        mContext.startService(intent);
     }
@@ -336,9 +336,9 @@ public class TodayAdapter extends RecyclerView.Adapter {
 
         planTaskStore.updatePlanTaskState(planTask, true);
 //        Intent intent = new Intent(mContext, UserActionService.class);
-//        intent.setAction(UserActionService.INTENT_ACTION_UPDATE_ONE_SCHEDULETASK_STATE);
-//        intent.putExtra(UserActionService.EXTRA_SCHEDULETASK, planTask);
-//        Log.d(TAG, "updateScheduleTaskState , start intent service: UserActionService");
+//        intent.setAction(UserActionService.INTENT_ACTION_UPDATE_ONE_PLANTASK_STATE);
+//        intent.putExtra(UserActionService.EXTRA_PLANTASK, planTask);
+//        Log.d(TAG, "updatePlanTaskState , start intent service: UserActionService");
 //        mContext.startService(intent);
     }
 

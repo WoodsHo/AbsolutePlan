@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignWithParentIfMissing="true"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="日"
+            android:textColor="#ffffff"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="一"
+            android:textColor="#ffffff"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="二"
+            android:textColor="#ffffff"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="三"
+            android:textColor="#ffffff"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="四"
+            android:textColor="#ffffff"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="五"
+            android:textColor="#ffffff"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="六"
+            android:textColor="#ffffff"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <com.necer.ncalendar.calendar.NCalendar
+        android:id="@+id/ncalendar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:calendarHeight="@dimen/calendarHeight"
+        app:defaultCalendar="Month"
+        app:firstDayOfWeek="Sunday"
+        app:hintColor="@color/hintColor"
+        app:holidayColor="@color/holidayColor"
+        app:hollowCircleColor="@color/hollowCircleColor"
+        app:hollowCircleStroke="@integer/hollowCircleStroke"
+        app:isShowHoliday="true"
+        app:isShowLunar="true"
+        app:lunarTextColor="@color/lunarTextColor"
+        app:lunarTextSize="@dimen/lunarTextSize"
+        app:pointColor="@color/poinColor"
+        app:pointSize="@dimen/pointSize"
+        app:selectCircleColor="@color/selectCircleColor"
+        app:selectCircleRadius="@integer/selectCircleRadius"
+        app:solarTextColor="@color/solarTextColor"
+        app:solarTextSize="@dimen/solarTextSize"
+        app:workdayColor="#e91c1c">
+
+        <com.woodsho.absoluteplan.widget.PlanTaskRecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/common_bg" />
+
+    </com.necer.ncalendar.calendar.NCalendar>
+
+</LinearLayout>

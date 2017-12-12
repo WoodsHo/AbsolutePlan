@@ -41,7 +41,7 @@ public class CachePlanTaskStore {
     public static void initialize(Context context) {
         Log.d(TAG, "initialize , start intent service: UserActionService");
 //        Intent intent = new Intent(context, UserActionService.class);
-//        intent.setAction(UserActionService.INTENT_ACTION_CACHESCHEDULETASK);
+//        intent.setAction(UserActionService.INTENT_ACTION_CACHEPLANTASK);
 //        context.startService(intent);
     }
 

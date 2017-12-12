@@ -1,7 +1,7 @@
 package com.woodsho.absoluteplan.adapter;
 
 import android.content.Context;
-import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -27,11 +27,11 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by hewuzhao on 17/12/10.
+ * Created by hewuzhao on 17/12/12.
  */
 
-public class TomorrowAdapter extends RecyclerView.Adapter {
-    private static final String TAG = "TomorrowAdapter";
+public class PlanTaskAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public static final String TAG = "PlanTaskAdapter";
 
     private static final int PLANTASK_TYPE_NORMAL = 0;
     private static final int PLANTASK_TYPE_FINISHED = 1;
@@ -42,10 +42,24 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
     private List<PlanTask> mFinishedPlanTaskList;
     private OnItemClickListener mOnItemClickListener;
 
-    public TomorrowAdapter(Context context) {
+    public PlanTaskAdapter(Context context) {
         mContext = context;
         mNormalPlanTaskList = new ArrayList<>();
         mFinishedPlanTaskList = new ArrayList<>();
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == PLANTASK_TYPE_NORMAL) {
+            return new PlanTaskNormalViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_plantask_normal_layout, parent, false));
+        } else if (viewType == PLANTASK_TYPE_FINISHED) {
+            return new PlanTaskFinishedViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_plantask_finished_layout, parent, false));
+        } else if (viewType == PLANTASK_TYPE_EMPTY){
+            return new PlanTaskEmptyViewHolder(LayoutInflater.from(mContext).inflate(R.layout.calendar_empty_layout, parent, false));
+        } else {
+            Log.e(TAG, "error viewType: " + viewType);
+            return null;
+        }
     }
 
     public interface OnItemClickListener {
@@ -62,22 +76,7 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == PLANTASK_TYPE_NORMAL) {
-            return new PlanTaskNormalViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_plantask_normal_layout, parent, false));
-        } else if (viewType == PLANTASK_TYPE_FINISHED) {
-            return new PlanTaskFinishedViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_plantask_finished_layout, parent, false));
-        } else if (viewType == PLANTASK_TYPE_EMPTY){
-            return new PlanTaskEmptyViewHolder(LayoutInflater.from(mContext).inflate(R.layout.empty_layout, parent, false));
-        } else {
-            Log.e(TAG, "error viewType: " + viewType);
-            return null;
-        }
-    }
-
-    @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
         if (holder instanceof PlanTaskNormalViewHolder) {
             final PlanTaskNormalViewHolder viewHolder = (PlanTaskNormalViewHolder) holder;
             final PlanTask planTask = mNormalPlanTaskList.get(position);
@@ -108,7 +107,7 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
             viewHolder.mCheckBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    updatePlanTaskState(planTask);
+                    updateSPlanTaskState(planTask);
                 }
             });
 
@@ -153,7 +152,7 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
             viewHolder.mCheckBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    updatePlanTaskState(planTask);
+                    updateSPlanTaskState(planTask);
                 }
             });
         } else if (holder instanceof PlanTaskFinishedHintViewHolder) {
@@ -165,10 +164,13 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
                 params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
             }
             viewHolder.itemView.setLayoutParams(params);
-        } else if (holder instanceof PlanTaskBottomViewHolder) {
+        } else if (holder instanceof PlanTaskBottomViewHolder){
+
+        } else if (holder instanceof PlanTaskEmptyViewHolder) {
 
         }
     }
+
 
     @Override
     public int getItemViewType(int position) {
@@ -177,6 +179,7 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
         if (normalSize <= 0 && finishedSize <= 0) {
             return PLANTASK_TYPE_EMPTY;
         }
+
         if (position < normalSize) {
             return PLANTASK_TYPE_NORMAL;
         } else {
@@ -249,14 +252,21 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
     }
 
     public class PlanTaskEmptyViewHolder extends RecyclerView.ViewHolder {
+        public CardView mEmptyView;
 
         public PlanTaskEmptyViewHolder(View itemView) {
             super(itemView);
+            mEmptyView = (CardView) itemView.findViewById(R.id.calendar_empty_view);
         }
     }
 
     public void changeAllData(List<PlanTask> planTasks) {
         distinguishData(planTasks);
+    }
+
+    public void resetData() {
+        mNormalPlanTaskList.clear();
+        mFinishedPlanTaskList.clear();
     }
 
     public void insertItem(PlanTask planTask) {
@@ -287,7 +297,7 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void updatePlanTaskState(final PlanTask planTask) {
+    private void updateSPlanTaskState(final PlanTask planTask) {
         CachePlanTaskStore planTaskStore = CachePlanTaskStore.getInstance();
         switch (planTask.state) {
             case PlanTaskState.STATE_NORMAL:
@@ -306,7 +316,7 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
         }
 
         if (mNormalPlanTaskList.size() > 0) {
-            Collections.sort(mNormalPlanTaskList, new Comparator<Object>() {
+            Collections.sort(mNormalPlanTaskList,  new Comparator<Object>() {
                 @Override
                 public int compare(Object o1, Object o2) {
                     if (o1 instanceof PlanTask && o2 instanceof PlanTask) {
@@ -319,7 +329,7 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
             });
         }
         if (mFinishedPlanTaskList.size() > 0) {
-            Collections.sort(mFinishedPlanTaskList, new Comparator<Object>() {
+            Collections.sort(mFinishedPlanTaskList,  new Comparator<Object>() {
                 @Override
                 public int compare(Object o1, Object o2) {
                     if (o1 instanceof PlanTask && o2 instanceof PlanTask) {
@@ -344,8 +354,10 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
     private void distinguishData(List<PlanTask> planTasks) {
         mNormalPlanTaskList.clear();
         mFinishedPlanTaskList.clear();
-        if (planTasks == null || planTasks.size() <= 0)
+        if (planTasks == null || planTasks.size() <= 0) {
+            notifyDataSetChanged();
             return;
+        }
 
         Collections.sort(planTasks, new Comparator<Object>() {
             @Override
@@ -370,4 +382,5 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
         }
         notifyDataSetChanged();
     }
+
 }

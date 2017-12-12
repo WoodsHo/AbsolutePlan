@@ -35,6 +35,7 @@ import com.woodsho.absoluteplan.bean.SideItem;
 import com.woodsho.absoluteplan.common.AbsPSharedPreference;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 import com.woodsho.absoluteplan.ui.AllFragment;
+import com.woodsho.absoluteplan.ui.CalendarFragment;
 import com.woodsho.absoluteplan.ui.FinishedFragment;
 import com.woodsho.absoluteplan.ui.TodayFragment;
 import com.woodsho.absoluteplan.ui.TomorrowFragment;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
     public AllFragment mAllFragment;
     public TomorrowFragment mTomorrowFragment;
     public FinishedFragment mFinishedFragment;
+    public CalendarFragment mCalendarFragment;
     public SideAdapter mSideAdapter;
 
     public static final int ID_TODAY = 0;
@@ -132,19 +134,19 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
         mToolbarToToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (mLastSelectedSideId == ID_CALENDAR) {
-//                    if (mCalendarFragment != null && mCalendarFragment.isAdded() && mCalendarFragment.isVisible()) {
-//                        mCalendarFragment.JumpToToday();
-//                    }
-//                }
+                if (mLastSelectedSideId == ID_CALENDAR) {
+                    if (mCalendarFragment != null && mCalendarFragment.isAdded() && mCalendarFragment.isVisible()) {
+                        mCalendarFragment.JumpToToday();
+                    }
+                }
             }
         });
         mFloatActionButton = (FloatingActionButton) findViewById(R.id.main_float_action_button);
         mFloatActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, ScheduleTaskDetailsActivity.class);
-//                intent.putExtra(ScheduleTaskDetailsActivity.KEY_SHOW_TYPE, ScheduleTaskDetailsActivity.TYPE_NEW_BUILD);
+//                Intent intent = new Intent(MainActivity.this, PlanTaskDetailsActivity.class);
+//                intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_NEW_BUILD);
 //                startActivity(intent);
             }
         });
@@ -373,23 +375,23 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
                 }
                 break;
             case ID_CALENDAR:
-//                if (!(fragment instanceof CalendarFragment)) {
-//                    if (fragment != null) {
-//                        fragmentTransaction.hide(fragment);
-//                    }
-//                    if (mCalendarFragment == null) {
-//                        mCalendarFragment = new CalendarFragment();
-//                    }
-//                    Fragment calendarFragment = fragmentManager.findFragmentByTag(TAG_CALENDAR_FRAGMENT);
-//                    if (calendarFragment != mCalendarFragment) {
-//                        if (calendarFragment != null) {
-//                            fragmentTransaction.remove(calendarFragment);
-//                        }
-//                        fragmentTransaction.add(R.id.content_frame_layout, mCalendarFragment, TAG_CALENDAR_FRAGMENT);
-//                    }
-//                    fragmentTransaction.show(mCalendarFragment);
-//                    fragmentTransaction.commitAllowingStateLoss();
-//                }
+                if (!(fragment instanceof CalendarFragment)) {
+                    if (fragment != null) {
+                        fragmentTransaction.hide(fragment);
+                    }
+                    if (mCalendarFragment == null) {
+                        mCalendarFragment = new CalendarFragment();
+                    }
+                    Fragment calendarFragment = fragmentManager.findFragmentByTag(TAG_CALENDAR_FRAGMENT);
+                    if (calendarFragment != mCalendarFragment) {
+                        if (calendarFragment != null) {
+                            fragmentTransaction.remove(calendarFragment);
+                        }
+                        fragmentTransaction.add(R.id.content_frame_layout, mCalendarFragment, TAG_CALENDAR_FRAGMENT);
+                    }
+                    fragmentTransaction.show(mCalendarFragment);
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
                 break;
             case ID_FINISHED:
                 if (!(fragment instanceof FinishedFragment)) {
@@ -465,8 +467,8 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
         mUIHandler.post(new Runnable() {
             @Override
             public void run() {
-                CachePlanTaskStore scheduleTaskStore = CachePlanTaskStore.getInstance();
-                List<PlanTask> allTask = scheduleTaskStore.getCachePlanTaskList();
+                CachePlanTaskStore planTaskStore = CachePlanTaskStore.getInstance();
+                List<PlanTask> allTask = planTaskStore.getCachePlanTaskList();
                 updateSideItemOfAll(allTask.size());
 
                 updateSideItemOfToday(CommonUtil.getTodayPlanTaskList().size());
@@ -514,6 +516,28 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
         item.count = count;
         mSideItemList.set(ID_FINISHED, item);
         mSideAdapter.notifyItemChanged(ID_FINISHED, "pos: " + ID_FINISHED);
+    }
+
+    public void updateToolbarDate(int year, int month, int day) {
+        mToolbarTitle.setVisibility(View.VISIBLE);
+        mToolbarToToday.setText(String.valueOf(CommonUtil.getToday()));
+        if (CommonUtil.isToday(year, month, day)) {
+            mToolbarToToday.setVisibility(View.GONE);
+        } else {
+            mToolbarToToday.setVisibility(View.VISIBLE);
+        }
+        mToolbarSubTitleYear.setVisibility(View.VISIBLE);
+        mToolbarSubTitleDay.setVisibility(View.VISIBLE);
+        mToolbarSubTitleDay.setText(day + "日");
+        mToolbarTitle.setText(month + "月");
+        mToolbarSubTitleYear.setText(year + "年");
+        setCurrentSelectDate(year, month, day);
+    }
+
+    private void setCurrentSelectDate(int year, int month, int day) {
+        mCurrentSelectYear = year;
+        mCurrentSelectMonth = month;
+        mCurrentSelectDay = day;
     }
 
     @Override
