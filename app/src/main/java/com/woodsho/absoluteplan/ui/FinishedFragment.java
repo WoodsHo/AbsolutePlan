@@ -79,9 +79,9 @@ public class FinishedFragment extends BaseFragment implements FinishedAdapter.On
 
     @Override
     public void onContentItemClick(PlanTask task) {
-//        Intent intent = new Intent(getActivity(), PlanTaskDetailsActivity.class);
-//        intent.putExtra(PlanTaskDetailsActivity.KEY_PLANTASK, task);
-//        intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_MODIFY);
-//        startActivity(intent);
+        Intent intent = new Intent(getActivity(), PlanTaskDetailsActivity.class);
+        intent.putExtra(PlanTaskDetailsActivity.KEY_PLANTASK, task);
+        intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_MODIFY);
+        startActivity(intent);
     }
 }

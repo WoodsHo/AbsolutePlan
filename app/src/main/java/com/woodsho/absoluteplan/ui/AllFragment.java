@@ -1,6 +1,7 @@
 package com.woodsho.absoluteplan.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -82,9 +83,9 @@ public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickL
 
     @Override
     public void onContentItemClick(PlanTask task) {
-//        Intent intent = new Intent(getActivity(), PlanTaskDetailsActivity.class);
-//        intent.putExtra(PlanTaskDetailsActivity.KEY_PLANTASK, task);
-//        intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_MODIFY);
-//        startActivity(intent);
+        Intent intent = new Intent(getActivity(), PlanTaskDetailsActivity.class);
+        intent.putExtra(PlanTaskDetailsActivity.KEY_PLANTASK, task);
+        intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_MODIFY);
+        startActivity(intent);
     }
 }

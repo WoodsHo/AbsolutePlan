@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:paddingTop="2dp">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/time_plantaskdetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="15dp"
+        card_view:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp">
+
+            <LinearLayout
+                android:id="@+id/time_year_month_day_hour_minute"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:divider="@color/black_30"
+                android:dividerPadding="13dp"
+                android:showDividers="middle">
+
+                <TextView
+                    android:id="@+id/time_year_month_day"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="year month day"
+                    android:textColor="@color/black_50"
+                    android:textSize="@dimen/text_size_17"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/time_hour_minute"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="hour minute"
+                    android:textColor="@color/black_50"
+                    android:textSize="@dimen/text_size_17"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/time_plantaskdetails_textinputlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/time_plantaskdetails"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:textColorHint="@color/black_30">
+
+        <EditText
+            android:id="@+id/title_plantaskdetails"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="标题"
+            android:textColor="@color/black_50"
+            android:textColorHint="@color/black_30"
+            android:textSize="@dimen/text_size_17"
+            android:textStyle="bold" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <View
+        android:id="@+id/divide_plantaskdetails_2"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/time_plantaskdetails_textinputlayout"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/black_10" />
+
+    <EditText
+        android:id="@+id/describe_plantaskdetails"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/divide_plantaskdetails_2"
+        android:layout_marginTop="5dp"
+        android:background="@null"
+        android:gravity="top|start"
+        android:hint="具体描述一下..."
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:textColor="@color/black_50"
+        android:textColorHint="@color/black_30"
+        android:textSize="@dimen/text_size_17"
+        android:textStyle="bold" />
+</RelativeLayout>

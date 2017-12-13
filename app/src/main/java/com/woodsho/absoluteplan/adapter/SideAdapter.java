@@ -2,9 +2,11 @@ package com.woodsho.absoluteplan.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.woodsho.absoluteplan.MainActivity;
@@ -82,7 +84,7 @@ public class SideAdapter extends RecyclerView.Adapter {
             sideViewHolder.mTitle.setTextColor(res.getColor(R.color.black));
             sideViewHolder.mCount.setTextColor(res.getColor(R.color.black_30));
         }
-        sideViewHolder.mIcon.setImageURI(sideItem.iconId);
+        sideViewHolder.mIcon.setImageResource(sideItem.iconId);
         sideViewHolder.mTitle.setText(sideItem.title);
         if (sideItem.id == MainActivity.ID_ALL || sideItem.id == MainActivity.ID_TODAY
                 || sideItem.id == MainActivity.ID_TOMORROW || sideItem.id == MainActivity.ID_FINISHED) {
@@ -98,13 +100,13 @@ public class SideAdapter extends RecyclerView.Adapter {
     }
 
     private class SideViewHolder extends RecyclerView.ViewHolder {
-        public SimpleDraweeViewEx mIcon;
+        public ImageView mIcon;
         public TextView mTitle;
         public TextView mCount;
 
         public SideViewHolder(View itemView) {
             super(itemView);
-            mIcon = (SimpleDraweeViewEx) itemView.findViewById(R.id.side_item_icon);
+            mIcon = (ImageView) itemView.findViewById(R.id.side_item_icon);
             mTitle = (TextView) itemView.findViewById(R.id.side_item_title);
             mCount = (TextView) itemView.findViewById(R.id.side_item_count);
         }

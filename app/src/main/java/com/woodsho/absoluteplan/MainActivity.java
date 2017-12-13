@@ -37,6 +37,7 @@ import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 import com.woodsho.absoluteplan.ui.AllFragment;
 import com.woodsho.absoluteplan.ui.CalendarFragment;
 import com.woodsho.absoluteplan.ui.FinishedFragment;
+import com.woodsho.absoluteplan.ui.PlanTaskDetailsActivity;
 import com.woodsho.absoluteplan.ui.TodayFragment;
 import com.woodsho.absoluteplan.ui.TomorrowFragment;
 import com.woodsho.absoluteplan.utils.CommonUtil;
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        CachePlanTaskStore.getInstance().addOnPlanTaskChangedListener(this);
         StatusBarUtil statusbar = new StatusBarUtil(this);
         statusbar.setColorBarForDrawer(ContextCompat.getColor(this, R.color.colorPrimary));
 
@@ -145,9 +147,9 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
         mFloatActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, PlanTaskDetailsActivity.class);
-//                intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_NEW_BUILD);
-//                startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, PlanTaskDetailsActivity.class);
+                intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_NEW_BUILD);
+                startActivity(intent);
             }
         });
         mSideNavigationView = (SideNavigationView) findViewById(R.id.toolbar_slide_navigation_view);
@@ -213,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
         });
 
         mSettingBt = (TextView) view.findViewById(R.id.setting_side_layout);
-        mSettingBt.setText(createStringWithLeftPicture(R.drawable.ic_side_settings, "  设置"));
+        mSettingBt.setText(createStringWithLeftPicture(R.drawable.ic_side_setting, "  设置"));
         mSettingBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -265,11 +267,11 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
             }
         }
 
-        sideItemList.add(new SideItem(ID_TODAY, String.valueOf(getLocalUri(R.drawable.ic_side_today)), "今天", todayCount));
-        sideItemList.add(new SideItem(ID_TOMORROW, String.valueOf(getLocalUri(R.drawable.ic_side_tomorrow)), "明天", tomorrowCount));
-        sideItemList.add(new SideItem(ID_CALENDAR, String.valueOf(getLocalUri(R.drawable.ic_side_calendar)), "日历", 0));
-        sideItemList.add(new SideItem(ID_ALL, String.valueOf(getLocalUri(R.drawable.ic_side_all)), "所有", allCount));
-        sideItemList.add(new SideItem(ID_FINISHED, String.valueOf(getLocalUri(R.drawable.ic_side_finished)), "已完成", finishedCount));
+        sideItemList.add(new SideItem(ID_TODAY, R.drawable.ic_side_today, "今天", todayCount));
+        sideItemList.add(new SideItem(ID_TOMORROW, R.drawable.ic_side_tomorrow, "明天", tomorrowCount));
+        sideItemList.add(new SideItem(ID_CALENDAR, R.drawable.ic_side_calendar, "日历", 0));
+        sideItemList.add(new SideItem(ID_ALL, R.drawable.ic_side_all, "所有", allCount));
+        sideItemList.add(new SideItem(ID_FINISHED, R.drawable.ic_side_finished, "已完成", finishedCount));
 
         return sideItemList;
     }

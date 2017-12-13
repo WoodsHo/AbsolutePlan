@@ -9,13 +9,13 @@ import android.os.Parcelable;
 
 public class SideItem implements Parcelable {
     public int id;
-    public String iconId;
+    public int iconId;
     public String title;
     public int count;
 
     public SideItem() {}
 
-    public SideItem(int id, String iconId, String title, int count) {
+    public SideItem(int id, int iconId, String title, int count) {
         this.id = id;
         this.iconId = iconId;
         this.title = title;
@@ -29,7 +29,7 @@ public class SideItem implements Parcelable {
 
     public void readFromParcelable(Parcel in) {
         id = in.readInt();
-        iconId = in.readString();
+        iconId = in.readInt();
         title = in.readString();
         count = in.readInt();
     }
@@ -37,7 +37,7 @@ public class SideItem implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeString(iconId);
+        dest.writeInt(iconId);
         dest.writeString(title);
         dest.writeInt(count);
     }

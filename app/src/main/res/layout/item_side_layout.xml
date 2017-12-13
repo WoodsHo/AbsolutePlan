@@ -8,11 +8,11 @@
     android:paddingEnd="7dp"
     android:paddingStart="10dp">
 
-    <com.woodsho.absoluteplan.widget.SimpleDraweeViewEx
+    <ImageView
         android:id="@+id/side_item_icon"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        fresco:actualImageScaleType="fitCenter"
+        android:scaleType="center"
         android:layout_centerVertical="true" />
 
     <TextView
