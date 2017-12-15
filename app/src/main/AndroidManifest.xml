@@ -29,11 +29,18 @@
             android:authorities="com.woodsho.absoluteplan"
             android:exported="false" />
 
-        <service android:name=".service.UserActionService"
+        <service
+            android:name=".service.UserActionService"
             android:enabled="true"
-            android:exported="false"/>
-        
-        <activity android:name=".ui.PlanTaskDetailsActivity"/>
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.PlanTaskDetailsActivity"
+            android:theme="@style/Theme.Slidr.Slidable" />
+
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:theme="@style/Theme.Slidr.Slidable" />
     </application>
 
 </manifest>

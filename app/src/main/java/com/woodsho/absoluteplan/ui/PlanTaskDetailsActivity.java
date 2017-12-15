@@ -31,6 +31,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.r0adkll.slidr.Slidr;
+import com.r0adkll.slidr.model.SlidrConfig;
+import com.r0adkll.slidr.model.SlidrPosition;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
@@ -74,7 +77,14 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantaskdetails);
-
+        SlidrConfig mConfig = new SlidrConfig.Builder()
+                .position(SlidrPosition.LEFT)
+                .velocityThreshold(2400)
+                .distanceThreshold(.25f)
+                .edge(true)
+                .touchSize(CommonUtil.dp2px(this, 32))
+                .build();
+        Slidr.attach(this, mConfig);
         setupActionBar();
         StatusBarUtil statusBarUtil = new StatusBarUtil(this);
         statusBarUtil.setColorBarForDrawer(ContextCompat.getColor(this, R.color.colorPrimary));

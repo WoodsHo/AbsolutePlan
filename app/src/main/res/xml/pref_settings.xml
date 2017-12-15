@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.woodsho.absoluteplan.widget.AbsPlanPreference
+        android:icon="@drawable/ic_side_all"
+        android:key="key_settings_about"
+        android:title="关于" />
+
+    <com.woodsho.absoluteplan.widget.AbsPlanPreference
+        android:icon="@drawable/ic_side_today"
+        android:key="key_settings_skin"
+        android:title="换肤" />
+
+    <com.woodsho.absoluteplan.widget.AbsPlanPreference
+        android:icon="@drawable/ic_side_calendar"
+        android:key="key_settings_feedback_suggestion"
+        android:title="反馈与建议" />
+</PreferenceScreen>

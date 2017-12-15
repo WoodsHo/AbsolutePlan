@@ -38,6 +38,7 @@ import com.woodsho.absoluteplan.ui.AllFragment;
 import com.woodsho.absoluteplan.ui.CalendarFragment;
 import com.woodsho.absoluteplan.ui.FinishedFragment;
 import com.woodsho.absoluteplan.ui.PlanTaskDetailsActivity;
+import com.woodsho.absoluteplan.ui.SettingsActivity;
 import com.woodsho.absoluteplan.ui.TodayFragment;
 import com.woodsho.absoluteplan.ui.TomorrowFragment;
 import com.woodsho.absoluteplan.utils.CommonUtil;
@@ -219,14 +220,14 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
         mSettingBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-//                startActivity(intent);
-//                mUIHandler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mDrawerLayout.closeDrawer(mSideLayout);
-//                    }
-//                }, 200);
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                mUIHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDrawerLayout.closeDrawer(mSideLayout);
+                    }
+                }, 200);
             }
         });
         mSearchBt = (TextView) view.findViewById(R.id.search_side_layout);
