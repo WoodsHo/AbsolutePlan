@@ -31,6 +31,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.app.hubert.library.Controller;
+import com.app.hubert.library.HighLight;
+import com.app.hubert.library.NewbieGuide;
+import com.app.hubert.library.OnGuideChangedListener;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrPosition;
@@ -52,7 +56,8 @@ import java.util.Locale;
 public class PlanTaskDetailsActivity extends AppCompatActivity {
     public static final String TAG = "PlanTaskDetailsActivity";
     public static final String KEY_PLANTASK = "key_plantask";
-
+    public static final String KEY_GUIDE_TIME = "guide_time";
+    public static final String KEY_GUIDE_SAVE_PLANTASK = "guide_save_plantask";
     public static final String KEY_SHOW_TYPE = "show_type";
 
     public static final int TYPE_NEW_BUILD = 1;
@@ -89,7 +94,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
         StatusBarUtil statusBarUtil = new StatusBarUtil(this);
         statusBarUtil.setColorBarForDrawer(ContextCompat.getColor(this, R.color.colorPrimary));
         init();
-
+        showGuideTime();
     }
 
     private void setupActionBar() {
@@ -110,7 +115,53 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
         }
     }
 
+    private void showGuideTime() {
+        Controller controller = NewbieGuide.with(this)
+                .setOnGuideChangedListener(new OnGuideChangedListener() {//add listener
+                    @Override
+                    public void onShowed(Controller controller) {
+                        //引导层显示
+                    }
 
+                    @Override
+                    public void onRemoved(Controller controller) {
+                        mTimeYearMonthDay.callOnClick();
+                    }
+                })
+                .setBackgroundColor(getResources().getColor(R.color.guide_bg_color))//设置引导层背景色，建议有透明度，默认背景色为：0xb2000000
+                .setEveryWhereCancelable(true)//设置点击任何区域消失，默认为true
+                .setLayoutRes(R.layout.guide_time_view_layout)//自定义的提示layout,第二个可变参数为点击隐藏引导层view的id
+                .alwaysShow(false)//是否每次都显示引导层，默认false
+                .addHighLight(mTimeYearMonthDayHourMinute)
+                .setLabel(KEY_GUIDE_TIME)
+                .build();//构建引导层的控制器
+        //controller.resetLabel(KEY_GUIDE_TIME);//重置该引导层为未显示过
+        //controller.remove();//移除引导层
+        controller.show();//显示引导层
+    }
+
+    private void showGuideSave() {
+        Controller controller = NewbieGuide.with(this)
+                .setOnGuideChangedListener(new OnGuideChangedListener() {
+                    @Override
+                    public void onShowed(Controller controller) {
+                        //when guide layer display
+                    }
+
+                    @Override
+                    public void onRemoved(Controller controller) {
+                        //when guide layer dismiss
+                    }
+                })
+                .setBackgroundColor(getResources().getColor(R.color.guide_bg_color))
+                .setEveryWhereCancelable(true)
+                .setLayoutRes(R.layout.guide_save_plantask_view_layout)
+                .alwaysShow(false)
+                .addHighLight(mSaveBt, HighLight.Type.CIRCLE)
+                .setLabel(KEY_GUIDE_SAVE_PLANTASK)
+                .build();
+        controller.show();
+    }
 
     private void init() {
         mHandler = new Handler();
@@ -177,14 +228,14 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
                         mCalendar.set(Calendar.MONTH, month);
                         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                         setYearMonthDay();
-
+                        showGuideSave();
                     }
                 }, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
 
                 datePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
-
+                        showGuideSave();
                     }
                 });
                 datePickerDialog.show();

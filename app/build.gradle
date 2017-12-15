@@ -40,4 +40,6 @@ dependencies {
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
     // 侧滑退出activity
     compile 'com.r0adkll:slidableactivity:2.0.5'
+    // 引导提示
+    compile 'com.github.huburt-Hu:NewbieGuide:v1.0.3'
 }

@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
@@ -44,6 +45,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         if (rootView != null) {
             View view = getLayoutInflater().inflate(R.layout.settings_toolbar_layout, rootView, false);
             rootView.addView(view, 0);
+            ImageView back = (ImageView) view.findViewById(R.id.img_back);
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
 
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);

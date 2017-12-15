@@ -29,6 +29,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.hubert.library.Controller;
+import com.app.hubert.library.HighLight;
+import com.app.hubert.library.NewbieGuide;
+import com.app.hubert.library.OnGuideChangedListener;
 import com.woodsho.absoluteplan.adapter.SideAdapter;
 import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.bean.SideItem;
@@ -120,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                //showGuideBuild();
+                showGuideBuild();
             }
 
             @Override
@@ -165,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
         getLastSelectedSideId();
         initSideView();
         changeMainView(mLastSelectedSideId);
+        showGuideSide();
     }
 
     public void getLastSelectedSideId() {
@@ -564,5 +569,51 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
+    }
+
+    private void showGuideBuild() {
+        Controller controller = NewbieGuide.with(this)
+                .setOnGuideChangedListener(new OnGuideChangedListener() {
+                    @Override
+                    public void onShowed(Controller controller) {
+                        //when guide layer display
+                    }
+
+                    @Override
+                    public void onRemoved(Controller controller) {
+                        startActivity(new Intent(MainActivity.this, PlanTaskDetailsActivity.class));
+                    }
+                })
+                .setBackgroundColor(getResources().getColor(R.color.guide_bg_color))
+                .setEveryWhereCancelable(true)
+                .setLayoutRes(R.layout.guide_build_view_layout)
+                .alwaysShow(false)
+                .addHighLight(mFloatActionButton, HighLight.Type.CIRCLE)
+                .setLabel(KEY_GUIDE_BUILD)
+                .build();
+        controller.show();
+    }
+
+    private void showGuideSide() {
+        Controller controller = NewbieGuide.with(this)
+                .setOnGuideChangedListener(new OnGuideChangedListener() {
+                    @Override
+                    public void onShowed(Controller controller) {
+                        //when guide layer display
+                    }
+
+                    @Override
+                    public void onRemoved(Controller controller) {
+                        mDrawerLayout.openDrawer(mSideLayout);
+                    }
+                })
+                .setBackgroundColor(getResources().getColor(R.color.guide_bg_color))
+                .setEveryWhereCancelable(true)
+                .setLayoutRes(R.layout.guide_side_view_layout)
+                .alwaysShow(false)
+                .addHighLight(mSideNavigationView, HighLight.Type.CIRCLE)
+                .setLabel(KEY_GUIDE_SIDE)
+                .build();
+        controller.show();
     }
 }
