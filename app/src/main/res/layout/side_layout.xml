@@ -61,7 +61,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="#707070"
+            android:background="@drawable/item_side_bottom_bg_selector"
             android:textStyle="bold" />
 
         <TextView
@@ -70,7 +71,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="#707070"
+            android:background="@drawable/item_side_bottom_bg_selector"
             android:textStyle="bold" />
 
     </LinearLayout>

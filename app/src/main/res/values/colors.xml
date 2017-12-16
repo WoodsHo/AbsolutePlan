@@ -48,6 +48,6 @@
     <color name="guide_bg_color">#b2000000</color>
     <color name="settings_bg_color">#f2f4f5</color>
 
-    <color name="item_bg_normal">@color/white_70</color>
-    <color name="item_bg_finished">@color/white_30</color>
+    <color name="item_bg_normal">@color/white_80</color>
+    <color name="item_bg_finished">@color/white_40</color>
 </resources>

@@ -1,6 +1,5 @@
 package com.woodsho.absoluteplan;
 
-import android.app.WallpaperManager;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;

@@ -2,6 +2,7 @@ package com.woodsho.absoluteplan.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -79,6 +80,7 @@ public class PlanTaskAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Resources res = mContext.getResources();
         if (holder instanceof PlanTaskNormalViewHolder) {
             final PlanTaskNormalViewHolder viewHolder = (PlanTaskNormalViewHolder) holder;
             final PlanTask planTask = mNormalPlanTaskList.get(position);
@@ -90,6 +92,7 @@ public class PlanTaskAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
                     }
                 }
             });
+            viewHolder.mContent.setBackground(res.getDrawable(R.drawable.item_plantask_normal_bg_selector));
 
             viewHolder.mDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -124,6 +127,7 @@ public class PlanTaskAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
                     }
                 }
             });
+            viewHolder.mContent.setBackground(res.getDrawable(R.drawable.item_plantask_finished_bg_selector));
 
             viewHolder.mDelete.setOnClickListener(new View.OnClickListener() {
                 @Override

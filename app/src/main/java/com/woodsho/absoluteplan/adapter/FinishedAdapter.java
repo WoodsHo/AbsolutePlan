@@ -2,6 +2,7 @@ package com.woodsho.absoluteplan.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -72,6 +73,7 @@ public class FinishedAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Resources res = mContext.getResources();
         if (holder instanceof PlanTaskFinishedViewHolder) {
             final PlanTaskFinishedViewHolder viewHolder = (PlanTaskFinishedViewHolder) holder;
             final PlanTask planTask = mFinishedPlanTaskList.get(position);
@@ -83,6 +85,7 @@ public class FinishedAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
+            viewHolder.mContent.setBackground(res.getDrawable(R.drawable.item_plantask_finished_bg_selector));
 
             viewHolder.mDelete.setOnClickListener(new View.OnClickListener() {
                 @Override

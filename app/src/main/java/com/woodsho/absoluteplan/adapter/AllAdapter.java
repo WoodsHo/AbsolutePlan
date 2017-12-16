@@ -88,7 +88,7 @@ public class AllAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        Resources res = mContext.getResources();
         if (holder instanceof PlanTaskNormalViewHolder) {
             final PlanTaskNormalViewHolder viewHolder = (PlanTaskNormalViewHolder) holder;
             final PlanTask planTask = mNormalPlanTaskList.get(getRealPos().get(position));
@@ -100,6 +100,7 @@ public class AllAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
+            viewHolder.mContent.setBackground(res.getDrawable(R.drawable.item_plantask_normal_bg_selector));
 
             viewHolder.mDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,6 +135,7 @@ public class AllAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
+            viewHolder.mContent.setBackground(res.getDrawable(R.drawable.item_plantask_finished_bg_selector));
 
             viewHolder.mDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -183,7 +185,6 @@ public class AllAdapter extends RecyclerView.Adapter {
             List<String> headers = getHeaders();
             int pso = getRealPos().get(position);
             String header = headers.get(pso);
-            Resources res = mContext.getResources();
             if (header.endsWith(SEPARATOR)) {
                 String str = header.substring(0, header.length() - 1);
                 Spannable spanStrikethroughTitel = new SpannableString(str);
