@@ -2,6 +2,7 @@ package com.woodsho.absoluteplan.utils;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -21,6 +22,7 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.woodsho.absoluteplan.AbsolutePlanApplication;
 import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 
@@ -593,5 +595,12 @@ public class CommonUtil {
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         drawable.draw(canvas);
         return bitmap;
+    }
+
+    public static Drawable getWallpaperDrawable() {
+        //获取壁纸管理器
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(AbsolutePlanApplication.sAppContext);
+        //获取壁纸图片
+        return wallpaperManager.getDrawable();
     }
 }

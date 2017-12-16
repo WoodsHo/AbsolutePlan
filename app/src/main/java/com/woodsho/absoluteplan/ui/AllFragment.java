@@ -3,6 +3,7 @@ package com.woodsho.absoluteplan.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.adapter.AllAdapter;
 import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.presenter.AllPresenter;
+import com.woodsho.absoluteplan.utils.CommonUtil;
 
 import java.util.List;
 
@@ -39,7 +41,12 @@ public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickL
         Resources res = getResources();
         Context context = AbsolutePlanApplication.sAppContext;
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.all_recyclerview);
-
+        Drawable wallpaperDrawable = CommonUtil.getWallpaperDrawable();
+        if (wallpaperDrawable != null) {
+            recyclerView.setBackground(wallpaperDrawable);
+        } else {
+            recyclerView.setBackgroundResource(R.drawable.common_bg);
+        }
         mAllAdapter = new AllAdapter(context);
         mAllAdapter.addOnItemClickListener(this);
         recyclerView.setAdapter(mAllAdapter);

@@ -2,6 +2,7 @@ package com.woodsho.absoluteplan.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -19,6 +20,7 @@ import com.woodsho.absoluteplan.adapter.PlanTaskAdapter;
 import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 import com.woodsho.absoluteplan.presenter.CalendarPresenter;
+import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.widget.PlanTaskRecyclerView;
 
 import org.joda.time.DateTime;
@@ -60,6 +62,12 @@ public class CalendarFragment extends BaseFragment implements PlanTaskAdapter.On
             }
         });
         mPlanTaskRecyclerView = (PlanTaskRecyclerView) view.findViewById(R.id.recyclerView);
+        Drawable wallpaperDrawable = CommonUtil.getWallpaperDrawable();
+        if (wallpaperDrawable != null) {
+            mPlanTaskRecyclerView.setBackground(wallpaperDrawable);
+        } else {
+            mPlanTaskRecyclerView.setBackgroundResource(R.drawable.common_bg);
+        }
         initPlanTaskList();
         mCalendarPresenter = new CalendarPresenter(this);
     }

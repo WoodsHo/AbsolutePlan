@@ -1,5 +1,6 @@
 package com.woodsho.absoluteplan;
 
+import android.app.WallpaperManager;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -186,7 +187,12 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
             }
         });
         final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.side_layout_relativelayout);
-        relativeLayout.setBackgroundResource(R.drawable.common_bg);
+        Drawable wallpaperDrawable = CommonUtil.getWallpaperDrawable();
+        if (wallpaperDrawable != null) {
+            relativeLayout.setBackground(wallpaperDrawable);
+        } else {
+            relativeLayout.setBackgroundResource(R.drawable.common_bg);
+        }
         final LinearLayout bottomLayout = (LinearLayout) view.findViewById(R.id.bottom_side_layout);
         mSideRecyclerView = (RecyclerView) view.findViewById(R.id.side_layout_recyclerview);
         mSideItemList = getAllSideItems();
@@ -301,7 +307,11 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
             mToolbarSubTitleDay.setText(mCurrentSelectDay + "日");
             mToolbarSubTitleYear.setVisibility(View.VISIBLE);
             mToolbarSubTitleDay.setVisibility(View.VISIBLE);
-            mToolbarToToday.setVisibility(View.VISIBLE);
+            if (CommonUtil.isToday(mCurrentSelectYear, mCurrentSelectMonth, mCurrentSelectDay)) {
+                mToolbarToToday.setVisibility(View.GONE);
+            } else {
+                mToolbarToToday.setVisibility(View.VISIBLE);
+            }
         } else {
             mToolbarTitle.setText(sideItem.title);
             mToolbarSubTitleYear.setVisibility(View.GONE);

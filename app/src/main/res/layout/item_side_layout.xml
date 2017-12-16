@@ -22,7 +22,7 @@
         android:layout_marginStart="26dp"
         android:layout_toEndOf="@+id/side_item_icon"
         android:gravity="center"
-        android:textColor="@android:color/black"
+        android:textColor="@color/black"
         android:textSize="@dimen/text_size_14"
         android:textStyle="bold" />
 
@@ -32,8 +32,7 @@
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:gravity="center"
-        android:text="4"
-        android:textColor="@color/black_30"
+        android:textColor="@color/black"
         android:textSize="@dimen/text_size_12"
         android:textStyle="bold" />
 </RelativeLayout>

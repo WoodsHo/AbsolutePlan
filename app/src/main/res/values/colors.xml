@@ -8,21 +8,27 @@
     <color name="colorPrimaryDark">#00000000</color>
     <color name="colorAccent">@color/common_color</color>
 
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
-    <color name="white_10">#19FFFFFF</color>
-    <color name="black_10">#19000000</color>
-    <color name="white_70">#b2ffffff</color>
-    <color name="white_20">#33ffffff</color>
-    <color name="white_30">#4dffffff</color>
+    <color name="white">#ffffffff</color>
+    <color name="white_90">#e6ffffff</color>
+    <color name="white_80">#ccffffff</color>
+    <color name="white_70">#b3ffffff</color>
+    <color name="white_60">#99ffffff</color>
     <color name="white_50">#80ffffff</color>
-    <color name="black_90">#e5000000</color>
+    <color name="white_40">#66ffffff</color>
+    <color name="white_30">#4dffffff</color>
+    <color name="white_20">#33ffffff</color>
+    <color name="white_10">#1affffff</color>
+
+    <color name="black">#ff000000</color>
+    <color name="black_90">#e6000000</color>
     <color name="black_80">#cc000000</color>
-    <color name="black_70">#B2000000</color>
-    <color name="black_50">#7f000000</color>
+    <color name="black_70">#b3000000</color>
     <color name="black_60">#99000000</color>
-    <color name="black_30">#4c000000</color>
+    <color name="black_50">#80000000</color>
+    <color name="black_40">#66000000</color>
+    <color name="black_30">#4d000000</color>
     <color name="black_20">#33000000</color>
+    <color name="black_10">#1a000000</color>
 
     <color name="main_bg_color">#f1f2f4</color>
     <color name="side_selected_item_bg_color">#200ac6e7</color>
@@ -41,4 +47,7 @@
 
     <color name="guide_bg_color">#b2000000</color>
     <color name="settings_bg_color">#f2f4f5</color>
+
+    <color name="item_bg_normal">@color/white_70</color>
+    <color name="item_bg_finished">@color/white_30</color>
 </resources>

@@ -189,11 +189,11 @@ public class AllAdapter extends RecyclerView.Adapter {
                 Spannable spanStrikethroughTitel = new SpannableString(str);
                 StrikethroughSpan stSpan = new StrikethroughSpan();
                 spanStrikethroughTitel.setSpan(stSpan, 0, str.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                viewHolder.mCardView.setCardBackgroundColor(res.getColor(R.color.white_30));
+                viewHolder.mCardView.setCardBackgroundColor(res.getColor(R.color.item_bg_finished));
                 viewHolder.mTextView.setTextColor(res.getColor(R.color.black_50));
                 viewHolder.mTextView.setText(spanStrikethroughTitel);
             } else {
-                viewHolder.mCardView.setCardBackgroundColor(res.getColor(R.color.white_50));
+                viewHolder.mCardView.setCardBackgroundColor(res.getColor(R.color.item_bg_normal));
                 viewHolder.mTextView.setTextColor(res.getColor(R.color.black));
                 viewHolder.mTextView.setText(header);
             }

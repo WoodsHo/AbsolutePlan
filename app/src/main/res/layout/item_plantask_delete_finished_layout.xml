@@ -2,7 +2,9 @@
     android:id="@+id/slide_delete_item_plantask"
     android:layout_width="120dp"
     android:layout_height="100dp"
-    android:background="#eef10c0c"
+    android:background="#4df10c0c"
     android:gravity="center"
     android:text="删除"
+    android:textStyle="bold"
+    android:textSize="@dimen/text_size_14"
     android:textColor="@color/white" />
