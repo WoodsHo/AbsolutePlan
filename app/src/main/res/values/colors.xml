@@ -50,4 +50,7 @@
 
     <color name="item_bg_normal">@color/white_80</color>
     <color name="item_bg_finished">@color/white_40</color>
+
+    <drawable name="item_plantask_normal_bg_state_pressed">@color/black_20</drawable>
+    <drawable name="item_plantask_normal_bg_state_normal">@color/transparent</drawable>
 </resources>

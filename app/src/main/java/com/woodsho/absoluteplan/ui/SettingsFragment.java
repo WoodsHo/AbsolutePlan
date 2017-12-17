@@ -2,6 +2,7 @@ package com.woodsho.absoluteplan.ui;
 
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.widget.AbsPlanPreference;
+import com.woodsho.absoluteplan.widget.AbsPlanPreferenceCategory;
 
 /**
  * Created by hewuzhao on 17/12/15.
@@ -21,12 +23,16 @@ public class SettingsFragment extends PreferenceFragment {
     public AbsPlanPreference mAboutPreference;
     public AbsPlanPreference mSkinPreference;
     public AbsPlanPreference mFeedbackSuggestionPreference;
+    public AbsPlanPreferenceCategory mPreferencePreferenceCategory;
+    public AbsPlanPreferenceCategory mServiceSupportPreferenceCategory;
     public int mOrder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_settings);
+        mPreferencePreferenceCategory = (AbsPlanPreferenceCategory) findPreference(getString(R.string.key_settings_preference));
+        mServiceSupportPreferenceCategory = (AbsPlanPreferenceCategory) findPreference(getString(R.string.key_settings_service_support));
         mAboutPreference = (AbsPlanPreference) findPreference(getString(R.string.key_settings_about));
         mSkinPreference = (AbsPlanPreference) findPreference(getString(R.string.key_settings_skin));
         mFeedbackSuggestionPreference = (AbsPlanPreference) findPreference(getString(R.string.key_settings_feedback_suggestion));
@@ -46,12 +52,17 @@ public class SettingsFragment extends PreferenceFragment {
         super.onResume();
         PreferenceScreen prefScreen = getPreferenceScreen();
         prefScreen.removeAll();
-        mAboutPreference.setOrder(mOrder++);
         mSkinPreference.setOrder(mOrder++);
+        mPreferencePreferenceCategory.addPreference(mSkinPreference);
+        mPreferencePreferenceCategory.setOrder(mOrder++);
+        prefScreen.addPreference(mPreferencePreferenceCategory);
+        mAboutPreference.setOrder(mOrder++);
         mFeedbackSuggestionPreference.setOrder(mOrder++);
-        prefScreen.addPreference(mAboutPreference);
-        prefScreen.addPreference(mSkinPreference);
-        prefScreen.addPreference(mFeedbackSuggestionPreference);
+        mServiceSupportPreferenceCategory.addPreference(mAboutPreference);
+        mServiceSupportPreferenceCategory.addPreference(mFeedbackSuggestionPreference);
+        mServiceSupportPreferenceCategory.setOrder(mOrder++);
+        prefScreen.addPreference(mServiceSupportPreferenceCategory);
+
     }
 
     @Override

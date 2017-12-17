@@ -1,0 +1,16 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="34dp"
+    android:background="@color/settings_bg_color">
+
+    <TextView
+        android:id="@+id/item_settings_preferencecategory_title"
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/text_size_14"
+        android:text="kkk"
+        android:textColor="@color/colorPrimary"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="17dp"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

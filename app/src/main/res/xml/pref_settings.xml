@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settings_preference="http://schemas.android.com/apk/res-auto">
+
+    <com.woodsho.absoluteplan.widget.AbsPlanPreferenceCategory
+        android:key="@string/key_settings_preference"
+        settings_preference:title="偏好"
+        android:persistent="false" />
+
+    <com.woodsho.absoluteplan.widget.AbsPlanPreferenceCategory
+        android:key="@string/key_settings_service_support"
+        settings_preference:title="服务支持"
+        android:persistent="false" />
 
     <com.woodsho.absoluteplan.widget.AbsPlanPreference
-        android:icon="@drawable/ic_side_all"
-        android:key="key_settings_about"
-        android:title="关于" />
+        android:key="@string/key_settings_about"
+        settings_preference:image="@drawable/ic_settings_about"
+        settings_preference:title="关于" />
 
     <com.woodsho.absoluteplan.widget.AbsPlanPreference
-        android:icon="@drawable/ic_side_today"
-        android:key="key_settings_skin"
-        android:title="换肤" />
+        android:key="@string/key_settings_skin"
+        settings_preference:image="@drawable/ic_settings_skin"
+        settings_preference:title="换肤" />
 
     <com.woodsho.absoluteplan.widget.AbsPlanPreference
-        android:icon="@drawable/ic_side_calendar"
-        android:key="key_settings_feedback_suggestion"
-        android:title="反馈与建议" />
+        android:key="@string/key_settings_feedback_suggestion"
+        settings_preference:image="@drawable/ic_settings_feedback_suggestion"
+        settings_preference:title="反馈与建议" />
 </PreferenceScreen>

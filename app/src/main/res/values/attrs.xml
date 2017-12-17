@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="settings_preference">
+        <attr name="image" format="integer" />
+        <attr name="title" format="string" />
+    </declare-styleable>
+</resources>
