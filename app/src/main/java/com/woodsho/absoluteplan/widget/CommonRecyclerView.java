@@ -45,6 +45,13 @@ public class CommonRecyclerView extends RecyclerView {
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mBgBitmap.recycle();
+        mBgBitmap = null;
+    }
+
+    @Override
     public void onDraw(Canvas c) {
         if (mBgBitmap == null) {
             Drawable drawable = CommonUtil.getWallpaperDrawable();
