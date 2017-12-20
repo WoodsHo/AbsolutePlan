@@ -601,6 +601,6 @@ public class CommonUtil {
         //获取壁纸管理器
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(AbsolutePlanApplication.sAppContext);
         //获取壁纸图片
-        return wallpaperManager.getDrawable();
+        return wallpaperManager.peekDrawable();
     }
 }

@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -16,7 +15,7 @@ import com.woodsho.absoluteplan.R;
  * Created by hewuzhao on 17/12/12.
  */
 
-public class PlanTaskRecyclerView extends RecyclerView {
+public class PlanTaskRecyclerView extends CommonRecyclerView {
     public Paint mEmptyViewPain;
     public Rect mEmptyViewRect;
 

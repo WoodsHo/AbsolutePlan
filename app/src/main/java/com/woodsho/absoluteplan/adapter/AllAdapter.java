@@ -553,8 +553,10 @@ public class AllAdapter extends RecyclerView.Adapter {
     private void distinguishData(List<PlanTask> planTasks) {
         mNormalPlanTaskList.clear();
         mFinishedPlanTaskList.clear();
-        if (planTasks == null || planTasks.size() <= 0)
+        if (planTasks == null || planTasks.size() <= 0) {
+            notifyDataSetChanged();
             return;
+        }
 
         Collections.sort(planTasks, new Comparator<Object>() {
             @Override

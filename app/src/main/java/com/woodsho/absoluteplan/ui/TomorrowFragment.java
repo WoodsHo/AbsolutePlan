@@ -3,7 +3,6 @@ package com.woodsho.absoluteplan.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,12 +36,6 @@ public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.On
         Resources res = getResources();
         Context context = AbsolutePlanApplication.sAppContext;
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.tomorrow_recyclerview);
-        Drawable wallpaperDrawable = CommonUtil.getWallpaperDrawable();
-        if (wallpaperDrawable != null) {
-            recyclerView.setBackground(wallpaperDrawable);
-        } else {
-            recyclerView.setBackgroundResource(R.drawable.common_bg);
-        }
         mTomorrowAdapter = new TomorrowAdapter(context);
         mTomorrowAdapter.addOnItemClickListener(this);
         recyclerView.setAdapter(mTomorrowAdapter);
