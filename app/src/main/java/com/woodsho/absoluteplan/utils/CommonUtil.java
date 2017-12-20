@@ -18,6 +18,7 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
@@ -118,6 +119,14 @@ public class CommonUtil {
 
     public static boolean isToday(long time) {
         return DateUtils.isToday(time);
+    }
+
+    public static boolean isToYear(long time) {
+        Calendar c = Calendar.getInstance();//
+        int toyear = c.get(Calendar.YEAR); // 获取当前年份
+        SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        String year = sdFormatter.format(time).split("-")[0];
+        return TextUtils.equals(year, String.valueOf(toyear));
     }
 
     public static boolean isTomorrow(long date) {

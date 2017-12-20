@@ -104,8 +104,9 @@ public class TodayAdapter extends RecyclerView.Adapter {
 
             viewHolder.mTitle.setText(planTask.title);
             viewHolder.mDescrible.setText(planTask.describe);
-            SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy/MM/dd");
+            SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy/MM/dd&HH:mm");
             String strBD = sdFormatter.format(planTask.time);
+            strBD = strBD.split("&")[1];
             viewHolder.mTime.setText(strBD);
             viewHolder.mCheckBox.setChecked(false);
             viewHolder.mCheckBox.setOnClickListener(new View.OnClickListener() {
@@ -146,9 +147,9 @@ public class TodayAdapter extends RecyclerView.Adapter {
             spanStrikethroughDescrible.setSpan(stSpan, 0, planTask.describe.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             viewHolder.mDescrible.setText(spanStrikethroughDescrible);
 
-            SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy/MM/dd");
+            SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy/MM/dd&HH:mm");
             String strBD = sdFormatter.format(planTask.time);
-
+            strBD = strBD.split("&")[1];
             Spannable spanStrikethroughTime = new SpannableString(strBD);
             spanStrikethroughTime.setSpan(stSpan, 0, strBD.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             viewHolder.mTime.setText(spanStrikethroughTime);
@@ -360,7 +361,7 @@ public class TodayAdapter extends RecyclerView.Adapter {
                 if (o1 instanceof PlanTask && o2 instanceof PlanTask) {
                     PlanTask task1 = (PlanTask) o1;
                     PlanTask task2 = (PlanTask) o2;
-                    return task1.time > task2.time ? 1 : -1;
+                    return task1.time < task2.time ? 1 : -1;
                 }
                 return 0;
             }

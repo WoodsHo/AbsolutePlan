@@ -44,7 +44,7 @@ public class AllAdapter extends RecyclerView.Adapter {
     private static final int PLANTASK_TYPE_FINISHED = 1;
     private static final int PLANTASK_TYPE_HEADER = 2;
     private static final int PLANTASK_TYPE_EMPTY = 3;
-    private static final String SEPARATOR = "&";
+    private static final String SIGN_FINISHED = "*";
 
     private Context mContext;
     private List<PlanTask> mNormalPlanTaskList;
@@ -113,8 +113,9 @@ public class AllAdapter extends RecyclerView.Adapter {
 
             viewHolder.mTitle.setText(planTask.title);
             viewHolder.mDescrible.setText(planTask.describe);
-            SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy/MM/dd");
+            SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy/MM/dd&HH:mm");
             String strBD = sdFormatter.format(planTask.time);
+            strBD = strBD.split("&")[1];
             viewHolder.mTime.setText(strBD);
             viewHolder.mCheckBox.setChecked(false);
             viewHolder.mCheckBox.setOnClickListener(new View.OnClickListener() {
@@ -155,9 +156,9 @@ public class AllAdapter extends RecyclerView.Adapter {
             spanStrikethroughDescrible.setSpan(stSpan, 0, planTask.describe.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             viewHolder.mDescrible.setText(spanStrikethroughDescrible);
 
-            SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy/MM/dd");
+            SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy/MM/dd&HH:mm");
             String strBD = sdFormatter.format(planTask.time);
-
+            strBD = strBD.split("&")[1];
             Spannable spanStrikethroughTime = new SpannableString(strBD);
             spanStrikethroughTime.setSpan(stSpan, 0, strBD.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             viewHolder.mTime.setText(spanStrikethroughTime);
@@ -185,7 +186,7 @@ public class AllAdapter extends RecyclerView.Adapter {
             List<String> headers = getHeaders();
             int pso = getRealPos().get(position);
             String header = headers.get(pso);
-            if (header.endsWith(SEPARATOR)) {
+            if (header.endsWith(SIGN_FINISHED)) {
                 String str = header.substring(0, header.length() - 1);
                 Spannable spanStrikethroughTitel = new SpannableString(str);
                 StrikethroughSpan stSpan = new StrikethroughSpan();
@@ -373,6 +374,9 @@ public class AllAdapter extends RecyclerView.Adapter {
             for (int i = 0; i < normalSize; i++) {
                 PlanTask task = mNormalPlanTaskList.get(i);
                 String time = sdFormatter.format(task.time);
+                if (CommonUtil.isToYear(task.time)) {
+                    time = time.split("年")[1];
+                }
                 if (!time.equals(preTime)) {
                     if (CommonUtil.isToday(task.time)) {
                         list.add("今天");
@@ -392,13 +396,16 @@ public class AllAdapter extends RecyclerView.Adapter {
             for (int i = 0; i < finishedSize; i++) {
                 PlanTask task = mFinishedPlanTaskList.get(i);
                 String time = sdFormatter.format(task.time);
+                if (CommonUtil.isToYear(task.time)) {
+                    time = time.split("年")[1];
+                }
                 if (!time.equals(preTime)) {
                     if (CommonUtil.isToday(task.time)) {
-                        list.add("今天" + SEPARATOR);
+                        list.add("今天" + SIGN_FINISHED);
                     } else if (CommonUtil.isTomorrow(task.time)) {
-                        list.add("明天" + SEPARATOR);
+                        list.add("明天" + SIGN_FINISHED);
                     } else {
-                        list.add(time + SEPARATOR);
+                        list.add(time + SIGN_FINISHED);
                     }
                 }
                 preTime = time;

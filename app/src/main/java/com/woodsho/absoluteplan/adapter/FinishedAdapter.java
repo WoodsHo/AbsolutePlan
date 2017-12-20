@@ -241,7 +241,7 @@ public class FinishedAdapter extends RecyclerView.Adapter {
                 if (o1 instanceof PlanTask && o2 instanceof PlanTask) {
                     PlanTask task1 = (PlanTask) o1;
                     PlanTask task2 = (PlanTask) o2;
-                    return task1.time > task2.time ? 1 : -1;
+                    return task1.time < task2.time ? 1 : -1;
                 }
                 return 0;
             }
