@@ -2,7 +2,6 @@ package com.woodsho.absoluteplan.ui;
 
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
@@ -14,6 +13,7 @@ import android.widget.Toast;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.widget.AbsPlanPreference;
 import com.woodsho.absoluteplan.widget.AbsPlanPreferenceCategory;
+import com.woodsho.absoluteplan.widget.AbsPlanSwitchPreference;
 
 /**
  * Created by hewuzhao on 17/12/15.
@@ -25,6 +25,7 @@ public class SettingsFragment extends PreferenceFragment {
     public AbsPlanPreference mFeedbackSuggestionPreference;
     public AbsPlanPreferenceCategory mPreferencePreferenceCategory;
     public AbsPlanPreferenceCategory mServiceSupportPreferenceCategory;
+    public AbsPlanSwitchPreference mWallpaperBgPreference;
     public int mOrder;
 
     @Override
@@ -36,6 +37,7 @@ public class SettingsFragment extends PreferenceFragment {
         mAboutPreference = (AbsPlanPreference) findPreference(getString(R.string.key_settings_about));
         mSkinPreference = (AbsPlanPreference) findPreference(getString(R.string.key_settings_skin));
         mFeedbackSuggestionPreference = (AbsPlanPreference) findPreference(getString(R.string.key_settings_feedback_suggestion));
+        mWallpaperBgPreference = (AbsPlanSwitchPreference) findPreference(getString(R.string.key_settings_wallpaper_bg));
     }
 
     @Override
@@ -53,7 +55,9 @@ public class SettingsFragment extends PreferenceFragment {
         PreferenceScreen prefScreen = getPreferenceScreen();
         prefScreen.removeAll();
         mSkinPreference.setOrder(mOrder++);
+        mWallpaperBgPreference.setOrder(mOrder++);
         mPreferencePreferenceCategory.addPreference(mSkinPreference);
+        mPreferencePreferenceCategory.addPreference(mWallpaperBgPreference);
         mPreferencePreferenceCategory.setOrder(mOrder++);
         prefScreen.addPreference(mPreferencePreferenceCategory);
         mAboutPreference.setOrder(mOrder++);

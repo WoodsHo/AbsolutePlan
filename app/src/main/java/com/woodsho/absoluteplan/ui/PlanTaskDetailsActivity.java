@@ -289,7 +289,10 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
         int year = mCalendar.get(Calendar.YEAR);
         int month = mCalendar.get(Calendar.MONTH) + 1;
         int day = mCalendar.get(Calendar.DAY_OF_MONTH);
-        String timeStr = year + "年" + CommonUtil.fillZero(month) + "月" + CommonUtil.fillZero(day) + "日";
+        String timeStr = CommonUtil.fillZero(month) + "月" + CommonUtil.fillZero(day) + "日";
+        if (!CommonUtil.isToYear(year)) {
+            timeStr = year + "年" + timeStr;
+        }
         long time = mCalendar.getTimeInMillis();
         if (CommonUtil.isToday(time)) {
             timeStr = "今天";

@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:descendantFocusability="beforeDescendants"
+    android:background="@drawable/item_settings_preference_bg_selector">
+
+    <ImageView
+        android:id="@+id/settings_switchpreference_ic"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="17dp" />
+
+    <RelativeLayout
+        android:layout_toEndOf="@id/settings_switchpreference_ic"
+        android:layout_marginStart="14dp"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/settings_switchpreference_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:paddingBottom="2dp"
+            android:text="dksdjsf"
+            android:textSize="@dimen/text_size_16"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/settings_switchpreference_summary"
+            android:textColor="@color/black_50"
+            android:layout_below="@id/settings_switchpreference_title"
+            android:textSize="@dimen/text_size_12"
+            android:text="woeiifj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/settings_switchpreference_switch"
+        android:layout_width="45dp"
+        android:layout_height="15dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="5dp"
+        app:theme="@style/AppTheme" />
+</RelativeLayout>

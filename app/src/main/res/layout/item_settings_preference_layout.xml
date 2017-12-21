@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="64dp"
-    android:background="@color/white">
+    android:background="@drawable/item_settings_preference_bg_selector">
 
     <ImageView
         android:id="@+id/settings_preference_ic"

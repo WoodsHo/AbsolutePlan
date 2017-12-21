@@ -26,4 +26,10 @@
         android:key="@string/key_settings_feedback_suggestion"
         settings_preference:image="@drawable/ic_settings_feedback_suggestion"
         settings_preference:title="反馈与建议" />
+
+    <com.woodsho.absoluteplan.widget.AbsPlanSwitchPreference
+        android:key="@string/key_settings_wallpaper_bg"
+        settings_preference:image="@drawable/ic_settings_wallpaper_bg"
+        settings_preference:summary="开关在进程重启后生效，可手动杀掉进程生效"
+        settings_preference:title="使用桌面壁纸作背景" />
 </PreferenceScreen>

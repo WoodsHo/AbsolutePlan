@@ -56,16 +56,5 @@ public class AbsPlanPreference extends Preference {
         TextView title = (TextView) view.findViewById(R.id.settings_preference_title);
         icon.setImageDrawable(res.getDrawable(mIcon));
         title.setText(mTitle);
-
-//        view.setBackgroundColor(res.getColor(R.color.white));
-//        final TextView titleView = (TextView) view.findViewById(Resources.getSystem().getIdentifier("title", "id", "android"));
-//        if (titleView != null) {
-//            titleView.setTextColor(res.getColor(R.color.black));
-//        }
-//
-//        final TextView summaryView = (TextView) view.findViewById(Resources.getSystem().getIdentifier("summary", "id", "android"));
-//        if (summaryView != null) {
-//            summaryView.setTextColor(res.getColor(R.color.black_30));
-//        }
     }
 }

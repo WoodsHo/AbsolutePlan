@@ -25,6 +25,7 @@ import android.view.View;
 
 import com.woodsho.absoluteplan.AbsolutePlanApplication;
 import com.woodsho.absoluteplan.bean.PlanTask;
+import com.woodsho.absoluteplan.common.AbsPSharedPreference;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 
 import java.text.SimpleDateFormat;
@@ -127,6 +128,12 @@ public class CommonUtil {
         SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy-MM-dd");
         String year = sdFormatter.format(time).split("-")[0];
         return TextUtils.equals(year, String.valueOf(toyear));
+    }
+
+    public static boolean isToYear(int year) {
+        SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        String toyear = sdFormatter.format(System.currentTimeMillis()).split("-")[0];
+        return TextUtils.equals(toyear, String.valueOf(year));
     }
 
     public static boolean isTomorrow(long date) {
@@ -607,6 +614,9 @@ public class CommonUtil {
     }
 
     public static Drawable getWallpaperDrawable() {
+        if (!AbsPSharedPreference.getInstanc().getSelectedWallpaperBg()) {
+            return null;
+        }
         //获取壁纸管理器
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(AbsolutePlanApplication.sAppContext);
         //获取壁纸图片
