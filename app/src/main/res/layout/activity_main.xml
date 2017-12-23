@@ -95,7 +95,7 @@
                 app:elevation="6dp"
                 app:fabSize="normal"
                 app:pressedTranslationZ="12dp"
-                app:rippleColor="#79bd4c" />
+                app:rippleColor="@color/fab_rippleColor" />
 
         </RelativeLayout>
 

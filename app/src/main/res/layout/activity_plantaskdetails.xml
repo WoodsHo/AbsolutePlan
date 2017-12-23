@@ -2,68 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:fitsSystemWindows="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:paddingTop="2dp">
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/time_plantaskdetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
-        android:foreground="?android:attr/selectableItemBackground"
-        card_view:cardBackgroundColor="@color/white"
-        card_view:cardCornerRadius="5dp"
-        card_view:cardElevation="15dp"
-        card_view:cardUseCompatPadding="true">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="55dp">
-
-            <LinearLayout
-                android:id="@+id/time_year_month_day_hour_minute"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:divider="@color/black_30"
-                android:dividerPadding="13dp"
-                android:showDividers="middle">
-
-                <TextView
-                    android:id="@+id/time_year_month_day"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="year month day"
-                    android:textColor="@color/black_50"
-                    android:textSize="@dimen/text_size_17"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/time_hour_minute"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="hour minute"
-                    android:textColor="@color/black_50"
-                    android:textSize="@dimen/text_size_17"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
     <android.support.design.widget.TextInputLayout
         android:id="@+id/time_plantaskdetails_textinputlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/time_plantaskdetails"
         android:paddingEnd="10dp"
         android:paddingStart="10dp"
         android:textColorHint="@color/black_30">
@@ -109,4 +58,35 @@
         android:textColorHint="@color/black_30"
         android:textSize="@dimen/text_size_17"
         android:textStyle="bold" />
+
+    <com.woodsho.absoluteplan.widget.FloatingActionMenu
+        android:id="@+id/float_action_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="@dimen/float_action_button_margin_end" >
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/main_float_action_menu"
+            android:layout_width="@dimen/main_float_action_menu_width"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="45dp"
+            android:layout_marginEnd="@dimen/float_action_button_margin_end"
+            android:src="@drawable/ic_fab_menu_modify"
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+            app:fabSize="normal"
+            app:rippleColor="@color/fab_rippleColor" />
+
+        <include layout="@layout/item_exit_float_action_menu" />
+
+        <include layout="@layout/item_save_float_action_menu" />
+
+        <include layout="@layout/item_save_exit_float_action_menu" />
+
+    </com.woodsho.absoluteplan.widget.FloatingActionMenu>
 </RelativeLayout>

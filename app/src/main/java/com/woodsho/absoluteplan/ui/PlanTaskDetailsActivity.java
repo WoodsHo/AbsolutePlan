@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +28,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -44,6 +44,8 @@ import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 import com.woodsho.absoluteplan.service.UserActionService;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
+import com.woodsho.absoluteplan.widget.CenteredImageSpan;
+import com.woodsho.absoluteplan.widget.FloatingActionMenu;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -69,14 +71,18 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
     public EditText mTitle;
     public EditText mDescribe;
     public ImageView mBack;
-    public TextView mSaveBt;
-    public TextView mTimeYearMonthDay;
-    public TextView mTimeHourMinute;
-    private LinearLayout mTimeYearMonthDayHourMinute;
+    public TextView mToolbarDate;
+    public TextView mToolbarTime;
     private PlanTask mIntentPlanTask;
     private int mShowType;
 
     private Calendar mCalendar = Calendar.getInstance(Locale.CHINA);
+
+    private FloatingActionMenu mFloatingActionMenu;
+    private FloatingActionButton mMainFab;
+    private FloatingActionButton mSaveFab;
+    private FloatingActionButton mSaveAndExitFab;
+    private FloatingActionButton mExitFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +111,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
             rootView.addView(view, 0);
 
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
             setSupportActionBar(toolbar);
         }
 
@@ -113,6 +120,21 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setDisplayShowTitleEnabled(false);
         }
+    }
+
+    //通过反射获取状态栏高度，默认25dp
+    private int getStatusBarHeight() {
+        int statusBarHeight = CommonUtil.dp2px(this, 25);
+        try {
+            Class<?> clazz = Class.forName("com.android.internal.R$dimen");
+            Object object = clazz.newInstance();
+            int height = Integer.parseInt(clazz.getField("status_bar_height")
+                    .get(object).toString());
+            statusBarHeight = getResources().getDimensionPixelSize(height);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return statusBarHeight;
     }
 
     private void showGuideTime() {
@@ -125,14 +147,14 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
 
                     @Override
                     public void onRemoved(Controller controller) {
-                        mTimeYearMonthDay.callOnClick();
+                        mToolbarDate.callOnClick();
                     }
                 })
                 .setBackgroundColor(getResources().getColor(R.color.guide_bg_color))//设置引导层背景色，建议有透明度，默认背景色为：0xb2000000
                 .setEveryWhereCancelable(true)//设置点击任何区域消失，默认为true
                 .setLayoutRes(R.layout.guide_time_view_layout)//自定义的提示layout,第二个可变参数为点击隐藏引导层view的id
                 .alwaysShow(false)//是否每次都显示引导层，默认false
-                .addHighLight(mTimeYearMonthDayHourMinute)
+                .addHighLight(mToolbarDate)
                 .setLabel(KEY_GUIDE_TIME)
                 .build();//构建引导层的控制器
         //controller.resetLabel(KEY_GUIDE_TIME);//重置该引导层为未显示过
@@ -157,13 +179,14 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
                 .setEveryWhereCancelable(true)
                 .setLayoutRes(R.layout.guide_save_plantask_view_layout)
                 .alwaysShow(false)
-                .addHighLight(mSaveBt, HighLight.Type.CIRCLE)
+                .addHighLight(mFloatingActionMenu, HighLight.Type.CIRCLE)
                 .setLabel(KEY_GUIDE_SAVE_PLANTASK)
                 .build();
         controller.show();
     }
 
     private void init() {
+        final Resources res = getResources();
         mHandler = new Handler();
         mToolbarTitle = (TextView) findViewById(R.id.head_plantaskdetails);
         mTitle = (EditText) findViewById(R.id.title_plantaskdetails);
@@ -197,28 +220,10 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
                 finish();
             }
         });
-        mSaveBt = (TextView) findViewById(R.id.save_plantaskdetails);
-        mSaveBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mShowType == TYPE_MODIFY) {
-                    mShowType = TYPE_NEW_BUILD;
-                    mToolbarTitle.setText("修改计划");
-                    mSaveBt.setText("保存");
-                    mTitle.setFocusable(true);
-                    mDescribe.setFocusable(true);
-                    mTimeHourMinute.setClickable(true);
-                    mTimeYearMonthDay.setClickable(true);
-                } else {
-                    savePlanTask();
-                    finish();
-                }
-            }
-        });
+        mToolbarDate = (TextView) findViewById(R.id.date_plantaskdetails);
+        mToolbarTime = (TextView) findViewById(R.id.time_plantaskdetails);
 
-        mTimeYearMonthDayHourMinute = (LinearLayout) findViewById(R.id.time_year_month_day_hour_minute);
-        mTimeYearMonthDay = (TextView) findViewById(R.id.time_year_month_day);
-        mTimeYearMonthDay.setOnClickListener(new View.OnClickListener() {
+        mToolbarDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(PlanTaskDetailsActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -241,8 +246,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
-        mTimeHourMinute = (TextView) findViewById(R.id.time_hour_minute);
-        mTimeHourMinute.setOnClickListener(new View.OnClickListener() {
+        mToolbarTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(PlanTaskDetailsActivity.this, new TimePickerDialog.OnTimeSetListener() {
@@ -259,20 +263,63 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mShowType = intent.getIntExtra(KEY_SHOW_TYPE, -1);
+        mFloatingActionMenu = (FloatingActionMenu) findViewById(R.id.float_action_menu);
+        mMainFab = (FloatingActionButton) findViewById(R.id.main_float_action_menu);
+        mMainFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mShowType == TYPE_MODIFY) {
+                    mShowType = TYPE_NEW_BUILD;
+                    mToolbarTitle.setText("修改计划");
+                    mMainFab.setImageDrawable(res.getDrawable(R.drawable.ic_fab_menu_normal));
+                    mTitle.setFocusable(true);
+                    mDescribe.setFocusable(true);
+                    mToolbarDate.setClickable(true);
+                    mToolbarTime.setClickable(true);
+                } else {
+                    mMainFab.setImageDrawable(res.getDrawable(R.drawable.ic_fab_menu_normal));
+                    mFloatingActionMenu.toggle();
+                }
+            }
+        });
+        mSaveFab = (FloatingActionButton) findViewById(R.id.button_item_save_float_action_menu);
+        mSaveFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFloatingActionMenu.toggle();
+                savePlanTask();
+            }
+        });
+        mSaveAndExitFab = (FloatingActionButton) findViewById(R.id.button_item_save_exit_float_action_menu);
+        mSaveAndExitFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                savePlanTask();
+                finish();
+            }
+        });
+        mExitFab = (FloatingActionButton) findViewById(R.id.button_item_exit_float_action_menu);
+        mExitFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         if (mShowType == TYPE_NEW_BUILD) {
             mToolbarTitle.setText("新建计划");
-            mSaveBt.setText("保存");
+            mMainFab.setImageDrawable(res.getDrawable(R.drawable.ic_fab_menu_normal));
             mTitle.setFocusable(true);
             mDescribe.setFocusable(true);
-            mTimeHourMinute.setClickable(true);
-            mTimeYearMonthDay.setClickable(true);
+            mToolbarDate.setClickable(true);
+            mToolbarTime.setClickable(true);
         } else if (mShowType == TYPE_MODIFY) {
             mToolbarTitle.setText("查看计划");
-            mSaveBt.setText("修改");
+            mMainFab.setImageDrawable(res.getDrawable(R.drawable.ic_fab_menu_modify));
             mTitle.setFocusable(false);
             mDescribe.setFocusable(false);
-            mTimeHourMinute.setClickable(false);
-            mTimeYearMonthDay.setClickable(false);
+            mToolbarDate.setClickable(false);
+            mToolbarTime.setClickable(false);
         }
         PlanTask task = intent.getParcelableExtra(KEY_PLANTASK);
         mIntentPlanTask = task;
@@ -299,13 +346,13 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
         } else if (CommonUtil.isTomorrow(time)) {
             timeStr = "明天";
         }
-        mTimeYearMonthDay.setText(timeStr);
+        mToolbarDate.setText(createStringWithLeftPicture(R.drawable.ic_date_plantaskdetails, timeStr));
     }
 
     private void setHourMinute() {
         int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
         int minute = mCalendar.get(Calendar.MINUTE);
-        mTimeHourMinute.setText(CommonUtil.fillZero(hour) + ":" + CommonUtil.fillZero(minute));
+        mToolbarTime.setText(createStringWithLeftPicture(R.drawable.ic_time_plantaskdetails, CommonUtil.fillZero(hour) + ":" + CommonUtil.fillZero(minute)));
     }
 
     public SpannableString createStringWithLeftPicture(int drawableId, String str) {
@@ -316,7 +363,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
         drawable.setBounds(0, 0,
                 res.getDimensionPixelSize(R.dimen.plantaskdetails_time_right),
                 res.getDimensionPixelSize(R.dimen.plantaskdetails_time_bottom));
-        ImageSpan span = new ImageSpan(drawable);
+        CenteredImageSpan span = new CenteredImageSpan(drawable);
         spannableString.setSpan(span, 0, replacedStr.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         return spannableString;
     }

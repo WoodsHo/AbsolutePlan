@@ -25,4 +25,7 @@
     <dimen name="calendarHeight">300dp</dimen>//日历高度，在NCalendar中使用
     <dimen name="pointSize">3dp</dimen>//指示圆点大小
     <!-- 日历 -->
+
+    <dimen name="button_item_float_action_menu_width">42dp</dimen>
+    <dimen name="main_float_action_menu_width">55dp</dimen>
 </resources>

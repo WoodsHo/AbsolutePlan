@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
     android:elevation="5dp"
-    android:fitsSystemWindows="true"
     android:minHeight="?attr/actionBarSize"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -37,14 +36,23 @@
             android:textSize="@dimen/text_size_16" />
 
         <TextView
-            android:id="@+id/save_plantaskdetails"
+            android:id="@+id/time_plantaskdetails"
             android:layout_width="70dp"
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="15dp"
             android:gravity="center"
-            android:text="保存"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_14" />
+
+        <TextView
+            android:id="@+id/date_plantaskdetails"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginEnd="15dp"
+            android:layout_toStartOf="@id/time_plantaskdetails"
+            android:gravity="center"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_14" />
     </RelativeLayout>

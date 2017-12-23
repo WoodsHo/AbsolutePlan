@@ -2,6 +2,7 @@ package com.woodsho.absoluteplan.widget;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.style.ImageSpan;
 
@@ -12,6 +13,27 @@ import android.text.style.ImageSpan;
 public class CenteredImageSpan extends ImageSpan {
     public CenteredImageSpan(Drawable d) {
         super(d);
+    }
+
+    @Override
+    public int getSize(Paint paint, CharSequence text, int start, int end,
+                       Paint.FontMetricsInt fm) {
+        Drawable d = getDrawable();
+        Rect rect = d.getBounds();
+        if (fm != null) {
+            Paint.FontMetricsInt fmPaint=paint.getFontMetricsInt();
+            int fontHeight = fmPaint.bottom - fmPaint.top;
+            int drHeight=rect.bottom-rect.top;
+
+            int top= drHeight/2 - fontHeight/4;
+            int bottom=drHeight/2 + fontHeight/4;
+
+            fm.ascent=-bottom;
+            fm.top=-bottom;
+            fm.bottom=top;
+            fm.descent=top;
+        }
+        return rect.right;
     }
 
     @Override
