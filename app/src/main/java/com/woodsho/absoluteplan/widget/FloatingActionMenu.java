@@ -6,12 +6,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Rect;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
@@ -19,8 +15,6 @@ import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 
 import com.woodsho.absoluteplan.R;
-
-import java.util.ArrayList;
 
 /**
  * Created by hewuzhao on 17/12/23.
@@ -42,8 +36,6 @@ public class FloatingActionMenu extends ViewGroup {
     private int mChildViewIconWidth;//子控件的图标的宽度
     private int mMainViewIconWidht;//主按钮的图标的宽度
 
-    private TouchDelegateGroup mTouchDelegateGroup;// 夸大view的点击范围
-
     private OnFloatingActionsMenuUpdateListener mListener;//展开或收起更新监听
 
     public interface OnFloatingActionsMenuUpdateListener {
@@ -59,8 +51,6 @@ public class FloatingActionMenu extends ViewGroup {
 
     public FloatingActionMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mTouchDelegateGroup = new TouchDelegateGroup(this);
-        setTouchDelegate(mTouchDelegateGroup);// 扩大view的点击范围
         Resources res = context.getResources();
         mChildViewIconWidth = res.getDimensionPixelSize(R.dimen.button_item_float_action_menu_width);
         mMainViewIconWidht = res.getDimensionPixelSize(R.dimen.main_float_action_menu_width);
@@ -93,7 +83,6 @@ public class FloatingActionMenu extends ViewGroup {
     public void expand() {
         if (!mExpanded) {
             mExpanded = true;
-            mTouchDelegateGroup.setEnabled(true);
             mCollapseAnimation.cancel();
             mExpandAnimation.start();
 
@@ -111,7 +100,6 @@ public class FloatingActionMenu extends ViewGroup {
     private void collapse(boolean immediately) {
         if (mExpanded) {
             mExpanded = false;
-            mTouchDelegateGroup.setEnabled(false);
             mCollapseAnimation.setDuration(immediately ? 0 : ANIMATION_DURATION);
             mCollapseAnimation.start();
             mExpandAnimation.cancel();
@@ -163,9 +151,6 @@ public class FloatingActionMenu extends ViewGroup {
      */
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        if (changed) {
-            mTouchDelegateGroup.clearTouchDelegates();
-        }
         // 这里减去20是为了留空间显示floatactionbutton的阴影
         int addButtonY = b - t - mBaseView.getMeasuredHeight() - 30;
 
@@ -294,61 +279,5 @@ public class FloatingActionMenu extends ViewGroup {
         getFrontView();
         bringChildToFront(mBaseView);
         mChildCount = getChildCount();
-    }
-
-
-    /**
-     *  通过设置某个view的parent的touchDelegate来达到扩大这个view触摸范围的目的
-     */
-    public static class TouchDelegateGroup extends TouchDelegate {
-        private static final Rect USELESS_HACKY_RECT = new Rect();
-        private final ArrayList<TouchDelegate> mTouchDelegates = new ArrayList<TouchDelegate>();
-        private TouchDelegate mCurrentTouchDelegate;
-        private boolean mEnabled;
-
-        public TouchDelegateGroup(View uselessHackyView) {
-            super(USELESS_HACKY_RECT, uselessHackyView);
-        }
-
-        public void clearTouchDelegates() {
-            mTouchDelegates.clear();
-            mCurrentTouchDelegate = null;
-        }
-
-        @Override
-        public boolean onTouchEvent(@NonNull MotionEvent event) {
-            if (!mEnabled)
-                return true;
-
-            TouchDelegate delegate = null;
-
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    for (int i = 0; i < mTouchDelegates.size(); i++) {
-                        TouchDelegate touchDelegate = mTouchDelegates.get(i);
-                        if (touchDelegate.onTouchEvent(event)) {
-                            mCurrentTouchDelegate = touchDelegate;
-                            return true;
-                        }
-                    }
-                    break;
-
-                case MotionEvent.ACTION_MOVE:
-                    delegate = mCurrentTouchDelegate;
-                    break;
-
-                case MotionEvent.ACTION_CANCEL:
-                case MotionEvent.ACTION_UP:
-                    delegate = mCurrentTouchDelegate;
-                    mCurrentTouchDelegate = null;
-                    break;
-            }
-
-            return true;
-        }
-
-        public void setEnabled(boolean enabled) {
-            mEnabled = enabled;
-        }
     }
 }

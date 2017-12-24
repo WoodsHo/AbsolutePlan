@@ -3,6 +3,7 @@ package com.woodsho.absoluteplan.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -20,12 +21,15 @@ import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.common.PlanTaskState;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 import com.woodsho.absoluteplan.service.UserActionService;
+import com.woodsho.absoluteplan.utils.CommonUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hewuzhao on 17/12/10.
@@ -36,6 +40,7 @@ public class FinishedAdapter extends RecyclerView.Adapter {
 
     private static final int PLANTASK_TYPE_FINISHED = 0;
     private static final int PLANTASK_TYPE_EMPTY = 1;
+    private static final int PLANTASK_TYPE_HEADER = 2;
 
     private Context mContext;
     private List<PlanTask> mFinishedPlanTaskList;
@@ -65,6 +70,8 @@ public class FinishedAdapter extends RecyclerView.Adapter {
             return new PlanTaskFinishedViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_plantask_finished_layout, parent, false));
         } else if (viewType == PLANTASK_TYPE_EMPTY){
             return new PlanTaskEmptyViewHolder(LayoutInflater.from(mContext).inflate(R.layout.empty_layout, parent, false));
+        } else if (viewType == PLANTASK_TYPE_HEADER){
+            return new PlanTaskHeaderViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_plantask_header_layout, parent, false));
         } else {
             Log.e(TAG, "error viewType: " + viewType);
             return null;
@@ -76,7 +83,7 @@ public class FinishedAdapter extends RecyclerView.Adapter {
         Resources res = mContext.getResources();
         if (holder instanceof PlanTaskFinishedViewHolder) {
             final PlanTaskFinishedViewHolder viewHolder = (PlanTaskFinishedViewHolder) holder;
-            final PlanTask planTask = mFinishedPlanTaskList.get(position);
+            final PlanTask planTask = mFinishedPlanTaskList.get(getRealPos().get(position));
             viewHolder.mContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -105,9 +112,9 @@ public class FinishedAdapter extends RecyclerView.Adapter {
             spanStrikethroughDescrible.setSpan(stSpan, 0, planTask.describe.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             viewHolder.mDescrible.setText(spanStrikethroughDescrible);
 
-            SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy/MM/dd");
+            SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy/MM/dd&HH:mm");
             String strBD = sdFormatter.format(planTask.time);
-
+            strBD = strBD.split("&")[1];
             Spannable spanStrikethroughTime = new SpannableString(strBD);
             spanStrikethroughTime.setSpan(stSpan, 0, strBD.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             viewHolder.mTime.setText(spanStrikethroughTime);
@@ -121,6 +128,18 @@ public class FinishedAdapter extends RecyclerView.Adapter {
             });
         } else if (holder instanceof PlanTaskBottomViewHolder){
 
+        } else if (holder instanceof PlanTaskHeaderViewHolder) {
+            PlanTaskHeaderViewHolder viewHolder = (PlanTaskHeaderViewHolder) holder;
+            List<String> headers = getHeaders();
+            int pso = getRealPos().get(position);
+            String header = headers.get(pso);
+            String str = header.substring(0, header.length() - 1);
+            Spannable spanStrikethroughTitel = new SpannableString(str);
+            StrikethroughSpan stSpan = new StrikethroughSpan();
+            spanStrikethroughTitel.setSpan(stSpan, 0, str.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            viewHolder.mCardView.setCardBackgroundColor(res.getColor(R.color.item_bg_finished));
+            viewHolder.mTextView.setTextColor(res.getColor(R.color.black_50));
+            viewHolder.mTextView.setText(spanStrikethroughTitel);
         }
     }
 
@@ -130,14 +149,91 @@ public class FinishedAdapter extends RecyclerView.Adapter {
         if (finishedSize <= 0) {
             return PLANTASK_TYPE_EMPTY;
         }
+        List<Integer> list = getItemType();
+        return list.get(position);
+    }
 
-        return PLANTASK_TYPE_FINISHED;
+    private List<Integer> getItemType() {
+        List<Integer> list = new ArrayList<>();
+        int finishedSize = mFinishedPlanTaskList.size();
+        String preTime = "";
+        SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy年MM月dd日");
+        for (int i = 0; i < finishedSize; i++) {
+            PlanTask task = mFinishedPlanTaskList.get(i);
+            String time = sdFormatter.format(task.time);
+            if (!time.equals(preTime)) {
+                list.add(PLANTASK_TYPE_HEADER);
+                list.add(PLANTASK_TYPE_FINISHED);
+            } else {
+                list.add(PLANTASK_TYPE_FINISHED);
+            }
+            preTime = time;
+        }
+        return list;
+    }
+
+    private Map<Integer, Integer> getRealPos() {
+        Map<Integer, Integer> map = new HashMap<>();
+        int finishedSize = mFinishedPlanTaskList.size();
+        if (finishedSize <= 0) {
+            return map;
+        }
+
+        int pos = 0;
+        int headerPos = 0;
+        String preTime = "";
+        SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy年MM月dd日");
+        for (int i = 0; i < finishedSize; i++) {
+            PlanTask task = mFinishedPlanTaskList.get(i);
+            String time = sdFormatter.format(task.time);
+            if (!time.equals(preTime)) {
+                map.put(pos++, headerPos++);
+                map.put(pos++, i);
+            } else {
+                map.put(pos++, i);
+            }
+            preTime = time;
+        }
+        return map;
+    }
+
+    public List<String> getHeaders() {
+        List<String> list = new ArrayList<>();
+        int finishedSize = mFinishedPlanTaskList.size();
+        if (finishedSize <= 0) {
+            return list;
+        }
+
+        String preTime = "";
+        SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyy年MM月dd日");
+        for (int i = 0; i < finishedSize; i++) {
+            PlanTask task = mFinishedPlanTaskList.get(i);
+            String time = sdFormatter.format(task.time);
+            if (CommonUtil.isToYear(task.time)) {
+                time = time.split("年")[1];
+            }
+            if (!time.equals(preTime)) {
+                if (CommonUtil.isToday(task.time)) {
+                    list.add("今天");
+                } else if (CommonUtil.isTomorrow(task.time)) {
+                    list.add("明天");
+                } else {
+                    list.add(time);
+                }
+            }
+            preTime = time;
+        }
+
+        return list;
     }
 
     @Override
     public int getItemCount() {
         int finishedSize = mFinishedPlanTaskList.size();
-        return finishedSize <= 0 ? 1 : finishedSize;
+        if (finishedSize <= 0) {
+            return 1;
+        }
+        return finishedSize + getHeaders().size();
     }
 
     private class PlanTaskFinishedViewHolder extends RecyclerView.ViewHolder {
@@ -172,6 +268,17 @@ public class FinishedAdapter extends RecyclerView.Adapter {
 
         public PlanTaskEmptyViewHolder(View itemView) {
             super(itemView);
+        }
+    }
+
+    public class PlanTaskHeaderViewHolder extends RecyclerView.ViewHolder {
+        public TextView mTextView;
+        public CardView mCardView;
+
+        public PlanTaskHeaderViewHolder(View itemView) {
+            super(itemView);
+            mTextView = (TextView) itemView.findViewById(R.id.item_plantask_header_text);
+            mCardView = (CardView) itemView.findViewById(R.id.header_card_view);
         }
     }
 
