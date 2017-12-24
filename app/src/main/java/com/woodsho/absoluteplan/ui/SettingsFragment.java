@@ -73,7 +73,7 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         if (preference == mAboutPreference) {
-            Toast.makeText(getActivity(), "开发中，敬请期待！", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), AboutActivity.class));
         } else if (preference == mSkinPreference) {
             Toast.makeText(getActivity(), "开发中，敬请期待！", Toast.LENGTH_SHORT).show();
         } else if (preference == mFeedbackSuggestionPreference) {

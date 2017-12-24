@@ -38,6 +38,7 @@ import com.app.hubert.library.OnGuideChangedListener;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrPosition;
+import com.woodsho.absoluteplan.AbsolutePlanApplication;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
@@ -111,7 +112,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
             rootView.addView(view, 0);
 
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
+            toolbar.setPadding(0, CommonUtil.getStatusBarHeight(AbsolutePlanApplication.sAppContext), 0, 0);
             setSupportActionBar(toolbar);
         }
 
@@ -120,21 +121,6 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setDisplayShowTitleEnabled(false);
         }
-    }
-
-    //通过反射获取状态栏高度，默认25dp
-    private int getStatusBarHeight() {
-        int statusBarHeight = CommonUtil.dp2px(this, 25);
-        try {
-            Class<?> clazz = Class.forName("com.android.internal.R$dimen");
-            Object object = clazz.newInstance();
-            int height = Integer.parseInt(clazz.getField("status_bar_height")
-                    .get(object).toString());
-            statusBarHeight = getResources().getDimensionPixelSize(height);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return statusBarHeight;
     }
 
     private void showGuideTime() {

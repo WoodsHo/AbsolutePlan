@@ -1,14 +1,14 @@
 package com.woodsho.absoluteplan.ui;
 
-import android.content.res.Resources;
-import android.os.Bundle;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
@@ -18,12 +18,12 @@ import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 
-public class FeedbackSuggestionActivity extends AppCompatActivity {
+public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feedback_suggestion);
+        setContentView(R.layout.activity_about);
         SlidrConfig mConfig = new SlidrConfig.Builder()
                 .position(SlidrPosition.LEFT)
                 .velocityThreshold(2400)
@@ -42,10 +42,10 @@ public class FeedbackSuggestionActivity extends AppCompatActivity {
         ViewGroup rootView = (ViewGroup) findViewById(R.id.action_bar_root); //id from appcompat
 
         if (rootView != null) {
-            View view = getLayoutInflater().inflate(R.layout.feedback_suggestion_toolbar_layout, rootView, false);
+            View view = getLayoutInflater().inflate(R.layout.about_toolbar_layout, rootView, false);
             rootView.addView(view, 0);
 
-            Toolbar toolbar = (Toolbar) findViewById(R.id.feedback_suggestion_toolbar);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.about_toolbar);
             toolbar.setPadding(0, CommonUtil.getStatusBarHeight(AbsolutePlanApplication.sAppContext), 0, 0);
             setSupportActionBar(toolbar);
         }
@@ -57,11 +57,17 @@ public class FeedbackSuggestionActivity extends AppCompatActivity {
         }
     }
 
+
+
     private void init() {
-        Resources res = getResources();
-        CardView qqCadView = (CardView) findViewById(R.id.qq_cardview);
-        qqCadView.setCardBackgroundColor(res.getColor(R.color.white));
-        CardView emailCardView = (CardView) findViewById(R.id.email_cardview);
-        emailCardView.setCardBackgroundColor(res.getColor(R.color.white));
+        TextView versionName = (TextView) findViewById(R.id.version_name);
+        versionName.setText("版本号：" + CommonUtil.getVersionName(AbsolutePlanApplication.sAppContext));
+        TextView aboutOpenSource = (TextView) findViewById(R.id.about_open_source);
+        aboutOpenSource.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AboutActivity.this, OpenSourceActivity.class));
+            }
+        });
     }
 }

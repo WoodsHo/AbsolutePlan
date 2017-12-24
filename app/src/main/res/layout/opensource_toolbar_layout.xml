@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar android:id="@+id/toolbar"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/opensource_toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
-    android:fitsSystemWindows="true"
     android:elevation="5dp"
     android:minHeight="?attr/actionBarSize"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -16,7 +15,7 @@
         android:layout_height="32dp">
 
         <ImageView
-            android:id="@+id/img_back"
+            android:id="@+id/back_opensource"
             android:layout_width="17dp"
             android:layout_height="17dp"
             android:layout_centerVertical="true"
@@ -25,13 +24,13 @@
             android:src="@drawable/ic_back" />
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/head_opensource"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
-            android:layout_toEndOf="@+id/img_back"
+            android:layout_toEndOf="@+id/back_opensource"
             android:gravity="center_vertical"
-            android:text="设置"
+            android:text="开源相关"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_20" />
 

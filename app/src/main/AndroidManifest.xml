@@ -42,6 +42,12 @@
         <activity
             android:name=".ui.FeedbackSuggestionActivity"
             android:theme="@style/Theme.Slidr.Slidable" />
+        <activity
+            android:name=".ui.AboutActivity"
+            android:theme="@style/Theme.Slidr.Slidable" />
+
+        <activity android:name=".ui.OpenSourceActivity"
+            android:theme="@style/Theme.Slidr.Slidable" />
     </application>
 
 </manifest>

@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -621,5 +623,57 @@ public class CommonUtil {
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(AbsolutePlanApplication.sAppContext);
         //获取壁纸图片
         return wallpaperManager.peekDrawable();
+    }
+
+    /**
+     * get App versionCode
+     * @param context
+     * @return
+     */
+    public static int getVersionCode(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        PackageInfo packageInfo;
+        int versionCode = 1;
+        try {
+            packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            versionCode = packageInfo.versionCode;
+        } catch (Exception ex) {
+            Log.e(TAG, "ex: " + ex);
+        }
+        return versionCode;
+    }
+
+    /**
+     * get App versionName
+     *
+     * @param context
+     * @return
+     */
+    public static String getVersionName(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        PackageInfo packageInfo;
+        String versionName = "";
+        try {
+            packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            versionName = packageInfo.versionName;
+        } catch (Exception ex) {
+            Log.e(TAG, "ex: " + ex);
+        }
+        return versionName;
+    }
+
+    //通过反射获取状态栏高度，默认25dp
+    public static int getStatusBarHeight(Context context) {
+        int statusBarHeight = CommonUtil.dp2px(context, 25);
+        try {
+            Class<?> clazz = Class.forName("com.android.internal.R$dimen");
+            Object object = clazz.newInstance();
+            int height = Integer.parseInt(clazz.getField("status_bar_height")
+                    .get(object).toString());
+            statusBarHeight = context.getResources().getDimensionPixelSize(height);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return statusBarHeight;
     }
 }
