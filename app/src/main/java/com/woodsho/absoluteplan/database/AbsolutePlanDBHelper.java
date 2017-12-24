@@ -26,9 +26,7 @@ public class AbsolutePlanDBHelper extends SQLiteOpenHelper {
                 + AbsolutePlanContract.PlanTask.TASK_DESCRIBE + " text , "
                 + AbsolutePlanContract.PlanTask.TASK_PRIORITY + "  integer default -1 , "
                 + AbsolutePlanContract.PlanTask.TASK_STATE + " integer default 0 , "
-                + AbsolutePlanContract.PlanTask.TASK_TIME + " integer , "
-                + AbsolutePlanContract.PlanTask.TASK_COLOR + " integer , "
-                + AbsolutePlanContract.PlanTask.TASK_FROMLIST + " text default '-1' "
+                + AbsolutePlanContract.PlanTask.TASK_TIME + " integer "
                 + ")");
     }
 

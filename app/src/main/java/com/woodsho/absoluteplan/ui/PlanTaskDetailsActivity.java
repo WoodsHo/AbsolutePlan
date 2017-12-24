@@ -376,6 +376,8 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
             PlanTask task = new PlanTask();
             if (mIntentPlanTask != null) {
                 task.id = mIntentPlanTask.id;
+                task.state = mIntentPlanTask.state;
+                task.priority = mIntentPlanTask.priority;
             } else {
                 task.id = String.valueOf(System.currentTimeMillis());
             }

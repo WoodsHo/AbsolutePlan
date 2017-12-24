@@ -79,8 +79,6 @@ public class UserActionService extends IntentService {
                 planTask.describe = cursor.getString(cursor.getColumnIndex(AbsolutePlanContract.PlanTask.TASK_DESCRIBE));
                 planTask.time = cursor.getLong(cursor.getColumnIndex(AbsolutePlanContract.PlanTask.TASK_TIME));
                 planTask.state = cursor.getInt(cursor.getColumnIndex(AbsolutePlanContract.PlanTask.TASK_STATE));
-                planTask.color = cursor.getInt(cursor.getColumnIndex(AbsolutePlanContract.PlanTask.TASK_COLOR));
-                planTask.fromList = cursor.getString(cursor.getColumnIndex(AbsolutePlanContract.PlanTask.TASK_FROMLIST));
 
                 planTaskList.add(planTask);
             }
@@ -110,8 +108,6 @@ public class UserActionService extends IntentService {
         values.put(AbsolutePlanContract.PlanTask.TASK_DESCRIBE, task.describe);
         values.put(AbsolutePlanContract.PlanTask.TASK_TIME, task.time);
         values.put(AbsolutePlanContract.PlanTask.TASK_STATE, task.state);
-        values.put(AbsolutePlanContract.PlanTask.TASK_COLOR, task.color);
-        values.put(AbsolutePlanContract.PlanTask.TASK_FROMLIST, task.fromList);
 
         Cursor cursor = null;
         try {
@@ -174,8 +170,6 @@ public class UserActionService extends IntentService {
         values.put(AbsolutePlanContract.PlanTask.TASK_DESCRIBE, task.describe);
         values.put(AbsolutePlanContract.PlanTask.TASK_TIME, task.time);
         values.put(AbsolutePlanContract.PlanTask.TASK_STATE, task.state);
-        values.put(AbsolutePlanContract.PlanTask.TASK_COLOR, task.color);
-        values.put(AbsolutePlanContract.PlanTask.TASK_FROMLIST, task.fromList);
 
         try {
             if (cursorCount > 0) {

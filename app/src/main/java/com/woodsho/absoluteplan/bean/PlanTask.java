@@ -14,8 +14,6 @@ public class PlanTask implements Parcelable {
     public String describe;
     public long time;
     public int state; //0: normal; 1: finished
-    public int color;
-    public String fromList;
 
     @Override
     public int describeContents() {
@@ -27,10 +25,8 @@ public class PlanTask implements Parcelable {
         title = in.readString();
         describe = in.readString();
         time = in.readLong();
-        fromList = in.readString();
         state = in.readInt();
         id = in.readString();
-        color = in.readInt();
     }
 
     @Override
@@ -39,10 +35,8 @@ public class PlanTask implements Parcelable {
         dest.writeString(title);
         dest.writeString(describe);
         dest.writeLong(time);
-        dest.writeString(fromList);
         dest.writeInt(state);
         dest.writeString(id);
-        dest.writeInt(color);
     }
 
     public static final Creator<PlanTask> CREATOR = new Creator<PlanTask>() {

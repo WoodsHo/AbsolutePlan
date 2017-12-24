@@ -17,8 +17,6 @@ public class AbsolutePlanContract {
         public static final String TASK_PRIORITY = "task_priority";
         public static final String TASK_STATE = "task_state";
         public static final String TASK_TIME = "task_time";
-        public static final String TASK_COLOR = "task_color";
-        public static final String TASK_FROMLIST = "task_fromList";
 
         public static final String CONTENT_PLANTASK_DIR_TYPE = "vnd.android.cursor.dir/" + AbsolutePlanDBHelper.DB_TABLE_PLANTASK;
         public static final String CONTENT_PLANTASK_ITEM_TYPE = "vnd.android.cursor.item/" + AbsolutePlanDBHelper.DB_TABLE_PLANTASK;
