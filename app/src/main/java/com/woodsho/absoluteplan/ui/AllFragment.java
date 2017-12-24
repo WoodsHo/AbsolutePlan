@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,10 @@ import com.woodsho.absoluteplan.AbsolutePlanApplication;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.adapter.AllAdapter;
 import com.woodsho.absoluteplan.bean.PlanTask;
+import com.woodsho.absoluteplan.common.WallpaperBgManager;
+import com.woodsho.absoluteplan.listener.IWallpaperBgUpdate;
 import com.woodsho.absoluteplan.presenter.AllPresenter;
+import com.woodsho.absoluteplan.widget.CommonRecyclerView;
 
 import java.util.List;
 
@@ -22,11 +26,12 @@ import java.util.List;
  * Created by hewuzhao on 17/12/10.
  */
 
-public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickListener {
+public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickListener, IWallpaperBgUpdate {
     public static final String TAG = "AllFragment";
     public AllAdapter mAllAdapter;
     public AllPresenter mAllPresenter;
     public List<PlanTask> mPlanTaskList;
+    public CommonRecyclerView mRecyclerView;
 
     @Nullable
     @Override
@@ -38,13 +43,19 @@ public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickL
     protected void bindView(View view) {
         Resources res = getResources();
         Context context = AbsolutePlanApplication.sAppContext;
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.all_recyclerview);
+        mRecyclerView = (CommonRecyclerView) view.findViewById(R.id.all_recyclerview);
         mAllAdapter = new AllAdapter(context);
         mAllAdapter.addOnItemClickListener(this);
-        recyclerView.setAdapter(mAllAdapter);
+        mRecyclerView.setAdapter(mAllAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(context);
-        recyclerView.setLayoutManager(manager);
+        mRecyclerView.setLayoutManager(manager);
         mAllPresenter = new AllPresenter(this);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        WallpaperBgManager.getInstance().attach(this);
     }
 
     @Override
@@ -73,6 +84,7 @@ public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickL
         if (mAllAdapter != null) {
             mAllAdapter.removeOnItemClickListener();
         }
+        WallpaperBgManager.getInstance().detach(this);
     }
 
     @Override
@@ -86,5 +98,13 @@ public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickL
         intent.putExtra(PlanTaskDetailsActivity.KEY_PLANTASK, task);
         intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_MODIFY);
         startActivity(intent);
+    }
+
+    @Override
+    public void onWallpaperBgUpdate() {
+        Log.d(TAG, "all fragment, recycl: " + mRecyclerView);
+        if (mRecyclerView != null) {
+            mRecyclerView.updateBackground();
+        }
     }
 }

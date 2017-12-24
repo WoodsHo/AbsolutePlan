@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 import com.woodsho.absoluteplan.R;
+import com.woodsho.absoluteplan.listener.IWallpaperBgUpdate;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 
 /**
@@ -121,5 +122,10 @@ public class CommonRecyclerView extends RecyclerView {
         }
 
         return inSampleSize;
+    }
+
+    public void updateBackground() {
+        mBgBitmap = null;
+        invalidate();
     }
 }

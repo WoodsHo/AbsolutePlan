@@ -238,9 +238,9 @@ public class CommonUtil {
         long time = System.currentTimeMillis();
         try {
             time = dateformat.parse(strTime).getTime();
-            Log.d("fuck", "time: " + time);
+            Log.d(TAG, "time: " + time);
         } catch (Exception ex) {
-            Log.e("fuck", "converToLongTime, ex: " + ex);
+            Log.e(TAG, "converToLongTime, ex: " + ex);
         }
         return time;
     }

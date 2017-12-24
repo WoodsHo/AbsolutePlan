@@ -1,11 +1,13 @@
 package com.woodsho.absoluteplan.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,9 @@ import com.woodsho.absoluteplan.MainActivity;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.adapter.PlanTaskAdapter;
 import com.woodsho.absoluteplan.bean.PlanTask;
+import com.woodsho.absoluteplan.common.WallpaperBgManager;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
+import com.woodsho.absoluteplan.listener.IWallpaperBgUpdate;
 import com.woodsho.absoluteplan.presenter.CalendarPresenter;
 import com.woodsho.absoluteplan.widget.PlanTaskRecyclerView;
 
@@ -31,7 +35,7 @@ import java.util.List;
  * Created by hewuzhao on 17/12/12.
  */
 
-public class CalendarFragment extends BaseFragment implements PlanTaskAdapter.OnItemClickListener {
+public class CalendarFragment extends BaseFragment implements PlanTaskAdapter.OnItemClickListener, IWallpaperBgUpdate {
     public static final String TAG = "CalendarFragment";
 
     private NCalendar mNCalendar;
@@ -40,8 +44,8 @@ public class CalendarFragment extends BaseFragment implements PlanTaskAdapter.On
     private int mCurrentSelectedYear, mCurrentSelectedMonth, mCurrentSelectedDay;
 
     public CalendarPresenter mCalendarPresenter;
-
     public Handler mHandler;
+
     @Nullable
     @Override
     protected View initContentView(LayoutInflater inflater, @Nullable ViewGroup container) {
@@ -140,6 +144,12 @@ public class CalendarFragment extends BaseFragment implements PlanTaskAdapter.On
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        WallpaperBgManager.getInstance().attach(this);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (mCalendarPresenter != null) {
@@ -149,6 +159,7 @@ public class CalendarFragment extends BaseFragment implements PlanTaskAdapter.On
         if (mPlanTaskAdapter != null) {
             mPlanTaskAdapter.removeOnItemClickListener();
         }
+        WallpaperBgManager.getInstance().detach(this);
     }
 
     @Override
@@ -162,5 +173,13 @@ public class CalendarFragment extends BaseFragment implements PlanTaskAdapter.On
         intent.putExtra(PlanTaskDetailsActivity.KEY_PLANTASK, task);
         intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_MODIFY);
         startActivity(intent);
+    }
+
+    @Override
+    public void onWallpaperBgUpdate() {
+        Log.d(TAG, "calendar fragment, recycl: " + mPlanTaskRecyclerView);
+        if (mPlanTaskRecyclerView != null) {
+            mPlanTaskRecyclerView.updateBackground();
+        }
     }
 }

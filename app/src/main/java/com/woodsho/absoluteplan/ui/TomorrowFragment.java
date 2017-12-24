@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +15,20 @@ import com.woodsho.absoluteplan.AbsolutePlanApplication;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.adapter.TomorrowAdapter;
 import com.woodsho.absoluteplan.bean.PlanTask;
+import com.woodsho.absoluteplan.common.WallpaperBgManager;
+import com.woodsho.absoluteplan.listener.IWallpaperBgUpdate;
 import com.woodsho.absoluteplan.presenter.TomorrowPresenter;
 import com.woodsho.absoluteplan.utils.CommonUtil;
+import com.woodsho.absoluteplan.widget.CommonRecyclerView;
 
 /**
  * Created by hewuzhao on 17/12/10.
  */
 
-public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.OnItemClickListener {
+public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.OnItemClickListener, IWallpaperBgUpdate {
     public TomorrowAdapter mTomorrowAdapter;
     public TomorrowPresenter mTomorrowPresenter;
+    private CommonRecyclerView mRecyclerView;
 
     @Nullable
     @Override
@@ -35,12 +40,12 @@ public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.On
     protected void bindView(View view) {
         Resources res = getResources();
         Context context = AbsolutePlanApplication.sAppContext;
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.tomorrow_recyclerview);
+        mRecyclerView = (CommonRecyclerView) view.findViewById(R.id.tomorrow_recyclerview);
         mTomorrowAdapter = new TomorrowAdapter(context);
         mTomorrowAdapter.addOnItemClickListener(this);
-        recyclerView.setAdapter(mTomorrowAdapter);
+        mRecyclerView.setAdapter(mTomorrowAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(context);
-        recyclerView.setLayoutManager(manager);
+        mRecyclerView.setLayoutManager(manager);
         mTomorrowPresenter = new TomorrowPresenter(this);
     }
 
@@ -60,6 +65,12 @@ public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.On
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        WallpaperBgManager.getInstance().attach(this);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (mTomorrowPresenter != null) {
@@ -69,6 +80,7 @@ public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.On
         if (mTomorrowAdapter != null) {
             mTomorrowAdapter.removeOnItemClickListener();
         }
+        WallpaperBgManager.getInstance().detach(this);
     }
 
     @Override
@@ -82,5 +94,13 @@ public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.On
         intent.putExtra(PlanTaskDetailsActivity.KEY_PLANTASK, task);
         intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_MODIFY);
         startActivity(intent);
+    }
+
+    @Override
+    public void onWallpaperBgUpdate() {
+        Log.d(TAG, "tomorrow fragment, recycl: " + mRecyclerView);
+        if (mRecyclerView != null) {
+            mRecyclerView.updateBackground();
+        }
     }
 }

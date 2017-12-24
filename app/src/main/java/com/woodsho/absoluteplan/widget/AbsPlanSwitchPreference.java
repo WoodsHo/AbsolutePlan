@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.preference.SwitchPreference;
 import android.support.v7.widget.SwitchCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +15,18 @@ import android.widget.TextView;
 
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.common.AbsPSharedPreference;
+import com.woodsho.absoluteplan.common.WallpaperBgManager;
 
 /**
  * Created by hewuzhao on 17/12/21.
  */
 
 public class AbsPlanSwitchPreference extends SwitchPreference {
+    public static final String TAG = "AbsPlanSwitchPreference";
+
     private int mIcon;
     private String mTitle;
     private String mSummary;
-
     private SwitchCompat mSwitchCompat;
 
     public AbsPlanSwitchPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -63,6 +66,8 @@ public class AbsPlanSwitchPreference extends SwitchPreference {
                 boolean newValue = !mSwitchCompat.isChecked();
                 mSwitchCompat.setChecked(newValue);
                 AbsPSharedPreference.getInstanc().saveSelectedWallpaperBg(newValue);
+                WallpaperBgManager.getInstance().notifyWallpaperBgUpdate();
+                Log.d(TAG, "reset new value: " + newValue);
             }
         });
         Resources res = view.getResources();

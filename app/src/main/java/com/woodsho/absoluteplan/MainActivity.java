@@ -37,7 +37,9 @@ import com.woodsho.absoluteplan.adapter.SideAdapter;
 import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.bean.SideItem;
 import com.woodsho.absoluteplan.common.AbsPSharedPreference;
+import com.woodsho.absoluteplan.common.WallpaperBgManager;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
+import com.woodsho.absoluteplan.listener.IWallpaperBgUpdate;
 import com.woodsho.absoluteplan.ui.AllFragment;
 import com.woodsho.absoluteplan.ui.CalendarFragment;
 import com.woodsho.absoluteplan.ui.FinishedFragment;
@@ -54,7 +56,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SideAdapter.OnSideItemClickListener, CachePlanTaskStore.OnPlanTaskChangedListener {
+public class MainActivity extends AppCompatActivity implements SideAdapter.OnSideItemClickListener,
+        CachePlanTaskStore.OnPlanTaskChangedListener, IWallpaperBgUpdate {
     public static final String TAG = "MainActivity";
 
     public DrawerLayout mDrawerLayout;
@@ -101,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
 
     public UIHandler mUIHandler;
     public FloatingActionButton mFloatActionButton;
+
+    private RelativeLayout mSideRelativeLayout;
+    private LinearLayout mSideBottomLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
         initSideView();
         changeMainView(mLastSelectedSideId);
         showGuideSide();
+        WallpaperBgManager.getInstance().attach(this);
     }
 
     public void getLastSelectedSideId() {
@@ -185,14 +192,14 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
                 Toast.makeText(AbsolutePlanApplication.sAppContext, "开发中，敬请期待！", Toast.LENGTH_SHORT).show();
             }
         });
-        final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.side_layout_relativelayout);
+        mSideRelativeLayout = (RelativeLayout) view.findViewById(R.id.side_layout_relativelayout);
         Drawable wallpaperDrawable = CommonUtil.getWallpaperDrawable();
         if (wallpaperDrawable != null) {
-            relativeLayout.setBackground(wallpaperDrawable);
+            mSideRelativeLayout.setBackground(wallpaperDrawable);
         } else {
-            relativeLayout.setBackgroundResource(R.drawable.common_bg);
+            mSideRelativeLayout.setBackgroundResource(R.drawable.common_bg);
         }
-        final LinearLayout bottomLayout = (LinearLayout) view.findViewById(R.id.bottom_side_layout);
+        mSideBottomLayout = (LinearLayout) view.findViewById(R.id.bottom_side_layout);
         mSideRecyclerView = (RecyclerView) view.findViewById(R.id.side_layout_recyclerview);
         mSideItemList = getAllSideItems();
         mSideAdapter = new SideAdapter(AbsolutePlanApplication.sAppContext, mSideItemList, mLastSelectedSideId);
@@ -210,18 +217,18 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
             }
         });
 
-        ViewTreeObserver vto = relativeLayout.getViewTreeObserver();
+        ViewTreeObserver vto = mSideRelativeLayout.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 // 保证只调用一次
-                relativeLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                mSideRelativeLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 // 组件生成cache（组件显示内容）
-                relativeLayout.buildDrawingCache();
+                mSideRelativeLayout.buildDrawingCache();
                 // 得到组件显示内容
-                Bitmap bitmap = CommonUtil.drawableToBitmap(relativeLayout.getBackground());
+                Bitmap bitmap = CommonUtil.drawableToBitmap(mSideRelativeLayout.getBackground());
                 // 局部模糊处理
-                CommonUtil.blur(AbsolutePlanApplication.sAppContext, bitmap, bottomLayout, 18);
+                CommonUtil.blur(AbsolutePlanApplication.sAppContext, bitmap, mSideBottomLayout, 18);
             }
         });
 
@@ -443,6 +450,34 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
         return Uri.parse(strBuilder.toString());
     }
 
+    @Override
+    public void onWallpaperBgUpdate() {
+        if (mSideRelativeLayout == null || mSideBottomLayout == null)
+            return;
+
+        Log.d(TAG, "main activity, mSidelayou and side bottom layout is not null");
+        Drawable wallpaperDrawable = CommonUtil.getWallpaperDrawable();
+        if (wallpaperDrawable != null) {
+            mSideRelativeLayout.setBackground(wallpaperDrawable);
+        } else {
+            mSideRelativeLayout.setBackgroundResource(R.drawable.common_bg);
+        }
+        ViewTreeObserver vto = mSideRelativeLayout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                // 保证只调用一次
+                mSideRelativeLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                // 组件生成cache（组件显示内容）
+                mSideRelativeLayout.buildDrawingCache();
+                // 得到组件显示内容
+                Bitmap bitmap = CommonUtil.drawableToBitmap(mSideRelativeLayout.getBackground());
+                // 局部模糊处理
+                CommonUtil.blur(AbsolutePlanApplication.sAppContext, bitmap, mSideBottomLayout, 18);
+            }
+        });
+    }
+
     private static class UIHandler extends Handler {
         private WeakReference<MainActivity> mWRef;
 
@@ -564,6 +599,7 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
             mSideAdapter.removeOnSideItemClickListener();
         }
         CachePlanTaskStore.getInstance().removePlanTaskChangedListener(this);
+        WallpaperBgManager.getInstance().detach(this);
     }
 
     @Override
