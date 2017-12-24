@@ -10,7 +10,6 @@
         android:roundIcon="@mipmap/ic_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,7 +17,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
@@ -36,11 +34,13 @@
 
         <activity
             android:name=".ui.PlanTaskDetailsActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
-            android:theme="@style/Theme.Slidr.Slidable" />
-
+            android:theme="@style/Theme.Slidr.Slidable"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".ui.SettingsActivity"
+            android:theme="@style/Theme.Slidr.Slidable" />
+        <activity
+            android:name=".ui.FeedbackSuggestionActivity"
             android:theme="@style/Theme.Slidr.Slidable" />
     </application>
 

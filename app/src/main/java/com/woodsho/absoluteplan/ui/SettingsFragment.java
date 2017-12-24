@@ -1,5 +1,6 @@
 package com.woodsho.absoluteplan.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -76,7 +77,7 @@ public class SettingsFragment extends PreferenceFragment {
         } else if (preference == mSkinPreference) {
             Toast.makeText(getActivity(), "开发中，敬请期待！", Toast.LENGTH_SHORT).show();
         } else if (preference == mFeedbackSuggestionPreference) {
-            Toast.makeText(getActivity(), "开发中，敬请期待！", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), FeedbackSuggestionActivity.class));
         }
         return true;
     }
