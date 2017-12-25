@@ -2,18 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="64dp"
-    android:descendantFocusability="beforeDescendants"
     android:background="@drawable/item_settings_preference_bg_selector">
 
-    <ImageView
-        android:id="@+id/settings_switchpreference_ic"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="17dp" />
-
     <RelativeLayout
-        android:layout_toEndOf="@id/settings_switchpreference_ic"
         android:layout_marginStart="14dp"
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
@@ -26,14 +17,14 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:paddingBottom="2dp"
-            android:textSize="@dimen/text_size_16"
-            android:textStyle="bold" />
+            android:textSize="@dimen/text_size_14"
+             />
 
         <TextView
             android:id="@+id/settings_switchpreference_summary"
             android:textColor="@color/black_50"
             android:layout_below="@id/settings_switchpreference_title"
-            android:textSize="@dimen/text_size_12"
+            android:textSize="@dimen/text_size_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -43,6 +34,9 @@
         android:id="@+id/settings_switchpreference_switch"
         android:layout_width="45dp"
         android:layout_height="15dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         app:theme="@style/AppTheme" />

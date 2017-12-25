@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorSwitchThumbNormal">@color/black</item>
+        <item name="colorSwitchThumbNormal">@color/switch_thumb_normal_color</item>
     </style>
 
     <style name="MyCheckBoxStyle" parent="@android:style/Widget.Material.CompoundButton.CheckBox">

@@ -1,5 +1,6 @@
 package com.woodsho.absoluteplan.ui;
 
+import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -65,6 +66,7 @@ public class OpenSourceActivity extends AppCompatActivity {
     private void init() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.opensource_recyclerview);
         OpenSourceAdapter sourceAdapter = new OpenSourceAdapter(this, getOpenSource());
+        recyclerView.addItemDecoration(new SpaceItemDecoration(30));
         recyclerView.setAdapter(sourceAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
@@ -77,5 +79,19 @@ public class OpenSourceActivity extends AppCompatActivity {
         list.add(new OpenSource("Slidr", "r0adkll", "Easily add slide to dismiss functionality to an Activity", "https://github.com/r0adkll/Slidr"));
         list.add(new OpenSource("NewbieGuide", "huburt-Hu", "Android 快速实现新手引导层的库", "https://github.com/huburt-Hu/NewbieGuide"));
         return list;
+    }
+
+    private class SpaceItemDecoration extends RecyclerView.ItemDecoration {
+        int mSpace ;
+
+        public SpaceItemDecoration(int space) {
+            mSpace = space;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            if(parent.getChildPosition(view) != 0)
+                outRect.top = mSpace;
+        }
     }
 }

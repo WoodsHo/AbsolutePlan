@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.woodsho.absoluteplan.R;
@@ -51,10 +50,7 @@ public class AbsPlanPreference extends Preference {
     @Override
     protected void onBindView(View view) {
         super.onBindView(view);
-        Resources res = view.getResources();
-        ImageView icon = (ImageView) view.findViewById(R.id.settings_preference_ic);
         TextView title = (TextView) view.findViewById(R.id.settings_preference_title);
-        icon.setImageDrawable(res.getDrawable(mIcon));
         title.setText(mTitle);
     }
 }

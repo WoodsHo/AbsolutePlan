@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.woodsho.absoluteplan.R;
@@ -70,12 +69,9 @@ public class AbsPlanSwitchPreference extends SwitchPreference {
                 Log.d(TAG, "reset new value: " + newValue);
             }
         });
-        Resources res = view.getResources();
-        ImageView icon = (ImageView) view.findViewById(R.id.settings_switchpreference_ic);
         TextView title = (TextView) view.findViewById(R.id.settings_switchpreference_title);
         mSwitchCompat = (SwitchCompat) view.findViewById(R.id.settings_switchpreference_switch);
         mSwitchCompat.setChecked(AbsPSharedPreference.getInstanc().getSelectedWallpaperBg());
-        icon.setImageDrawable(res.getDrawable(mIcon));
         title.setText(mTitle);
         TextView summary = (TextView) view.findViewById(R.id.settings_switchpreference_summary);
         summary.setText(mSummary);

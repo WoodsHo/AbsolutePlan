@@ -60,8 +60,8 @@ public class FeedbackSuggestionActivity extends AppCompatActivity {
     private void init() {
         Resources res = getResources();
         CardView qqCadView = (CardView) findViewById(R.id.qq_cardview);
-        qqCadView.setCardBackgroundColor(res.getColor(R.color.white));
+        qqCadView.setBackground(res.getDrawable(R.drawable.item_feedback_suggestion_bg_selector));
         CardView emailCardView = (CardView) findViewById(R.id.email_cardview);
-        emailCardView.setCardBackgroundColor(res.getColor(R.color.white));
+        emailCardView.setBackground(res.getDrawable(R.drawable.item_feedback_suggestion_bg_selector));
     }
 }

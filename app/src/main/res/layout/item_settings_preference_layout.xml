@@ -3,23 +3,16 @@
     android:layout_height="64dp"
     android:background="@drawable/item_settings_preference_bg_selector">
 
-    <ImageView
-        android:id="@+id/settings_preference_ic"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="17dp" />
-
     <TextView
         android:id="@+id/settings_preference_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:textColor="@color/black"
-        android:layout_toEndOf="@id/settings_preference_ic"
+
         android:layout_marginStart="14dp"
-        android:textStyle="bold"
-        android:textSize="@dimen/text_size_16" />
+
+        android:textSize="@dimen/text_size_14" />
 
     <ImageView
         android:layout_width="15dp"

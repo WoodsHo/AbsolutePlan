@@ -55,4 +55,6 @@
     <drawable name="item_plantask_normal_bg_state_normal">@color/transparent</drawable>
 
     <color name="fab_rippleColor">@color/black</color>
+
+    <color name="switch_thumb_normal_color">#838181</color>
 </resources>
