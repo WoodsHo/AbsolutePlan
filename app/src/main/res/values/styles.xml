@@ -25,4 +25,18 @@
 
     </style>
 
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/splash_view</item>
+
+    </style>
+
+    <style name="MyDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
+
+        <!-- Put the two options, colorAccent and android:colorAccent. -->
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/white</item>
+        <item name="android:colorAccent">@color/colorPrimary</item>
+    </style>
 </resources>

@@ -141,6 +141,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
                 .setLayoutRes(R.layout.guide_time_view_layout)//自定义的提示layout,第二个可变参数为点击隐藏引导层view的id
                 .alwaysShow(false)//是否每次都显示引导层，默认false
                 .addHighLight(mToolbarDate)
+                .addHighLight(mToolbarTime)
                 .setLabel(KEY_GUIDE_TIME)
                 .build();//构建引导层的控制器
         //controller.resetLabel(KEY_GUIDE_TIME);//重置该引导层为未显示过
@@ -165,7 +166,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
                 .setEveryWhereCancelable(true)
                 .setLayoutRes(R.layout.guide_save_plantask_view_layout)
                 .alwaysShow(false)
-                .addHighLight(mFloatingActionMenu, HighLight.Type.CIRCLE)
+                .addHighLight(mMainFab, HighLight.Type.CIRCLE)
                 .setLabel(KEY_GUIDE_SAVE_PLANTASK)
                 .build();
         controller.show();
@@ -212,7 +213,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
         mToolbarDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(PlanTaskDetailsActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(PlanTaskDetailsActivity.this, R.style.MyDatePickerDialogTheme, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         mCalendar.set(Calendar.YEAR, year);
@@ -235,7 +236,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
         mToolbarTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(PlanTaskDetailsActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(PlanTaskDetailsActivity.this, R.style.MyDatePickerDialogTheme, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);

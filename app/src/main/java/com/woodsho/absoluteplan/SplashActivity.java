@@ -18,10 +18,11 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        StatusBarUtil statusBar = new StatusBarUtil(this);
-        statusBar.setImmersionBar();
-        ImageView imageView = (ImageView) findViewById(R.id.splash_view);
-        imageView.setImageResource(R.drawable.splash_view);
+//        ImageView imageView = (ImageView) findViewById(R.id.splash_view);
+//        imageView.setImageResource(R.drawable.splash_view);
+//        StatusBarUtil statusBar = new StatusBarUtil(this);
+//        statusBar.setImmersionBar();
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
