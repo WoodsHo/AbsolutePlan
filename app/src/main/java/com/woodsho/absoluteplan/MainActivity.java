@@ -638,7 +638,9 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
 
                     @Override
                     public void onRemoved(Controller controller) {
-                        startActivity(new Intent(MainActivity.this, PlanTaskDetailsActivity.class));
+                        Intent intent = new Intent(MainActivity.this, PlanTaskDetailsActivity.class);
+                        intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_NEW_BUILD);
+                        startActivity(intent);
                     }
                 })
                 .setBackgroundColor(getResources().getColor(R.color.guide_bg_color))

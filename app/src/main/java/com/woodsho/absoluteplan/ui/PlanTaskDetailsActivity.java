@@ -249,7 +249,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        mShowType = intent.getIntExtra(KEY_SHOW_TYPE, -1);
+        mShowType = intent.getIntExtra(KEY_SHOW_TYPE, TYPE_NEW_BUILD);
         mFloatingActionMenu = (FloatingActionMenu) findViewById(R.id.float_action_menu);
         mMainFab = (FloatingActionButton) findViewById(R.id.main_float_action_menu);
         mMainFab.setOnClickListener(new View.OnClickListener() {
@@ -293,20 +293,20 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
             }
         });
 
-        if (mShowType == TYPE_NEW_BUILD) {
-            mToolbarTitle.setText("新建计划");
-            mMainFab.setImageDrawable(res.getDrawable(R.drawable.ic_fab_menu_normal));
-            mTitle.setFocusable(true);
-            mDescribe.setFocusable(true);
-            mToolbarDate.setClickable(true);
-            mToolbarTime.setClickable(true);
-        } else if (mShowType == TYPE_MODIFY) {
+        if (mShowType == TYPE_MODIFY) {
             mToolbarTitle.setText("查看计划");
             mMainFab.setImageDrawable(res.getDrawable(R.drawable.ic_fab_menu_modify));
             mTitle.setFocusable(false);
             mDescribe.setFocusable(false);
             mToolbarDate.setClickable(false);
             mToolbarTime.setClickable(false);
+        } else {
+            mToolbarTitle.setText("新建计划");
+            mMainFab.setImageDrawable(res.getDrawable(R.drawable.ic_fab_menu_normal));
+            mTitle.setFocusable(true);
+            mDescribe.setFocusable(true);
+            mToolbarDate.setClickable(true);
+            mToolbarTime.setClickable(true);
         }
         PlanTask task = intent.getParcelableExtra(KEY_PLANTASK);
         mIntentPlanTask = task;
