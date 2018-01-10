@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.woodsho.absoluteplan.AbsolutePlanApplication;
+import com.woodsho.absoluteplan.MainActivity;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.adapter.TomorrowAdapter;
 import com.woodsho.absoluteplan.bean.PlanTask;
@@ -20,6 +21,8 @@ import com.woodsho.absoluteplan.listener.IWallpaperBgUpdate;
 import com.woodsho.absoluteplan.presenter.TomorrowPresenter;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.widget.CommonRecyclerView;
+
+import java.util.List;
 
 /**
  * Created by hewuzhao on 17/12/10.
@@ -61,7 +64,11 @@ public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.On
     }
 
     public void loadDataSuccess() {
-        mTomorrowAdapter.changeAllData(CommonUtil.getTomorrowPlanTaskList());
+        List<PlanTask> planTasks = CommonUtil.getTomorrowPlanTaskList();
+        if (planTasks != null) {
+            ((MainActivity) getActivity()).updateSideItemOfTomorrow(planTasks.size());
+        }
+        mTomorrowAdapter.changeAllData(planTasks);
     }
 
     @Override

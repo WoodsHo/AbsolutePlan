@@ -535,6 +535,9 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
             return;
 
         SideItem item = mSideItemList.get(ID_ALL);
+        if (count == item.count)
+            return;
+
         item.count = count;
         mSideItemList.set(ID_ALL, item);
         mSideAdapter.notifyItemChanged(ID_ALL, "pos: " + ID_ALL);
@@ -545,6 +548,9 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
             return;
 
         SideItem item = mSideItemList.get(ID_TODAY);
+        if (count == item.count)
+            return;
+
         item.count = count;
         mSideItemList.set(ID_TODAY, item);
         mSideAdapter.notifyItemChanged(ID_TODAY, "pos: " + ID_TODAY);
@@ -555,6 +561,9 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
             return;
 
         SideItem item = mSideItemList.get(ID_TOMORROW);
+        if (count == item.count)
+            return;
+
         item.count = count;
         mSideItemList.set(ID_TOMORROW, item);
         mSideAdapter.notifyItemChanged(ID_TOMORROW, "pos: " + ID_TOMORROW);
@@ -565,6 +574,9 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
             return;
 
         SideItem item = mSideItemList.get(ID_FINISHED);
+        if (count == item.count)
+            return;
+
         item.count = count;
         mSideItemList.set(ID_FINISHED, item);
         mSideAdapter.notifyItemChanged(ID_FINISHED, "pos: " + ID_FINISHED);

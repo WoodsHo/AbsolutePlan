@@ -73,7 +73,8 @@ public class FloatingActionMenu extends ViewGroup {
 
     public void toggle() {
         if (mExpanded) {
-            collapse();
+            collapse(true);
+            ((FloatingActionButton)mBaseView).setImageDrawable(getResources().getDrawable(R.drawable.ic_fab_menu_normal));
         } else {
             expand();
             ((FloatingActionButton)mBaseView).setImageDrawable(getResources().getDrawable(R.drawable.ic_fab_menu_down));

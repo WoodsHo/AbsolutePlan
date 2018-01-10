@@ -379,6 +379,13 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
             } else {
                 task.describe = describe;
             }
+            hideSoftInput();
+
+            if (task.equals(mIntentPlanTask)) {
+                return;
+            } else {
+                mIntentPlanTask = task;
+            }
             addPlanTask(task);
 
             Intent intent = new Intent(PlanTaskDetailsActivity.this, UserActionService.class);
@@ -386,8 +393,6 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
             intent.putExtra(UserActionService.EXTRA_PLANTASK, task);
             Log.d(TAG, "savePlanTask , start intent service: UserActionService");
             startService(intent);
-
-            hideSoftInput();
         }
     }
 

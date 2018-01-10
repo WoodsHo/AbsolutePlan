@@ -2,6 +2,7 @@ package com.woodsho.absoluteplan.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 /**
  * Created by hewuzhao on 17/12/9.
@@ -52,4 +53,31 @@ public class PlanTask implements Parcelable {
             return new PlanTask[size];
         }
     };
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof PlanTask) {
+            PlanTask task = (PlanTask) obj;
+            if (!TextUtils.equals(id, task.id))
+                return false;
+
+            if (priority != task.priority)
+                return false;
+
+            if (!TextUtils.equals(title, task.title))
+                return false;
+
+            if (!TextUtils.equals(describe, task.describe))
+                return false;
+
+            if (time != task.time)
+                return false;
+
+            if (state != task.state)
+                return false;
+
+            return true;
+        }
+        return super.equals(obj);
+    }
 }
