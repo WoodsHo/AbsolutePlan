@@ -1,8 +1,8 @@
 # AbsolutePlan(绝对计划)
 
-## 介绍
 >想得好是聪明，计划得好更聪明，做得好是最聪明又是最好。——拿破仑
 
+## 介绍
 这是一个只专注于帮助你记录、管理日常计划任务的工具类APP。
 
 APP功能专一、操作简单、界面优美，记录只保存在本地，不上传到服务端，不需要担心隐私泄露问题。
@@ -17,14 +17,13 @@ APP功能专一、操作简单、界面优美，记录只保存在本地，不�
 
 ## APP展示
 ### 1. 第一次使用引导提示
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide1.jpg"/>
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide2.jpg"/>
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide3.jpg"/>
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide4.jpg"/>
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide1.jpg"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide2.jpg"/>
+
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide3.jpg"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide4.jpg"/>
 
 动态演示：
 
-![image](https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide.gif)
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide.gif"/>
 
 ### 2. 侧边栏 
 * 显示头像（开发中）
@@ -48,15 +47,12 @@ APP功能专一、操作简单、界面优美，记录只保存在本地，不�
 
 2. 新建任务，可以自主选择日期和时间。
 
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail1.jpg"/>
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail2.jpg"/>
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail3.jpg"/>
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail1.jpg"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail2.jpg"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail3.jpg"/>
 
 ### 6. 日历模式
 可以以日历的模式查看计划任务，日历上的红点标记该日期有计划任务。
 
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/calendar1.jpg"/>
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/calendar2.jpg"/>
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/calendar1.jpg"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/calendar2.jpg"/>
 
 ### 7. 设置
 1. 换肤功能(开发中，敬请期待)
@@ -67,9 +63,9 @@ APP功能专一、操作简单、界面优美，记录只保存在本地，不�
 <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/setting.jpg"/>
 
 ## 结尾
-拥抱开源，献上自己的微薄之力，多向大佬学习。
+拥抱开源，学习开源，为社会献上自己的微薄之力。
 
-## 反馈
+## 联系
 如果有建议或者有侵权之处，请联系我：
 
 QQ：1797856713
