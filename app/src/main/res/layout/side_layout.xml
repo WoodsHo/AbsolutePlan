@@ -29,7 +29,7 @@
             android:layout_marginTop="12dp"
             android:fontFamily="sans-serif-medium"
             android:text="登录"
-            android:textColor="@color/black"
+            android:textColor="#707070"
             android:textSize="@dimen/text_size_16"
             android:textStyle="bold" />
 

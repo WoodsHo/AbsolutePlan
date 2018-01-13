@@ -51,6 +51,7 @@ import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 import com.woodsho.absoluteplan.widget.CenteredImageSpan;
 import com.woodsho.absoluteplan.widget.SideNavigationView;
+import com.woodsho.absoluteplan.widget.SimpleDraweeViewEx;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -185,6 +186,13 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
 
     public void initSideView() {
         View view = View.inflate(this, R.layout.side_layout, null);
+        SimpleDraweeViewEx avatar = (SimpleDraweeViewEx) view.findViewById(R.id.avatar);
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(AbsolutePlanApplication.sAppContext, "开发中，敬请期待！", Toast.LENGTH_SHORT).show();
+            }
+        });
         TextView name = (TextView) view.findViewById(R.id.name);
         name.setOnClickListener(new View.OnClickListener() {
             @Override
