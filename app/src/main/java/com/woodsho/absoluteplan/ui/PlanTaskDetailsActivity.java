@@ -98,8 +98,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
                 .build();
         Slidr.attach(this, mConfig);
         setupActionBar();
-        StatusBarUtil statusBarUtil = new StatusBarUtil(this);
-        statusBarUtil.setColorBarForDrawer(ContextCompat.getColor(this, R.color.colorPrimary));
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
         init();
         showGuideTime();
     }
@@ -112,7 +111,6 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
             rootView.addView(view, 0);
 
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            toolbar.setPadding(0, CommonUtil.getStatusBarHeight(AbsolutePlanApplication.sAppContext), 0, 0);
             setSupportActionBar(toolbar);
         }
 

@@ -4,10 +4,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    android:fitsSystemWindows="true"
     android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:paddingTop="2dp">
+    android:focusableInTouchMode="true" >
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/time_plantaskdetails_textinputlayout"
@@ -15,6 +13,7 @@
         android:layout_height="wrap_content"
         android:paddingEnd="10dp"
         android:paddingStart="10dp"
+        android:layout_marginTop="10dp"
         android:textColorHint="@color/black_30">
 
         <EditText

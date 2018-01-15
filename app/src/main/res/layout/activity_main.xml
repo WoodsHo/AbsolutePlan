@@ -1,6 +1,7 @@
 <com.woodsho.absoluteplan.widget.MyDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,16 +11,25 @@
         android:fitsSystemWindows="true"
         android:orientation="vertical">
 
+        <!--状态栏-->
+        <View
+            android:id="@+id/view_status"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:visibility="gone"
+            android:background="@color/colorPrimary" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="@color/colorPrimary">
 
-            <com.woodsho.absoluteplan.widget.SideNavigationView
-                android:id="@+id/toolbar_slide_navigation_view"
+            <ImageView
+                android:id="@+id/toolbar_slide_menu"
                 android:layout_width="50dp"
                 android:layout_height="20dp"
                 android:layout_alignParentStart="true"
+                android:src="@drawable/ic_titlebar_menu"
                 android:layout_marginStart="1dp"
                 android:layout_marginTop="53dp" />
 
@@ -29,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="1dp"
                 android:layout_marginTop="40dp"
-                android:layout_toEndOf="@+id/toolbar_slide_navigation_view"
+                android:layout_toEndOf="@+id/toolbar_slide_menu"
                 android:text="9月"
                 android:textColor="#ffffff"
                 android:textSize="30sp" />

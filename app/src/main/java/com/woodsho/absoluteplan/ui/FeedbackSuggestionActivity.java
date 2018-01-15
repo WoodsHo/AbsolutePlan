@@ -2,18 +2,17 @@ package com.woodsho.absoluteplan.ui;
 
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrPosition;
-import com.woodsho.absoluteplan.AbsolutePlanApplication;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
@@ -33,8 +32,7 @@ public class FeedbackSuggestionActivity extends AppCompatActivity {
                 .build();
         Slidr.attach(this, mConfig);
         setupActionBar();
-        StatusBarUtil statusBarUtil = new StatusBarUtil(this);
-        statusBarUtil.setColorBarForDrawer(ContextCompat.getColor(this, R.color.colorPrimary));
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
         init();
     }
 
@@ -46,8 +44,14 @@ public class FeedbackSuggestionActivity extends AppCompatActivity {
             rootView.addView(view, 0);
 
             Toolbar toolbar = (Toolbar) findViewById(R.id.feedback_suggestion_toolbar);
-            toolbar.setPadding(0, CommonUtil.getStatusBarHeight(AbsolutePlanApplication.sAppContext), 0, 0);
             setSupportActionBar(toolbar);
+            ImageView back = (ImageView) findViewById(R.id.back_feedback_suggestion);
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
         }
 
         ActionBar actionBar = getSupportActionBar();

@@ -43,8 +43,27 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="40dp"
         android:text="开源相关"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_15" />
+
+    <TextView
+        android:id="@+id/github_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:text="AbsPlan开源GitHub, 欢迎star！"
+        android:textColor="@color/black_60"
+        android:textSize="@dimen/text_size_12" />
+
+    <TextView
+        android:id="@+id/github_absplan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/github_title"
+        android:layout_centerHorizontal="true"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_15" />
 </RelativeLayout>

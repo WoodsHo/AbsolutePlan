@@ -12,7 +12,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,8 +21,10 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -50,7 +51,6 @@ import com.woodsho.absoluteplan.ui.TomorrowFragment;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 import com.woodsho.absoluteplan.widget.CenteredImageSpan;
-import com.woodsho.absoluteplan.widget.SideNavigationView;
 import com.woodsho.absoluteplan.widget.SimpleDraweeViewEx;
 
 import java.lang.ref.WeakReference;
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
     public RecyclerView mSideRecyclerView;
     public TextView mSettingBt;
     public TextView mSearchBt;
-    public SideNavigationView mSideNavigationView;
+    public ImageView mSideNavigationView;
 
     public TodayFragment mTodayFragment;
     public AllFragment mAllFragment;
@@ -114,10 +114,15 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         CachePlanTaskStore.getInstance().addOnPlanTaskChangedListener(this);
-        StatusBarUtil statusbar = new StatusBarUtil(this);
-        statusbar.setColorBarForDrawer(ContextCompat.getColor(this, R.color.colorPrimary));
+
+        View statusView = findViewById(R.id.view_status);
+        ViewGroup.LayoutParams layoutParams = statusView.getLayoutParams();
+        layoutParams.height = StatusBarUtil.getStatusBarHeight(this);
+        statusView.setLayoutParams(layoutParams);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        StatusBarUtil.setColorNoTranslucentForDrawerLayout(MainActivity.this, mDrawerLayout,
+                getResources().getColor(R.color.colorPrimary));
         mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -164,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
                 startActivity(intent);
             }
         });
-        mSideNavigationView = (SideNavigationView) findViewById(R.id.toolbar_slide_navigation_view);
+        mSideNavigationView = (ImageView) findViewById(R.id.toolbar_slide_menu);
         mSideNavigationView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

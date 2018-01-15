@@ -1,13 +1,14 @@
 package com.woodsho.absoluteplan.ui;
 
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
+import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.r0adkll.slidr.Slidr;
@@ -19,6 +20,7 @@ import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 
 public class AboutActivity extends AppCompatActivity {
+    private static final String GITHUB = "https://github.com/WoodsHo/AbsolutePlan";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +35,7 @@ public class AboutActivity extends AppCompatActivity {
                 .build();
         Slidr.attach(this, mConfig);
         setupActionBar();
-        StatusBarUtil statusBarUtil = new StatusBarUtil(this);
-        statusBarUtil.setColorBarForDrawer(ContextCompat.getColor(this, R.color.colorPrimary));
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
         init();
     }
 
@@ -46,8 +47,14 @@ public class AboutActivity extends AppCompatActivity {
             rootView.addView(view, 0);
 
             Toolbar toolbar = (Toolbar) findViewById(R.id.about_toolbar);
-            toolbar.setPadding(0, CommonUtil.getStatusBarHeight(AbsolutePlanApplication.sAppContext), 0, 0);
             setSupportActionBar(toolbar);
+            ImageView back = (ImageView) findViewById(R.id.back_about);
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
         }
 
         ActionBar actionBar = getSupportActionBar();
@@ -67,6 +74,17 @@ public class AboutActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AboutActivity.this, OpenSourceActivity.class));
+            }
+        });
+        TextView github = (TextView) findViewById(R.id.github_absplan);
+        github.setText(GITHUB);
+        github.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setData(Uri.parse(GITHUB));
+                intent.setAction(Intent.ACTION_VIEW);
+                startActivity(intent);
             }
         });
     }

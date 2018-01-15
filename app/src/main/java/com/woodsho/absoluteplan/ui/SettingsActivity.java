@@ -33,8 +33,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 .build();
         Slidr.attach(this, mConfig);
         setupActionBar();
-        StatusBarUtil statusBarUtil = new StatusBarUtil(this);
-        statusBarUtil.setColorBarForDrawer(ContextCompat.getColor(this, R.color.colorPrimary));
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
         getFragmentManager().beginTransaction().replace(android.R.id.content,
                 new SettingsFragment()).commit();
     }

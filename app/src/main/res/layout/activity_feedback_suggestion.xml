@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="13dp"
         android:clickable="true"
         android:focusableInTouchMode="true"
         android:focusable="true"

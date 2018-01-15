@@ -42,7 +42,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.1'
 
     // 日历
-    compile 'com.necer.ncalendar:ncalendar:2.4.2'
+    compile 'com.necer.ncalendar:ncalendar:2.4.3'
     // item 侧滑滑出删除键
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
     // 侧滑退出activity
