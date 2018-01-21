@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +40,8 @@ import com.woodsho.absoluteplan.common.AbsPSharedPreference;
 import com.woodsho.absoluteplan.common.WallpaperBgManager;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 import com.woodsho.absoluteplan.listener.IWallpaperBgUpdate;
+import com.woodsho.absoluteplan.skinloader.SkinBaseActivity;
+import com.woodsho.absoluteplan.skinloader.SkinManager;
 import com.woodsho.absoluteplan.ui.AllFragment;
 import com.woodsho.absoluteplan.ui.CalendarFragment;
 import com.woodsho.absoluteplan.ui.FinishedFragment;
@@ -57,7 +58,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SideAdapter.OnSideItemClickListener,
+public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSideItemClickListener,
         CachePlanTaskStore.OnPlanTaskChangedListener, IWallpaperBgUpdate {
     public static final String TAG = "MainActivity";
 
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
 
     public RecyclerView mSideRecyclerView;
     public TextView mSettingBt;
-    public TextView mSearchBt;
     public ImageView mSideNavigationView;
 
     public TodayFragment mTodayFragment;
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         StatusBarUtil.setColorNoTranslucentForDrawerLayout(MainActivity.this, mDrawerLayout,
-                getResources().getColor(R.color.colorPrimary));
+                SkinManager.getInstance().getColor(R.color.colorPrimary));
         mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -161,6 +161,8 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
             }
         });
         mFloatActionButton = (FloatingActionButton) findViewById(R.id.main_float_action_button);
+        mFloatActionButton.setBackgroundTintList(SkinManager.getInstance().convertToColorStateList(R.color.colorPrimary));
+        dynamicAddView(mFloatActionButton, "backgroundTint", R.color.colorPrimary, false);
         mFloatActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,16 +192,9 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
     }
 
     public void initSideView() {
-        View view = View.inflate(this, R.layout.side_layout, null);
+        View view = getLayoutInflater().inflate(R.layout.side_layout, null);
         SimpleDraweeViewEx avatar = (SimpleDraweeViewEx) view.findViewById(R.id.avatar);
         avatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(AbsolutePlanApplication.sAppContext, "开发中，敬请期待！", Toast.LENGTH_SHORT).show();
-            }
-        });
-        TextView name = (TextView) view.findViewById(R.id.name);
-        name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(AbsolutePlanApplication.sAppContext, "开发中，敬请期待！", Toast.LENGTH_SHORT).show();
@@ -246,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
         });
 
         mSettingBt = (TextView) view.findViewById(R.id.setting_side_layout);
-        mSettingBt.setText(createStringWithLeftPicture(R.drawable.ic_side_setting, "  设置"));
+        mSettingBt.setText(createStringWithLeftPicture(R.drawable.ic_side_setting2, "  设置"));
         mSettingBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -258,14 +253,6 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
                         mDrawerLayout.closeDrawer(mSideLayout);
                     }
                 }, 200);
-            }
-        });
-        mSearchBt = (TextView) view.findViewById(R.id.search_side_layout);
-        mSearchBt.setText(createStringWithLeftPicture(R.drawable.ic_side_search, "  搜索"));
-        mSearchBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(AbsolutePlanApplication.sAppContext, "开发中，敬请期待！", Toast.LENGTH_SHORT).show();
             }
         });
         mSideLayout.addView(view);
@@ -656,7 +643,7 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
                         startActivity(intent);
                     }
                 })
-                .setBackgroundColor(getResources().getColor(R.color.guide_bg_color))
+                .setBackgroundColor(SkinManager.getInstance().getColor(R.color.guide_bg_color))
                 .setEveryWhereCancelable(true)
                 .setLayoutRes(R.layout.guide_build_view_layout)
                 .alwaysShow(false)
@@ -679,7 +666,7 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
                         mDrawerLayout.openDrawer(mSideLayout);
                     }
                 })
-                .setBackgroundColor(getResources().getColor(R.color.guide_bg_color))
+                .setBackgroundColor(SkinManager.getInstance().getColor(R.color.guide_bg_color))
                 .setEveryWhereCancelable(true)
                 .setLayoutRes(R.layout.guide_side_view_layout)
                 .alwaysShow(false)
@@ -687,5 +674,17 @@ public class MainActivity extends AppCompatActivity implements SideAdapter.OnSid
                 .setLabel(KEY_GUIDE_SIDE)
                 .build();
         controller.show();
+    }
+
+    @Override
+    public void onSkinUpdate() {
+        super.onSkinUpdate();
+        if (mDrawerLayout != null) {
+            StatusBarUtil.setColorNoTranslucentForDrawerLayout(MainActivity.this, mDrawerLayout,
+                    SkinManager.getInstance().getColor(R.color.colorPrimary));
+        }
+        if (mSideAdapter != null) {
+            mSideAdapter.updateSkin();
+        }
     }
 }

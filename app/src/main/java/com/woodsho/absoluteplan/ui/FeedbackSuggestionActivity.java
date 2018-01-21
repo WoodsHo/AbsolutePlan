@@ -3,7 +3,6 @@ package com.woodsho.absoluteplan.ui;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -14,10 +13,12 @@ import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrPosition;
 import com.woodsho.absoluteplan.R;
+import com.woodsho.absoluteplan.skinloader.SkinBaseActivity;
+import com.woodsho.absoluteplan.skinloader.SkinManager;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 
-public class FeedbackSuggestionActivity extends AppCompatActivity {
+public class FeedbackSuggestionActivity extends SkinBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class FeedbackSuggestionActivity extends AppCompatActivity {
                 .build();
         Slidr.attach(this, mConfig);
         setupActionBar();
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
+        StatusBarUtil.setColor(this, SkinManager.getInstance().getColor(R.color.colorPrimary), 0);
         init();
     }
 

@@ -15,6 +15,7 @@ import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 import com.woodsho.absoluteplan.fresco.BitmapMemoryCacheParamsSupplier;
 import com.woodsho.absoluteplan.fresco.ImageNetworkFetcherEx;
+import com.woodsho.absoluteplan.skinloader.SkinManager;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.widget.SimpleDraweeViewEx;
 
@@ -55,6 +56,7 @@ public class AbsolutePlanApplication extends Application {
                     CachePlanTaskStore.initialize(sAppContext);
                 }
             }).start();
+            SkinManager.getInstance().init(sAppContext);
         }
     }
 

@@ -12,14 +12,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,11 +35,12 @@ import com.app.hubert.library.OnGuideChangedListener;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrPosition;
-import com.woodsho.absoluteplan.AbsolutePlanApplication;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 import com.woodsho.absoluteplan.service.UserActionService;
+import com.woodsho.absoluteplan.skinloader.SkinBaseActivity;
+import com.woodsho.absoluteplan.skinloader.SkinManager;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 import com.woodsho.absoluteplan.widget.CenteredImageSpan;
@@ -56,7 +54,7 @@ import java.util.Locale;
  * Created by hewuzhao on 17/12/14.
  */
 
-public class PlanTaskDetailsActivity extends AppCompatActivity {
+public class PlanTaskDetailsActivity extends SkinBaseActivity {
     public static final String TAG = "PlanTaskDetailsActivity";
     public static final String KEY_PLANTASK = "key_plantask";
     public static final String KEY_GUIDE_TIME = "guide_time";
@@ -98,7 +96,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
                 .build();
         Slidr.attach(this, mConfig);
         setupActionBar();
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
+        StatusBarUtil.setColor(this, SkinManager.getInstance().getColor(R.color.colorPrimary), 0);
         init();
         showGuideTime();
     }
@@ -250,6 +248,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
         mShowType = intent.getIntExtra(KEY_SHOW_TYPE, TYPE_NEW_BUILD);
         mFloatingActionMenu = (FloatingActionMenu) findViewById(R.id.float_action_menu);
         mMainFab = (FloatingActionButton) findViewById(R.id.main_float_action_menu);
+        mMainFab.setBackgroundTintList(SkinManager.getInstance().convertToColorStateList(R.color.colorPrimary));
         mMainFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -268,6 +267,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
             }
         });
         mSaveFab = (FloatingActionButton) findViewById(R.id.button_item_save_float_action_menu);
+        mSaveFab.setBackgroundTintList(SkinManager.getInstance().convertToColorStateList(R.color.colorPrimary));
         mSaveFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,6 +276,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
             }
         });
         mSaveAndExitFab = (FloatingActionButton) findViewById(R.id.button_item_save_exit_float_action_menu);
+        mSaveAndExitFab.setBackgroundTintList(SkinManager.getInstance().convertToColorStateList(R.color.colorPrimary));
         mSaveAndExitFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -284,6 +285,7 @@ public class PlanTaskDetailsActivity extends AppCompatActivity {
             }
         });
         mExitFab = (FloatingActionButton) findViewById(R.id.button_item_exit_float_action_menu);
+        mExitFab.setBackgroundTintList(SkinManager.getInstance().convertToColorStateList(R.color.colorPrimary));
         mExitFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

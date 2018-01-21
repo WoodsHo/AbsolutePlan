@@ -34,4 +34,6 @@
     <string name="key_settings_preference">key_settings_preference</string>
     <string name="key_settings_service_support">key_settings_service_support</string>
     <string name="key_settings_wallpaper_bg">key_settings_wallpaper_bg</string>
+    <string name="wisdom">凡事预则立，不预则废。</string>
+    <string name="wisdom_source">——《礼记.中庸》</string>
 </resources>

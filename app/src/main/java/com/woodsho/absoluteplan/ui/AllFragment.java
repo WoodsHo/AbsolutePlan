@@ -36,7 +36,7 @@ public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickL
     @Nullable
     @Override
     protected View initContentView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_all_layout, container, false);
+        return getActivity().getLayoutInflater().inflate(R.layout.fragment_all_layout, container, false);
     }
 
     @Override

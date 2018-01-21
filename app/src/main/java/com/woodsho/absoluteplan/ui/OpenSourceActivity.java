@@ -2,7 +2,6 @@ package com.woodsho.absoluteplan.ui;
 
 import android.graphics.Rect;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,13 +16,15 @@ import com.r0adkll.slidr.model.SlidrPosition;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.adapter.OpenSourceAdapter;
 import com.woodsho.absoluteplan.bean.OpenSource;
+import com.woodsho.absoluteplan.skinloader.SkinBaseActivity;
+import com.woodsho.absoluteplan.skinloader.SkinManager;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OpenSourceActivity extends AppCompatActivity {
+public class OpenSourceActivity extends SkinBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class OpenSourceActivity extends AppCompatActivity {
                 .build();
         Slidr.attach(this, mConfig);
         setupActionBar();
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
+        StatusBarUtil.setColor(this, SkinManager.getInstance().getColor(R.color.colorPrimary), 0);
         init();
     }
 

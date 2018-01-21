@@ -3,16 +3,17 @@ package com.woodsho.absoluteplan.ui;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.woodsho.absoluteplan.skinloader.SkinBaseFragment;
 
 /**
  * Created by hewuzhao on 17/12/10.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends SkinBaseFragment {
     protected static final String TAG = "BaseFragment";
 
     protected Activity mActivity;

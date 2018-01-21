@@ -36,7 +36,7 @@ public class TodayFragment extends BaseFragment implements TodayAdapter.OnItemCl
     @Nullable
     @Override
     protected View initContentView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_today_layout, container, false);
+        return getActivity().getLayoutInflater().inflate(R.layout.fragment_today_layout, container, false);
     }
 
     @Override

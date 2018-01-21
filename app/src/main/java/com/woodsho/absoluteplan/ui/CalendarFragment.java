@@ -49,7 +49,7 @@ public class CalendarFragment extends BaseFragment implements PlanTaskAdapter.On
     @Nullable
     @Override
     protected View initContentView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_calendar_layout, container, false);
+        return getActivity().getLayoutInflater().inflate(R.layout.fragment_calendar_layout, container, false);
     }
 
     @Override

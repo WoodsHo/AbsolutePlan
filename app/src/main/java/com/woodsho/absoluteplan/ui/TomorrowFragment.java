@@ -36,7 +36,7 @@ public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.On
     @Nullable
     @Override
     protected View initContentView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_tomorrow_layout, container, false);
+        return getActivity().getLayoutInflater().inflate(R.layout.fragment_tomorrow_layout, container, false);
     }
 
     @Override

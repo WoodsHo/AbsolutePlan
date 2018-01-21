@@ -58,12 +58,11 @@
         android:textColor="@color/black_60"
         android:textSize="@dimen/text_size_12" />
 
-    <TextView
+    <ImageView
         android:id="@+id/github_absplan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/ic_github"
         android:layout_below="@id/github_title"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_15" />
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.woodsho.absoluteplan">
 
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".AbsolutePlanApplication"
         android:allowBackup="true"
@@ -10,7 +13,8 @@
         android:roundIcon="@mipmap/ic_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashActivity"
+        <activity
+            android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,8 +50,12 @@
         <activity
             android:name=".ui.AboutActivity"
             android:theme="@style/Theme.Slidr.Slidable" />
+        <activity
+            android:name=".ui.OpenSourceActivity"
+            android:theme="@style/Theme.Slidr.Slidable" />
 
-        <activity android:name=".ui.OpenSourceActivity"
+        <activity
+            android:name=".ui.SkinActivity"
             android:theme="@style/Theme.Slidr.Slidable" />
     </application>
 

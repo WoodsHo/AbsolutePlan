@@ -33,7 +33,7 @@ public class FinishedFragment extends BaseFragment implements FinishedAdapter.On
     @Nullable
     @Override
     protected View initContentView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_finished_layout, container, false);
+        return getActivity().getLayoutInflater().inflate(R.layout.fragment_finished_layout, container, false);
     }
 
     @Override

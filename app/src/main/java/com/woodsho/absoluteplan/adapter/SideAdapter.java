@@ -2,7 +2,6 @@ package com.woodsho.absoluteplan.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +13,7 @@ import com.woodsho.absoluteplan.AbsolutePlanApplication;
 import com.woodsho.absoluteplan.MainActivity;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.bean.SideItem;
-import com.woodsho.absoluteplan.widget.SimpleDraweeViewEx;
+import com.woodsho.absoluteplan.skinloader.SkinManager;
 
 import java.util.List;
 
@@ -60,20 +59,21 @@ public class SideAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final SideViewHolder sideViewHolder = (SideViewHolder) holder;
         final Resources res = mContext.getResources();
+        final SkinManager skinManager = SkinManager.getInstance();
         final SideItem sideItem = mSideItemList.get(position);
         sideViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mLastClickedViewHolder != null && mLastClickedSideItem != null) {
                     //mLastClickedViewHolder.itemView.setBackground(mContext.getDrawable(R.color.black_10));
-                    mLastClickedViewHolder.mTitle.setTextColor(res.getColor(R.color.black));
-                    mLastClickedViewHolder.mCount.setTextColor(res.getColor(R.color.black));
+                    mLastClickedViewHolder.mTitle.setTextColor(skinManager.getColor(R.color.white));
+                    mLastClickedViewHolder.mCount.setTextColor(skinManager.getColor(R.color.white));
                     mLastClickedViewHolder.mIcon.setImageResource(mLastClickedSideItem.iconId);
                 }
                 //v.setBackground(mContext.getDrawable(R.color.side_selected_item_bg_color));
-                sideViewHolder.mTitle.setTextColor(res.getColor(R.color.colorPrimary));
-                sideViewHolder.mCount.setTextColor(res.getColor(R.color.colorPrimary));
-                sideViewHolder.mIcon.setImageResource(getSelectedDrawableResId(sideItem.iconId, res));
+                sideViewHolder.mTitle.setTextColor(skinManager.getColor(R.color.colorPrimary));
+                sideViewHolder.mCount.setTextColor(skinManager.getColor(R.color.colorPrimary));
+                sideViewHolder.mIcon.setImageDrawable(skinManager.getDrawable(getSelectedDrawableResId(sideItem.iconId, res)));
                 mLastClickedViewHolder = sideViewHolder;
                 mLastClickedSideItem = sideItem;
                 if (mOnSideItemClickListener != null) {
@@ -86,13 +86,13 @@ public class SideAdapter extends RecyclerView.Adapter {
             //sideViewHolder.itemView.setBackground(mContext.getDrawable(R.color.side_selected_item_bg_color));
             mLastClickedViewHolder = sideViewHolder;
             mLastClickedSideItem = sideItem;
-            sideViewHolder.mTitle.setTextColor(res.getColor(R.color.colorPrimary));
-            sideViewHolder.mCount.setTextColor(res.getColor(R.color.colorPrimary));
-            sideViewHolder.mIcon.setImageResource(getSelectedDrawableResId(sideItem.iconId, res));
+            sideViewHolder.mTitle.setTextColor(skinManager.getColor(R.color.colorPrimary));
+            sideViewHolder.mCount.setTextColor(skinManager.getColor(R.color.colorPrimary));
+            sideViewHolder.mIcon.setImageDrawable(skinManager.getDrawable(getSelectedDrawableResId(sideItem.iconId, res)));
         } else {
             //sideViewHolder.itemView.setBackground(mContext.getDrawable(R.color.black_10));
-            sideViewHolder.mTitle.setTextColor(res.getColor(R.color.black));
-            sideViewHolder.mCount.setTextColor(res.getColor(R.color.black));
+            sideViewHolder.mTitle.setTextColor(skinManager.getColor(R.color.white));
+            sideViewHolder.mCount.setTextColor(skinManager.getColor(R.color.white));
             sideViewHolder.mIcon.setImageResource(sideItem.iconId);
         }
         sideViewHolder.mTitle.setText(sideItem.title);
@@ -102,6 +102,10 @@ public class SideAdapter extends RecyclerView.Adapter {
         } else {
             sideViewHolder.mCount.setText("");
         }
+    }
+
+    public void updateSkin() {
+        notifyItemRangeChanged(0, mSideItemList.size());
     }
 
     private int getSelectedDrawableResId(int id, Resources res) {

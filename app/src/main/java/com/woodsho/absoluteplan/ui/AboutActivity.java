@@ -3,7 +3,6 @@ package com.woodsho.absoluteplan.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,10 +15,12 @@ import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrPosition;
 import com.woodsho.absoluteplan.AbsolutePlanApplication;
 import com.woodsho.absoluteplan.R;
+import com.woodsho.absoluteplan.skinloader.SkinBaseActivity;
+import com.woodsho.absoluteplan.skinloader.SkinManager;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends SkinBaseActivity {
     private static final String GITHUB = "https://github.com/WoodsHo/AbsolutePlan";
 
     @Override
@@ -35,7 +36,7 @@ public class AboutActivity extends AppCompatActivity {
                 .build();
         Slidr.attach(this, mConfig);
         setupActionBar();
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
+        StatusBarUtil.setColor(this, SkinManager.getInstance().getColor(R.color.colorPrimary), 0);
         init();
     }
 
@@ -47,6 +48,7 @@ public class AboutActivity extends AppCompatActivity {
             rootView.addView(view, 0);
 
             Toolbar toolbar = (Toolbar) findViewById(R.id.about_toolbar);
+            toolbar.setBackgroundColor(SkinManager.getInstance().getColor(R.color.colorPrimary));
             setSupportActionBar(toolbar);
             ImageView back = (ImageView) findViewById(R.id.back_about);
             back.setOnClickListener(new View.OnClickListener() {
@@ -76,8 +78,7 @@ public class AboutActivity extends AppCompatActivity {
                 startActivity(new Intent(AboutActivity.this, OpenSourceActivity.class));
             }
         });
-        TextView github = (TextView) findViewById(R.id.github_absplan);
-        github.setText(GITHUB);
+        ImageView github = (ImageView) findViewById(R.id.github_absplan);
         github.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
