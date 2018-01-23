@@ -3,6 +3,7 @@ package com.woodsho.absoluteplan.ui;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelUuid;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,7 @@ import com.woodsho.absoluteplan.bean.SkinAdapterItem;
 import com.woodsho.absoluteplan.skinloader.ILoaderListener;
 import com.woodsho.absoluteplan.skinloader.SkinBaseActivity;
 import com.woodsho.absoluteplan.skinloader.SkinManager;
+import com.woodsho.absoluteplan.skinloader.SkinSharedPreferences;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.FileUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
@@ -38,6 +40,11 @@ public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkin
     public SkinAdapter mSkinAdapter;
     private static final String PATH = Environment
             .getExternalStorageDirectory() + File.separator + "com.woodsho.absoluteplan";
+
+    public static final String SKIN_BLUEGREY = "skin_bluegrey.skin";
+    public static final String SKIN_GREY = "skin_grey.skin";
+    public static final String SKIN_DEEPORANGE = "skin_deeporange.skin";
+    public static final String SKIN_TEAL = "skin_teal.skin";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,9 +115,10 @@ public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkin
 
     private List<SkinAdapterItem> getSkinList() {
         List<SkinAdapterItem> list = new ArrayList<>();
-        list.add(new SkinAdapterItem("蓝灰(bluegrey)", "skin_bluegrey.skin", R.color.skin_bluegrey_color));
-        list.add(new SkinAdapterItem("灰色(grey)", "skin_grey.skin", R.color.skin_grey_color));
-        list.add(new SkinAdapterItem("暗橙(deeporange)", "skin_deeporange.skin", R.color.skin_deeporange_color));
+        list.add(new SkinAdapterItem("混灰蓝", SKIN_BLUEGREY, R.color.skin_bluegrey_color));
+        list.add(new SkinAdapterItem("低调灰", SKIN_GREY, R.color.skin_grey_color));
+        list.add(new SkinAdapterItem("幽暗橙", SKIN_DEEPORANGE, R.color.skin_deeporange_color));
+        list.add(new SkinAdapterItem("水鸭绿", SKIN_TEAL, R.color.skin_teal_color));
         return list;
     }
 
@@ -129,7 +137,7 @@ public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkin
     }
 
     @Override
-    public void onSkinItemClick(SkinAdapterItem item) {
+    public void onSkinItemClick(final SkinAdapterItem item) {
         String skinFullName = PATH + File.separator + item.path;
         FileUtil.moveRawToDir(AbsolutePlanApplication.sAppContext, item.path, skinFullName);
         File skin = new File(skinFullName);
@@ -146,6 +154,7 @@ public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkin
 
             @Override
             public void onSuccess() {
+                SkinSharedPreferences.getInstance().saveApplyingSkinName(item.path);
                 Log.d(TAG, "load skin success");
             }
 

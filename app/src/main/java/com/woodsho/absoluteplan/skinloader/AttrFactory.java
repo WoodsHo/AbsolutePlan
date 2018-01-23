@@ -13,6 +13,10 @@ public class AttrFactory {
 
     public static final String DRAWABLE_START = "drawableStart";
 
+    public static final String SWITCH_COLOR = "switchColor";
+
+    public static final String BUTTON_TINT = "buttonTint";
+
     public static SkinAttr get(String attrName, int attrValueRefId, String attrValueRefName,
                                String typeName) {
 
@@ -29,6 +33,10 @@ public class AttrFactory {
             attr = new DrawableAttr();
         } else if (BACKGROUND_TINT.equals(attrName)) {
             attr = new BackgroundTintAttr();
+        } else if (SWITCH_COLOR.equals(attrName)){
+            attr = new SwitchColorAttr();
+        } else if (BUTTON_TINT.equals(attrName)) {
+            attr = new ButtonTintAttr();
         } else {
             return null;
         }
@@ -68,6 +76,14 @@ public class AttrFactory {
         }
 
         if (DRAWABLE_START.equals(attrName)) {
+            return true;
+        }
+
+        if (SWITCH_COLOR.equals(attrName)) {
+            return true;
+        }
+
+        if (BUTTON_TINT.equals(attrName)) {
             return true;
         }
 

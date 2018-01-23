@@ -44,7 +44,7 @@ public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickL
         Resources res = getResources();
         Context context = AbsolutePlanApplication.sAppContext;
         mRecyclerView = (CommonRecyclerView) view.findViewById(R.id.all_recyclerview);
-        mAllAdapter = new AllAdapter(context);
+        mAllAdapter = new AllAdapter(mActivity);
         mAllAdapter.addOnItemClickListener(this);
         mRecyclerView.setAdapter(mAllAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(context);
@@ -83,6 +83,7 @@ public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickL
         }
         if (mAllAdapter != null) {
             mAllAdapter.removeOnItemClickListener();
+            mAllAdapter.releaseActivity();
         }
         WallpaperBgManager.getInstance().detach(this);
     }

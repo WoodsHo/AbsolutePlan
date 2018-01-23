@@ -44,7 +44,7 @@ public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.On
         Resources res = getResources();
         Context context = AbsolutePlanApplication.sAppContext;
         mRecyclerView = (CommonRecyclerView) view.findViewById(R.id.tomorrow_recyclerview);
-        mTomorrowAdapter = new TomorrowAdapter(context);
+        mTomorrowAdapter = new TomorrowAdapter(mActivity);
         mTomorrowAdapter.addOnItemClickListener(this);
         mRecyclerView.setAdapter(mTomorrowAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(context);
@@ -86,6 +86,7 @@ public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.On
         }
         if (mTomorrowAdapter != null) {
             mTomorrowAdapter.removeOnItemClickListener();
+            mTomorrowAdapter.releaseActivity();
         }
         WallpaperBgManager.getInstance().detach(this);
     }

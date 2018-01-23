@@ -101,6 +101,7 @@
                 android:layout_marginBottom="45dp"
                 android:layout_marginEnd="@dimen/float_action_button_margin_end"
                 android:src="@drawable/ic_float_action_button"
+                app:backgroundTint="@color/colorPrimary"
                 app:borderWidth="0dp"
                 app:elevation="6dp"
                 app:fabSize="normal"

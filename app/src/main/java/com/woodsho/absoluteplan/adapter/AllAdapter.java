@@ -1,5 +1,6 @@
 package com.woodsho.absoluteplan.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -57,6 +58,10 @@ public class AllAdapter extends RecyclerView.Adapter {
         mFinishedPlanTaskList = new ArrayList<>();
     }
 
+    public void releaseActivity() {
+        mContext = null;
+    }
+
     public interface OnItemClickListener {
         void onDeleteItemClick(PlanTask task);
         void onContentItemClick(PlanTask task);
@@ -72,14 +77,21 @@ public class AllAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater;
+        if (mContext instanceof Activity) {
+            Activity activity = (Activity) mContext;
+            inflater = activity.getLayoutInflater();
+        } else {
+            inflater = LayoutInflater.from(mContext);
+        }
         if (viewType == PLANTASK_TYPE_NORMAL) {
-            return new PlanTaskNormalViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_plantask_normal_layout, parent, false));
+            return new PlanTaskNormalViewHolder(inflater.inflate(R.layout.item_plantask_normal_layout, parent, false));
         } else if (viewType == PLANTASK_TYPE_FINISHED) {
-            return new PlanTaskFinishedViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_plantask_finished_layout, parent, false));
+            return new PlanTaskFinishedViewHolder(inflater.inflate(R.layout.item_plantask_finished_layout, parent, false));
         } else if (viewType == PLANTASK_TYPE_HEADER){
-            return new PlanTaskHeaderViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_plantask_header_layout, parent, false));
+            return new PlanTaskHeaderViewHolder(inflater.inflate(R.layout.item_plantask_header_layout, parent, false));
         } else if (viewType == PLANTASK_TYPE_EMPTY){
-            return new PlanTaskEmptyViewHolder(LayoutInflater.from(mContext).inflate(R.layout.empty_layout, parent, false));
+            return new PlanTaskEmptyViewHolder(inflater.inflate(R.layout.empty_layout, parent, false));
         } else {
             Log.e(TAG, "error viewType: " + viewType);
             return null;

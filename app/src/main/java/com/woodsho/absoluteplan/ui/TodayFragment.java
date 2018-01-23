@@ -44,7 +44,7 @@ public class TodayFragment extends BaseFragment implements TodayAdapter.OnItemCl
         Resources res = getResources();
         Context context = AbsolutePlanApplication.sAppContext;
         mRecyclerView = (CommonRecyclerView) view.findViewById(R.id.today_recyclerview);
-        mTodayAdapter = new TodayAdapter(context);
+        mTodayAdapter = new TodayAdapter(mActivity);
         mTodayAdapter.addOnItemClickListener(this);
         mRecyclerView.setAdapter(mTodayAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(context);
@@ -86,6 +86,7 @@ public class TodayFragment extends BaseFragment implements TodayAdapter.OnItemCl
         }
         if (mTodayAdapter != null) {
             mTodayAdapter.removeOnItemClickListener();
+            mTodayAdapter.releaseActivity();
         }
         WallpaperBgManager.getInstance().detach(this);
     }

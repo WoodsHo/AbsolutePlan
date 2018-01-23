@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.bean.SkinAdapterItem;
+import com.woodsho.absoluteplan.skinloader.SkinSharedPreferences;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ import java.util.List;
 
 public class SkinAdapter extends RecyclerView.Adapter {
     public static final String TAG = "SkinAdapter";
+
+    private SkinViewHolder mLastSelectedSkin;
 
     public Context mContext;
     public List<SkinAdapterItem> mSkinAdapterItemList;
@@ -52,16 +55,27 @@ public class SkinAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final SkinViewHolder skinViewHolder = (SkinViewHolder) holder;
         final SkinAdapterItem item = mSkinAdapterItemList.get(position);
-        Resources res = mContext.getResources();
+        final Resources res = mContext.getResources();
         skinViewHolder.mTitle.setText(item.name);
+        skinViewHolder.mTitle.setTextColor(res.getColor(item.skinColor));
         skinViewHolder.mIcon.setBackgroundColor(res.getColor(item.skinColor));
+        if (item.path.equals(SkinSharedPreferences.getInstance().getApplyingSkinName())) {
+            mLastSelectedSkin = skinViewHolder;
+            skinViewHolder.mSelected.setText("使用中");
+            skinViewHolder.mSelected.setTextColor(res.getColor(item.skinColor));
+        }
         skinViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mOnSkinItemClickListener != null) {
                     mOnSkinItemClickListener.onSkinItemClick(item);
                 }
-                skinViewHolder.mSelected.setChecked(true);
+                if (mLastSelectedSkin != null) {
+                    mLastSelectedSkin.mSelected.setText("");
+                }
+                skinViewHolder.mSelected.setText("使用中");
+                skinViewHolder.mSelected.setTextColor(res.getColor(item.skinColor));
+                mLastSelectedSkin = skinViewHolder;
             }
         });
     }
@@ -74,13 +88,13 @@ public class SkinAdapter extends RecyclerView.Adapter {
     private class SkinViewHolder extends RecyclerView.ViewHolder {
         public ImageView mIcon;
         public TextView mTitle;
-        public CheckBox mSelected;
+        public TextView mSelected;
 
         public SkinViewHolder(View itemView) {
             super(itemView);
             mIcon = (ImageView) itemView.findViewById(R.id.skin_item_icon);
             mTitle = (TextView) itemView.findViewById(R.id.skin_item_title);
-            mSelected = (CheckBox) itemView.findViewById(R.id.skin_item_checkbox);
+            mSelected = (TextView) itemView.findViewById(R.id.skin_item_selected);
         }
     }
 }

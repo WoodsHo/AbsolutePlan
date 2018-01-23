@@ -129,7 +129,7 @@ public class CalendarFragment extends BaseFragment implements PlanTaskAdapter.On
         DefaultItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setSupportsChangeAnimations(false);
         mPlanTaskRecyclerView.setItemAnimator(itemAnimator);
-        mPlanTaskAdapter = new PlanTaskAdapter(AbsolutePlanApplication.sAppContext);
+        mPlanTaskAdapter = new PlanTaskAdapter(mActivity);
         mPlanTaskAdapter.addOnItemClickListener(this);
         mPlanTaskRecyclerView.setAdapter(mPlanTaskAdapter);
     }
@@ -158,6 +158,7 @@ public class CalendarFragment extends BaseFragment implements PlanTaskAdapter.On
         }
         if (mPlanTaskAdapter != null) {
             mPlanTaskAdapter.removeOnItemClickListener();
+            mPlanTaskAdapter.releaseActivity();
         }
         WallpaperBgManager.getInstance().detach(this);
     }

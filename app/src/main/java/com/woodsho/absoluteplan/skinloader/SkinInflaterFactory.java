@@ -156,9 +156,29 @@ public class SkinInflaterFactory implements LayoutInflater.Factory {
             }
         }
 
+        int switchColor = array.getResourceId(R.styleable.SkinAttr_switchColor, 0);
+        if (switchColor != 0) {
+            String entryName = context.getResources().getResourceEntryName(switchColor);
+            String typeName = context.getResources().getResourceTypeName(switchColor);
+            SkinAttr themeAttr = AttrFactory.get(AttrFactory.SWITCH_COLOR, switchColor, entryName, typeName);
+            if (themeAttr != null) {
+                viewAttrs.add(themeAttr);
+            }
+        }
+
+        int buttonTintResId = array.getResourceId(R.styleable.SkinAttr_android_buttonTint, 0);
+        if (buttonTintResId != 0) {
+            String entryName = context.getResources().getResourceEntryName(buttonTintResId);
+            String typeName = context.getResources().getResourceTypeName(buttonTintResId);
+            SkinAttr themeAttr = AttrFactory.get(AttrFactory.BUTTON_TINT, buttonTintResId, entryName, typeName);
+            if (themeAttr != null) {
+                viewAttrs.add(themeAttr);
+            }
+        }
+
         array.recycle();
 
-        if (viewAttrs != null && viewAttrs.size() > 0) {
+        if (viewAttrs.size() > 0) {
             SkinItem themeItem = new SkinItem();
             themeItem.mView = view;
             themeItem.mAttrs = viewAttrs;

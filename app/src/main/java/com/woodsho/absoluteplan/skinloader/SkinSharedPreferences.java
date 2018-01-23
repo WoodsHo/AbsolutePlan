@@ -24,6 +24,8 @@ public class SkinSharedPreferences {
     private static final String KEY_APPLYING_SKIN_PATH = "applying_skin_path";
     private static final String KEY_IS_DEFAULT_SKIN = "is_default_skin";
 
+    private static final String KEY_APPLYING_SKIN_NAME = "applying_skin_name";
+
     private SkinSharedPreferences() {
         mContext = AbsolutePlanApplication.sAppContext;
         mSharedPreferences = mContext.getSharedPreferences(SKIN_SHARED_PREFERECES, Context.MODE_PRIVATE);
@@ -56,6 +58,20 @@ public class SkinSharedPreferences {
             path = mSharedPreferences.getString(KEY_APPLYING_SKIN_PATH, "");
         }
         return path;
+    }
+
+    public void saveApplyingSkinName(String name) {
+        if (mSharedPreferences != null) {
+            mSharedPreferences.edit().putString(KEY_APPLYING_SKIN_NAME, name).apply();
+        }
+    }
+
+    public String getApplyingSkinName() {
+        String name = "";
+        if (mSharedPreferences != null) {
+            name = mSharedPreferences.getString(KEY_APPLYING_SKIN_NAME, "");
+        }
+        return name;
     }
 
     public boolean isDefaultSkin() {

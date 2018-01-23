@@ -25,14 +25,12 @@
         android:textSize="@dimen/text_size_14"
         android:textStyle="bold" />
 
-    <CheckBox
-        android:id="@+id/skin_item_checkbox"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+    <TextView
+        android:id="@+id/skin_item_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_12"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="10dp"
-        android:clickable="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:theme="@style/MyCheckBoxStyle" />
+        android:layout_marginEnd="10dp" />
 </RelativeLayout>

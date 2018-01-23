@@ -1,7 +1,6 @@
 package com.woodsho.absoluteplan.widget;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.preference.SwitchPreference;
 import android.support.v7.widget.SwitchCompat;

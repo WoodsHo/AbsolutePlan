@@ -5,28 +5,27 @@
     android:background="@drawable/item_settings_preference_bg_selector">
 
     <RelativeLayout
-        android:layout_marginStart="14dp"
-        android:layout_centerVertical="true"
-        android:gravity="center_vertical"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="14dp"
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/settings_switchpreference_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:paddingBottom="2dp"
-            android:textSize="@dimen/text_size_14"
-             />
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14" />
 
         <TextView
             android:id="@+id/settings_switchpreference_summary"
-            android:textColor="@color/black_50"
-            android:layout_below="@id/settings_switchpreference_title"
-            android:textSize="@dimen/text_size_10"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settings_switchpreference_title"
+            android:textColor="@color/black_50"
+            android:textSize="@dimen/text_size_10" />
 
     </RelativeLayout>
 
@@ -34,10 +33,10 @@
         android:id="@+id/settings_switchpreference_switch"
         android:layout_width="45dp"
         android:layout_height="15dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
         android:clickable="false"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        app:theme="@style/AppTheme" />
+        app:switchColor="@color/colorPrimary" />
 </RelativeLayout>

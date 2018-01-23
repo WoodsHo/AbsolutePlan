@@ -41,7 +41,7 @@ public class FinishedFragment extends BaseFragment implements FinishedAdapter.On
         Resources res = getResources();
         Context context = AbsolutePlanApplication.sAppContext;
         mRecyclerView = (CommonRecyclerView) view.findViewById(R.id.finished_recyclerview);
-        mFinishedAdapter = new FinishedAdapter(context);
+        mFinishedAdapter = new FinishedAdapter(mActivity);
         mFinishedAdapter.addOnItemClickListener(this);
         mRecyclerView.setAdapter(mFinishedAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(context);
@@ -79,6 +79,7 @@ public class FinishedFragment extends BaseFragment implements FinishedAdapter.On
         }
         if (mFinishedAdapter != null) {
             mFinishedAdapter.removeOnItemClickListener();
+            mFinishedAdapter.releaseActivity();
         }
         WallpaperBgManager.getInstance().detach(this);
     }

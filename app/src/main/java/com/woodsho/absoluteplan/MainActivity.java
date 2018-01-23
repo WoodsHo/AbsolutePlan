@@ -161,8 +161,6 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
             }
         });
         mFloatActionButton = (FloatingActionButton) findViewById(R.id.main_float_action_button);
-        mFloatActionButton.setBackgroundTintList(SkinManager.getInstance().convertToColorStateList(R.color.colorPrimary));
-        dynamicAddView(mFloatActionButton, "backgroundTint", R.color.colorPrimary, false);
         mFloatActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.woodsho.absoluteplan.R;
+import com.woodsho.absoluteplan.skinloader.AttrFactory;
 import com.woodsho.absoluteplan.skinloader.DynamicAttr;
 import com.woodsho.absoluteplan.skinloader.IDynamicNewView;
 import com.woodsho.absoluteplan.skinloader.ISkinUpdate;
@@ -81,7 +82,6 @@ public class SettingsFragment extends PreferenceFragment implements IDynamicNewV
         mServiceSupportPreferenceCategory.addPreference(mFeedbackSuggestionPreference);
         mServiceSupportPreferenceCategory.setOrder(mOrder++);
         prefScreen.addPreference(mServiceSupportPreferenceCategory);
-
     }
 
     @Override

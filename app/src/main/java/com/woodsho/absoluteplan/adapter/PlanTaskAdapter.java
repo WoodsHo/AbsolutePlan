@@ -1,5 +1,6 @@
 package com.woodsho.absoluteplan.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -51,8 +52,19 @@ public class PlanTaskAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
         mFinishedPlanTaskList = new ArrayList<>();
     }
 
+    public void releaseActivity() {
+        mContext = null;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater;
+        if (mContext instanceof Activity) {
+            Activity activity = (Activity) mContext;
+            inflater = activity.getLayoutInflater();
+        } else {
+            inflater = LayoutInflater.from(mContext);
+        }
         if (viewType == PLANTASK_TYPE_NORMAL) {
             return new PlanTaskNormalViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_plantask_normal_layout, parent, false));
         } else if (viewType == PLANTASK_TYPE_FINISHED) {

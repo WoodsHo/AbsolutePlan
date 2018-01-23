@@ -61,4 +61,7 @@
     <color name="skin_bluegrey_color">#607d8b</color>
     <color name="skin_grey_color">#9e9e9e</color>
     <color name="skin_deeporange_color">#ff5722</color>
+    <color name="skin_teal_color">#009688</color>
+
+    <color name="switch_thumb_unchecked_color">#838383</color>
 </resources>

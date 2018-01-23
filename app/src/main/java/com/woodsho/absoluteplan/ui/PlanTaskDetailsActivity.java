@@ -248,7 +248,6 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
         mShowType = intent.getIntExtra(KEY_SHOW_TYPE, TYPE_NEW_BUILD);
         mFloatingActionMenu = (FloatingActionMenu) findViewById(R.id.float_action_menu);
         mMainFab = (FloatingActionButton) findViewById(R.id.main_float_action_menu);
-        mMainFab.setBackgroundTintList(SkinManager.getInstance().convertToColorStateList(R.color.colorPrimary));
         mMainFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -267,7 +266,6 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
             }
         });
         mSaveFab = (FloatingActionButton) findViewById(R.id.button_item_save_float_action_menu);
-        mSaveFab.setBackgroundTintList(SkinManager.getInstance().convertToColorStateList(R.color.colorPrimary));
         mSaveFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,7 +274,6 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
             }
         });
         mSaveAndExitFab = (FloatingActionButton) findViewById(R.id.button_item_save_exit_float_action_menu);
-        mSaveAndExitFab.setBackgroundTintList(SkinManager.getInstance().convertToColorStateList(R.color.colorPrimary));
         mSaveAndExitFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -285,7 +282,6 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
             }
         });
         mExitFab = (FloatingActionButton) findViewById(R.id.button_item_exit_float_action_menu);
-        mExitFab.setBackgroundTintList(SkinManager.getInstance().convertToColorStateList(R.color.colorPrimary));
         mExitFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

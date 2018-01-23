@@ -20,6 +20,7 @@
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@+id/text_item_exit_float_action_menu"
         android:src="@drawable/ic_fab_exit"
+        app:backgroundTint="@color/colorPrimary"
         app:borderWidth="0dp"
         app:elevation="3dp"
         app:fabSize="normal"

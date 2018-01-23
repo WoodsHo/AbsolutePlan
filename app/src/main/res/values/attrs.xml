@@ -19,5 +19,7 @@
         <attr name="android:drawableBottom" />
         <attr name="android:drawableStart" />
         <attr name="android:drawableEnd" />
+        <attr name="switchColor" format="color"/>
+        <attr name="android:buttonTint" />
     </declare-styleable>
 </resources>
