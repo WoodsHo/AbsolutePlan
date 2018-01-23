@@ -80,6 +80,12 @@ public class SkinAdapter extends RecyclerView.Adapter {
         });
     }
 
+    public void restoreDefaultSkin() {
+        if (mLastSelectedSkin != null) {
+            mLastSelectedSkin.mSelected.setText("");
+        }
+    }
+
     @Override
     public int getItemCount() {
         return mSkinAdapterItemList.size();

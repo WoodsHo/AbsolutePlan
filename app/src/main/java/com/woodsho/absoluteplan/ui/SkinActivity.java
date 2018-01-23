@@ -46,6 +46,8 @@ public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkin
     public static final String SKIN_DEEPORANGE = "skin_deeporange.skin";
     public static final String SKIN_TEAL = "skin_teal.skin";
 
+    public TextView mSkinDefault;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,11 +83,19 @@ public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkin
                     finish();
                 }
             });
-            TextView skinDefault = (TextView) findViewById(R.id.skin_default);
-            skinDefault.setOnClickListener(new View.OnClickListener() {
+            mSkinDefault = (TextView) findViewById(R.id.skin_default);
+            if (SkinSharedPreferences.getInstance().isDefaultSkin()) {
+                mSkinDefault.setVisibility(View.GONE);
+            }
+            mSkinDefault.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     SkinManager.getInstance().restoreDefaultSkin();
+                    SkinSharedPreferences.getInstance().saveApplyingSkinName("");
+                    if (mSkinAdapter != null) {
+                        mSkinAdapter.restoreDefaultSkin();
+                    }
+                    mSkinDefault.setVisibility(View.GONE);
                 }
             });
         }
@@ -146,6 +156,9 @@ public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkin
             return;
         }
 
+        if (mSkinDefault != null) {
+            mSkinDefault.setVisibility(View.VISIBLE);
+        }
         SkinManager.getInstance().load(skin.getAbsolutePath(), new ILoaderListener() {
             @Override
             public void onStart() {
