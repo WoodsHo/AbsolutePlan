@@ -28,6 +28,7 @@
             android:layout_marginTop="10dp"
             android:textColor="@color/black_50"
             android:textColorHint="@color/black_30"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:textSize="@dimen/text_size_17"
             android:textStyle="bold" />
 
@@ -57,6 +58,7 @@
         android:paddingEnd="10dp"
         android:paddingStart="10dp"
         android:textColor="@color/black_50"
+        android:textCursorDrawable="@drawable/color_cursor"
         android:textColorHint="@color/black_30"
         android:textSize="@dimen/text_size_17"
         android:textStyle="bold" />

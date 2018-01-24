@@ -26,6 +26,12 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'   // aar目录
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -47,5 +53,6 @@ dependencies {
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
     compile 'com.r0adkll:slidableactivity:2.0.5'
     compile 'com.github.huburt-Hu:NewbieGuide:v1.0.3'
+    compile(name: 'materialdatetimepicker-release', ext: 'aar')
     testCompile 'junit:junit:4.12'
 }

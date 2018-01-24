@@ -83,6 +83,7 @@ public class OpenSourceActivity extends SkinBaseActivity {
         list.add(new OpenSource("SwipeDelMenuLayout", "mcxtzhang", "The most simple SwipeMenu in the history, 0 coupling, support any ViewGroup. Step integration swipe (delete) menu, high imitation QQ, iOS.", "https://github.com/mcxtzhang/SwipeDelMenuLayout"));
         list.add(new OpenSource("Slidr", "r0adkll", "Easily add slide to dismiss functionality to an Activity", "https://github.com/r0adkll/Slidr"));
         list.add(new OpenSource("NewbieGuide", "huburt-Hu", "Android 快速实现新手引导层的库", "https://github.com/huburt-Hu/NewbieGuide"));
+        list.add(new OpenSource("MaterialDateTimePicker", "wdullaer", "Pick a date or time on Android in style", "https://github.com/wdullaer/MaterialDateTimePicker"));
         return list;
     }
 

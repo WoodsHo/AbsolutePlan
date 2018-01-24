@@ -1,8 +1,6 @@
 package com.woodsho.absoluteplan.ui;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,11 +20,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.app.hubert.library.Controller;
 import com.app.hubert.library.HighLight;
@@ -35,6 +31,8 @@ import com.app.hubert.library.OnGuideChangedListener;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrPosition;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
@@ -60,6 +58,9 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
     public static final String KEY_GUIDE_TIME = "guide_time";
     public static final String KEY_GUIDE_SAVE_PLANTASK = "guide_save_plantask";
     public static final String KEY_SHOW_TYPE = "show_type";
+
+    public static final String TAG_DATEPICKERDIALOG = "Datepickerdialog";
+    public static final String TAG_TIMEPICKERDIALOG = "Timepickerdialog";
 
     public static final int TYPE_NEW_BUILD = 1;
     public static final int TYPE_MODIFY = 2;
@@ -209,38 +210,65 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
         mToolbarDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(PlanTaskDetailsActivity.this, R.style.MyDatePickerDialogTheme, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        mCalendar.set(Calendar.YEAR, year);
-                        mCalendar.set(Calendar.MONTH, month);
-                        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        setYearMonthDay();
-                        showGuideSave();
-                    }
-                }, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
-
-                datePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int dayOfMonth) {
+                                mCalendar.set(Calendar.YEAR, year);
+                                mCalendar.set(Calendar.MONTH, month);
+                                mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                                setYearMonthDay();
+                                showGuideSave();
+                            }
+                        },
+                        mCalendar.get(Calendar.YEAR),
+                        mCalendar.get(Calendar.MONTH),
+                        mCalendar.get(Calendar.DAY_OF_MONTH)
+                );
+                dpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
                         showGuideSave();
                     }
                 });
-                datePickerDialog.show();
+                dpd.setThemeDark(false);
+                dpd.vibrate(false);
+                dpd.dismissOnPause(true);
+                dpd.showYearPickerFirst(false);
+                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+                dpd.setAccentColor(SkinManager.getInstance().getColor(R.color.colorPrimary));
+                dpd.show(getFragmentManager(), TAG_DATEPICKERDIALOG);
             }
         });
         mToolbarTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(PlanTaskDetailsActivity.this, R.style.MyDatePickerDialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog tpd = TimePickerDialog.newInstance(
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePickerDialog timePickerDialog, int hourOfDay, int minute, int second) {
+                                mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                mCalendar.set(Calendar.MINUTE, minute);
+                                setHourMinute();
+                            }
+                        },
+                        mCalendar.get(Calendar.HOUR_OF_DAY),
+                        mCalendar.get(Calendar.MINUTE),
+                        true //24 hour
+                );
+                tpd.setThemeDark(false);
+                tpd.vibrate(false);
+                tpd.dismissOnPause(true);
+                tpd.enableSeconds(false);
+                tpd.setVersion(TimePickerDialog.Version.VERSION_2);
+                tpd.setAccentColor(SkinManager.getInstance().getColor(R.color.colorPrimary));
+                tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        mCalendar.set(Calendar.MINUTE, minute);
-                        setHourMinute();
+                    public void onCancel(DialogInterface dialogInterface) {
+
                     }
-                }, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true);
-                timePickerDialog.show();
+                });
+                tpd.show(getFragmentManager(), TAG_TIMEPICKERDIALOG);
             }
         });
 
