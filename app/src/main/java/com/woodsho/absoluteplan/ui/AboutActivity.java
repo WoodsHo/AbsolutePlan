@@ -5,6 +5,10 @@ import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -76,6 +80,20 @@ public class AboutActivity extends SkinBaseActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AboutActivity.this, OpenSourceActivity.class));
+            }
+        });
+        TextView textView = (TextView) findViewById(R.id.github_title);
+        SpannableString githubTitle = new SpannableString("AbsPlan开源GitHub, 欢迎star！");
+        githubTitle.setSpan(new AbsoluteSizeSpan(20, true), 9, 16, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        githubTitle.setSpan(new ForegroundColorSpan(SkinManager.getInstance().getColor(R.color.colorPrimary)), 9, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        textView.setText(githubTitle);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setData(Uri.parse(GITHUB));
+                intent.setAction(Intent.ACTION_VIEW);
+                startActivity(intent);
             }
         });
         ImageView github = (ImageView) findViewById(R.id.github_absplan);

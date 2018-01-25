@@ -1,6 +1,10 @@
 package com.woodsho.absoluteplan.ui;
 
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
@@ -8,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
@@ -66,7 +71,23 @@ public class FeedbackSuggestionActivity extends SkinBaseActivity {
         Resources res = getResources();
         CardView qqCadView = (CardView) findViewById(R.id.qq_cardview);
         qqCadView.setBackground(res.getDrawable(R.drawable.item_feedback_suggestion_bg_selector));
+        qqCadView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                cm.setText("1797856713");
+                Toast.makeText(getApplicationContext(), "复制成功", Toast.LENGTH_SHORT).show();
+            }
+        });
         CardView emailCardView = (CardView) findViewById(R.id.email_cardview);
         emailCardView.setBackground(res.getDrawable(R.drawable.item_feedback_suggestion_bg_selector));
+        emailCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("mailto:woodsho@163.com");
+                Intent it = new Intent(Intent.ACTION_SENDTO, uri);
+                startActivity(it);
+            }
+        });
     }
 }
