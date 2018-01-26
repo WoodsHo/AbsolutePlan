@@ -1,9 +1,12 @@
 package com.woodsho.absoluteplan.ui;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.ParcelUuid;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,19 +25,21 @@ import com.woodsho.absoluteplan.AbsolutePlanApplication;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.adapter.SkinAdapter;
 import com.woodsho.absoluteplan.bean.SkinAdapterItem;
+import com.woodsho.absoluteplan.listener.PermissionListener;
 import com.woodsho.absoluteplan.skinloader.ILoaderListener;
 import com.woodsho.absoluteplan.skinloader.SkinBaseActivity;
 import com.woodsho.absoluteplan.skinloader.SkinManager;
 import com.woodsho.absoluteplan.skinloader.SkinSharedPreferences;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.FileUtil;
+import com.woodsho.absoluteplan.utils.PermissionUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkinItemClickListener {
+public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkinItemClickListener, PermissionListener {
     private static final String TAG = "SkinActivity";
 
     public SkinAdapter mSkinAdapter;
@@ -47,6 +52,8 @@ public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkin
     public static final String SKIN_TEAL = "skin_teal.skin";
 
     public TextView mSkinDefault;
+
+    public Handler mUiHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +69,7 @@ public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkin
         Slidr.attach(this, mConfig);
         setupActionBar();
         StatusBarUtil.setColor(this, SkinManager.getInstance().getColor(R.color.colorPrimary), 0);
-        init();
+        checkPermissions();
     }
 
     private void setupActionBar() {
@@ -108,6 +115,7 @@ public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkin
     }
 
     private void init() {
+        mSkinDefault.setText("恢复默认");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.skin_recyclerview);
         List<SkinAdapterItem> list = getSkinList();
         mSkinAdapter = new SkinAdapter(AbsolutePlanApplication.sAppContext, list);
@@ -176,5 +184,84 @@ public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkin
                 Log.e(TAG, "load skin failed");
             }
         });
+    }
+
+    private void checkPermissions() {
+        String[] deniedPermissions = PermissionUtil.getDeniedPermissions(this, getPermissions());
+        if(deniedPermissions != null && deniedPermissions.length > 0){
+            PermissionUtil.requestPermissions(this, deniedPermissions, getPermissionsRequestCode());
+        }else{
+            requestPermissionsSuccess();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestPermissionsResult(requestCode, permissions, grantResults)){
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public boolean requestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+        if(requestCode == getPermissionsRequestCode()){
+            boolean isAllGranted = true;//是否全部权限已授权
+            for(int result : grantResults){
+                if(result == PackageManager.PERMISSION_DENIED){
+                    isAllGranted = false;
+                    break;
+                }
+            }
+            if(isAllGranted){
+                //已全部授权
+                requestPermissionsSuccess();
+            }else{
+                //权限有缺失
+                requestPermissionsFailed();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int getPermissionsRequestCode() {
+        return 99;
+    }
+
+    @Override
+    public String[] getPermissions() {
+        return new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        };
+    }
+
+    @Override
+    public void requestPermissionsSuccess() {
+        init();
+    }
+
+    @Override
+    public void requestPermissionsFailed() {
+        Toast.makeText(this, "申请权限失败，请手动打开权限", Toast.LENGTH_LONG).show();
+        if (mUiHandler == null) {
+            mUiHandler = new Handler();
+        }
+        mUiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 1000);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mUiHandler != null) {
+            mUiHandler.removeCallbacksAndMessages(null);
+            mUiHandler = null;
+        }
     }
 }

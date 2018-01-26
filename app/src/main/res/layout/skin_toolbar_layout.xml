@@ -40,7 +40,6 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="10dp"
             android:gravity="center_vertical"
-            android:text="恢复默认"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_14" />
 
