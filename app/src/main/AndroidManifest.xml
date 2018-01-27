@@ -54,10 +54,18 @@
         <activity
             android:name=".ui.OpenSourceActivity"
             android:theme="@style/Theme.Slidr.Slidable" />
-
         <activity
             android:name=".ui.SkinActivity"
             android:theme="@style/Theme.Slidr.Slidable" />
+
+        <activity
+            android:name=".ui.AvatarActivity"
+            android:theme="@style/Theme.Slidr.Slidable" />
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
 </manifest>

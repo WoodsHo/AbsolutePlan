@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/settings_bg_color"
+    android:fitsSystemWindows="true"
+    android:focusable="true"
+    android:clipChildren="false"
+    android:focusableInTouchMode="true">
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="330dp"
+        android:layout_height="330dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/default_avatar" />
+
+    <Button
+        android:id="@+id/avatar_choose_button"
+        android:layout_width="155dp"
+        android:layout_height="45dp"
+        android:layout_below="@id/avatar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:text="选择图片" />
+</RelativeLayout>

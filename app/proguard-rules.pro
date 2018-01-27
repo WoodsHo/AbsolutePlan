@@ -48,6 +48,10 @@
 -dontwarn com.android.volley.toolbox.**
 -dontwarn com.facebook.infer.**
 
+-dontwarn com.yalantis.ucrop**
+-keep class com.yalantis.ucrop** { *; }
+-keep interface com.yalantis.ucrop** { *; }
+
 # for
 
 

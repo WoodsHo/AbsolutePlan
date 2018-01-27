@@ -30,6 +30,7 @@ import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.common.AbsPSharedPreference;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 
+import java.io.Closeable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -675,5 +676,15 @@ public class CommonUtil {
             e.printStackTrace();
         }
         return statusBarHeight;
+    }
+
+    public static void closeSafely(Closeable io) {
+        if (io != null) {
+            try {
+                io.close();
+            } catch (Exception ex) {
+                Log.e(TAG, "ex: " + ex);
+            }
+        }
     }
 }

@@ -27,12 +27,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.app.hubert.library.Controller;
 import com.app.hubert.library.HighLight;
 import com.app.hubert.library.NewbieGuide;
 import com.app.hubert.library.OnGuideChangedListener;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.woodsho.absoluteplan.adapter.SideAdapter;
 import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.bean.SideItem;
@@ -43,6 +43,7 @@ import com.woodsho.absoluteplan.listener.IWallpaperBgUpdate;
 import com.woodsho.absoluteplan.skinloader.SkinBaseActivity;
 import com.woodsho.absoluteplan.skinloader.SkinManager;
 import com.woodsho.absoluteplan.ui.AllFragment;
+import com.woodsho.absoluteplan.ui.AvatarActivity;
 import com.woodsho.absoluteplan.ui.CalendarFragment;
 import com.woodsho.absoluteplan.ui.FinishedFragment;
 import com.woodsho.absoluteplan.ui.PlanTaskDetailsActivity;
@@ -54,9 +55,12 @@ import com.woodsho.absoluteplan.utils.StatusBarUtil;
 import com.woodsho.absoluteplan.widget.CenteredImageSpan;
 import com.woodsho.absoluteplan.widget.SimpleDraweeViewEx;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.woodsho.absoluteplan.ui.AvatarActivity.NAME_AVATAR;
 
 public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSideItemClickListener,
         CachePlanTaskStore.OnPlanTaskChangedListener, IWallpaperBgUpdate {
@@ -73,6 +77,8 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
     public RecyclerView mSideRecyclerView;
     public TextView mSettingBt;
     public ImageView mSideNavigationView;
+
+    public SimpleDraweeViewEx mAvatar;
 
     public TodayFragment mTodayFragment;
     public AllFragment mAllFragment;
@@ -95,6 +101,8 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
 
     public static final String KEY_GUIDE_BUILD = "guide_build";
     public static final String KEY_GUIDE_SIDE = "guide_side";
+
+    public static final int REQUEST_CODE_AVATAR_ACTIVITY = 10;
 
     public static final int MSG_CLOSE_DRAWER = 0;
 
@@ -191,13 +199,28 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
 
     public void initSideView() {
         View view = getLayoutInflater().inflate(R.layout.side_layout, null);
-        SimpleDraweeViewEx avatar = (SimpleDraweeViewEx) view.findViewById(R.id.avatar);
-        avatar.setOnClickListener(new View.OnClickListener() {
+        mAvatar = (SimpleDraweeViewEx) view.findViewById(R.id.avatar);
+        mAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AbsolutePlanApplication.sAppContext, "开发中，敬请期待！", Toast.LENGTH_SHORT).show();
+                startActivityForResult(new Intent(MainActivity.this, AvatarActivity.class), REQUEST_CODE_AVATAR_ACTIVITY);
+                mUIHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDrawerLayout.closeDrawer(mSideLayout);
+                    }
+                }, 200);
             }
         });
+        File externalFilesDir = getExternalFilesDir(null);
+        File imageFile = new File(externalFilesDir.getPath(), NAME_AVATAR);
+        if (imageFile.exists()) {
+            String uri = "file://" + imageFile.getPath();
+            mAvatar.setImageURI(Uri.parse(uri));
+        } else {
+            mAvatar.setImageURI(getLocalUri(R.drawable.default_avatar));
+        }
+
         mSideRelativeLayout = (RelativeLayout) view.findViewById(R.id.side_layout_relativelayout);
         Drawable wallpaperDrawable = CommonUtil.getWallpaperDrawable();
         if (wallpaperDrawable != null) {
@@ -254,6 +277,28 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
             }
         });
         mSideLayout.addView(view);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_CODE_AVATAR_ACTIVITY:
+                if (resultCode == RESULT_OK) {
+                    if (mAvatar != null) {
+                        File externalFilesDir = getExternalFilesDir(null);
+                        final File imageFile = new File(externalFilesDir.getPath(), NAME_AVATAR);
+                        if (imageFile.exists()) {
+                            Uri url = Uri.parse("file://" + imageFile.getPath());
+                            Fresco.getImagePipeline().evictFromMemoryCache(url);
+                            Fresco.getImagePipeline().evictFromDiskCache(url);
+                            Fresco.getImagePipeline().evictFromCache(url);
+                            mAvatar.setImageURI(url);
+                        }
+                    }
+                }
+                break;
+        }
     }
 
     public SpannableString createStringWithLeftPicture(int drawableId, String str) {
@@ -607,6 +652,10 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
         super.onDestroy();
         if (mSideAdapter != null) {
             mSideAdapter.removeOnSideItemClickListener();
+        }
+        if (mUIHandler != null) {
+            mUIHandler.removeCallbacksAndMessages(null);
+            mUIHandler = null;
         }
         CachePlanTaskStore.getInstance().removePlanTaskChangedListener(this);
         WallpaperBgManager.getInstance().detach(this);

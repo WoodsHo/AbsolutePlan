@@ -42,6 +42,7 @@ dependencies {
     // item 侧滑滑出删除键
     // 侧滑退出activity
     // 引导提示
+    compile(name: 'materialdatetimepicker-release', ext: 'aar')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:recyclerview-v7:25.3.1'
@@ -53,6 +54,6 @@ dependencies {
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
     compile 'com.r0adkll:slidableactivity:2.0.5'
     compile 'com.github.huburt-Hu:NewbieGuide:v1.0.3'
-    compile(name: 'materialdatetimepicker-release', ext: 'aar')
+    compile 'com.github.yalantis:ucrop:2.2.1'
     testCompile 'junit:junit:4.12'
 }
