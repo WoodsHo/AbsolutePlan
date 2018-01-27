@@ -50,6 +50,11 @@ public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkin
     public static final String SKIN_GREY = "skin_grey.skin";
     public static final String SKIN_DEEPORANGE = "skin_deeporange.skin";
     public static final String SKIN_TEAL = "skin_teal.skin";
+    public static final String SKIN_BLACK = "skin_black.skin";
+    public static final String SKIN_BLUE = "skin_blue.skin";
+    public static final String SKIN_PURPLE = "skin_purple.skin";
+    public static final String SKIN_PINK = "skin_pink.skin";
+    public static final String SKIN_RED = "skin_red.skin";
 
     public TextView mSkinDefault;
 
@@ -137,6 +142,11 @@ public class SkinActivity extends SkinBaseActivity implements SkinAdapter.OnSkin
         list.add(new SkinAdapterItem("低调灰", SKIN_GREY, R.color.skin_grey_color));
         list.add(new SkinAdapterItem("幽暗橙", SKIN_DEEPORANGE, R.color.skin_deeporange_color));
         list.add(new SkinAdapterItem("水鸭绿", SKIN_TEAL, R.color.skin_teal_color));
+        list.add(new SkinAdapterItem("高端黑", SKIN_BLACK, R.color.skin_black_color));
+        list.add(new SkinAdapterItem("知乎蓝", SKIN_BLUE, R.color.skin_blue_color));
+        list.add(new SkinAdapterItem("基佬紫", SKIN_PURPLE, R.color.skin_purple_color));
+        list.add(new SkinAdapterItem("哔哩粉", SKIN_PINK, R.color.skin_pink_color));
+        list.add(new SkinAdapterItem("姨妈红", SKIN_RED, R.color.skin_red_color));
         return list;
     }
 
