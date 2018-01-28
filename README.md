@@ -18,6 +18,8 @@ APP功能专一、操作简单、界面优美，记录只保存在本地，不�
 * mcxtzhang：https://github.com/mcxtzhang/SwipeDelMenuLayout
 * r0adkll：https://github.com/r0adkll/Slidr
 * huburt-Hu：https://github.com/huburt-Hu/NewbieGuide
+* wdullaer：https://github.com/wdullaer/MaterialDateTimePicker
+* Yalantis：https://github.com/Yalantis/uCrop
 
 ## APP展示
 ### 1. 第一次使用引导提示
@@ -30,9 +32,9 @@ APP功能专一、操作简单、界面优美，记录只保存在本地，不�
 <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide.gif"/>
 
 ### 2. 侧边栏 
-* 显示头像（开发中）
+* 显示头像
 * 有5个tab分别对应今天的、明天的、所有的、已完成的计划任务以及以日历显示的形式
-* 设置、搜索（开发中）
+* 设置
 
 <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/side.jpg"/>
 
@@ -59,12 +61,22 @@ APP功能专一、操作简单、界面优美，记录只保存在本地，不�
 <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/calendar1.jpg"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/calendar2.jpg"/>
 
 ### 7. 设置
-1. 换肤功能(开发中，敬请期待)
+1. 换肤功能
 2. 桌面壁纸：可以自主选择使用桌面壁纸做背景或使用默认图
 3. 关于：介绍APP当前版本，以及使用到的相关开源库
 4. 反馈与建议：可以QQ或Email给我反馈和提改进建议
 
 <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/setting.jpg"/>
+
+### 8. 换肤
+自由选择动态换肤，不需要退出APP
+
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/skin.jpg"/>
+
+### 9. 更改头像
+模仿酷安，自定义头像
+
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/avatar.jpg"/>
 
 ## 结尾
 拥抱开源，学习开源，为社会献上自己的微薄之力。
