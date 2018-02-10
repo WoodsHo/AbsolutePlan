@@ -58,6 +58,7 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
     public static final String KEY_GUIDE_TIME = "guide_time";
     public static final String KEY_GUIDE_SAVE_PLANTASK = "guide_save_plantask";
     public static final String KEY_SHOW_TYPE = "show_type";
+    public static final String KEY_IS_TOMORROW = "key_is_tomorrow";
 
     public static final String TAG_DATEPICKERDIALOG = "Datepickerdialog";
     public static final String TAG_TIMEPICKERDIALOG = "Timepickerdialog";
@@ -338,6 +339,11 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
             mTitle.setText(task.title);
             mDescribe.setText(task.describe);
             mCalendar.setTime(new Date(task.time));
+        } else {
+            boolean isTomorrow = intent.getBooleanExtra(KEY_IS_TOMORROW, false);
+            if (isTomorrow) {
+                mCalendar.setTime(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24));
+            }
         }
         setYearMonthDay();
         setHourMinute();

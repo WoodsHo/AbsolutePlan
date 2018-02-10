@@ -174,6 +174,9 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, PlanTaskDetailsActivity.class);
                 intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_NEW_BUILD);
+                if (mLastSelectedSideId == ID_TOMORROW) {
+                    intent.putExtra(PlanTaskDetailsActivity.KEY_IS_TOMORROW, true);
+                }
                 startActivity(intent);
             }
         });
