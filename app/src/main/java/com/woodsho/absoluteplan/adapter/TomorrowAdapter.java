@@ -90,7 +90,7 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         Resources res = mContext.getResources();
         if (holder instanceof PlanTaskNormalViewHolder) {
             final PlanTaskNormalViewHolder viewHolder = (PlanTaskNormalViewHolder) holder;
@@ -110,6 +110,7 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     if (mOnItemClickListener != null) {
                         mOnItemClickListener.onDeleteItemClick(planTask);
+                        notifyItemRemoved(position);
                     }
                 }
             });
@@ -146,6 +147,7 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     if (mOnItemClickListener != null) {
                         mOnItemClickListener.onDeleteItemClick(planTask);
+                        notifyItemRemoved(position);
                     }
                 }
             });
@@ -283,9 +285,9 @@ public class TomorrowAdapter extends RecyclerView.Adapter {
 
     public void removeItem(PlanTask planTask) {
         if (mNormalPlanTaskList.remove(planTask)) {
-            notifyDataSetChanged();
+//            notifyDataSetChanged();
         } else if (mFinishedPlanTaskList.remove(planTask)) {
-            notifyDataSetChanged();
+//            notifyDataSetChanged();
         } else {
             return;
         }
