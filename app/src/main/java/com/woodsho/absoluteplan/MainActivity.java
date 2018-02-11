@@ -18,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -191,7 +192,7 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
         mUIHandler = new UIHandler(this);
         getLastSelectedSideId();
         initSideView();
-        changeMainView(mLastSelectedSideId);
+        changeMainView(mLastSelectedSideId, true);
         showGuideSide();
         WallpaperBgManager.getInstance().attach(this);
     }
@@ -340,7 +341,12 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
         return sideItemList;
     }
 
-    public void changeMainView(int id) {
+    public void changeMainView(int id, boolean init) {
+        String fragmentTag = getFragmentTagBySideId(mLastSelectedSideId);
+        if (!init && (id == mLastSelectedSideId || TextUtils.isEmpty(fragmentTag))) {
+            mDrawerLayout.closeDrawer(mSideLayout);
+            return;
+        }
         SideItem sideItem = null;
         for (int i = 0; i < mSideItemList.size(); i++) {
             if (mSideItemList.get(i).id == id) {
@@ -373,119 +379,96 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.content_frame_layout);
-        if (fragment != null && !fragment.isVisible()) {
-            List<Fragment> fragmentList = fragmentManager.getFragments();
-            if (fragmentList != null && fragmentList.size() > 0) {
-                for (Fragment fg : fragmentList) {
-                    if (fg != null && fg.isVisible()) {
-                        fragment = fg;
-                        break;
-                    }
-                }
-            }
+        Fragment fragment = fragmentManager.findFragmentByTag(fragmentTag);
+        if (fragment != null) {
+            fragmentTransaction.hide(fragment);
         }
 
         switch (id) {
             case ID_ALL:
-                if (!(fragment instanceof AllFragment)) {
-                    if (fragment != null) {
-                        fragmentTransaction.hide(fragment);
-                    }
+                Fragment allFragment = fragmentManager.findFragmentByTag(TAG_ALL_FRAGMENT);
+                if (allFragment == null) {
                     if (mAllFragment == null) {
                         mAllFragment = new AllFragment();
                     }
-                    Fragment allFragment = fragmentManager.findFragmentByTag(TAG_ALL_FRAGMENT);
-                    if (allFragment != mAllFragment) {
-                        if (allFragment != null) {
-                            fragmentTransaction.remove(allFragment);
-                        }
-                        fragmentTransaction.add(R.id.content_frame_layout, mAllFragment, TAG_ALL_FRAGMENT);
-                    }
-                    fragmentTransaction.show(mAllFragment);
-                    fragmentTransaction.commitAllowingStateLoss();
+                    allFragment = mAllFragment;
+                    fragmentTransaction.add(R.id.content_frame_layout, mAllFragment, TAG_ALL_FRAGMENT);
                 }
+
+                fragmentTransaction.show(allFragment);
+                fragmentTransaction.commitAllowingStateLoss();
                 break;
             case ID_TODAY:
-                if (!(fragment instanceof TodayFragment)) {
-                    if (fragment != null) {
-                        fragmentTransaction.hide(fragment);
-                    }
+                Fragment todayFragment = fragmentManager.findFragmentByTag(TAG_TODAY_FRAGMENT);
+                if (todayFragment == null) {
                     if (mTodayFragment == null) {
                         mTodayFragment = new TodayFragment();
                     }
-                    Fragment todayFragment = fragmentManager.findFragmentByTag(TAG_TODAY_FRAGMENT);
-                    if (todayFragment != mTodayFragment) {
-                        if (todayFragment != null) {
-                            fragmentTransaction.remove(todayFragment);
-                        }
-                        fragmentTransaction.add(R.id.content_frame_layout, mTodayFragment, TAG_TODAY_FRAGMENT);
-                    }
-                    fragmentTransaction.show(mTodayFragment);
-                    fragmentTransaction.commitAllowingStateLoss();
+                    todayFragment = mTodayFragment;
+                    fragmentTransaction.add(R.id.content_frame_layout, mTodayFragment, TAG_TODAY_FRAGMENT);
                 }
+
+                fragmentTransaction.show(todayFragment);
+                fragmentTransaction.commitAllowingStateLoss();
                 break;
             case ID_TOMORROW:
-                if (!(fragment instanceof TomorrowFragment)) {
-                    if (fragment != null) {
-                        fragmentTransaction.hide(fragment);
-                    }
+                Fragment tomorrowFragment = fragmentManager.findFragmentByTag(TAG_TOMORROW_FRAGMENT);
+                if (tomorrowFragment == null) {
                     if (mTomorrowFragment == null) {
                         mTomorrowFragment = new TomorrowFragment();
                     }
-                    Fragment tomorrowFragment = fragmentManager.findFragmentByTag(TAG_TOMORROW_FRAGMENT);
-                    if (tomorrowFragment != mTomorrowFragment) {
-                        if (tomorrowFragment != null) {
-                            fragmentTransaction.remove(tomorrowFragment);
-                        }
-                        fragmentTransaction.add(R.id.content_frame_layout, mTomorrowFragment, TAG_TOMORROW_FRAGMENT);
-                    }
-                    fragmentTransaction.show(mTomorrowFragment);
-                    fragmentTransaction.commitAllowingStateLoss();
+                    tomorrowFragment = mTomorrowFragment;
+                    fragmentTransaction.add(R.id.content_frame_layout, mTomorrowFragment, TAG_TOMORROW_FRAGMENT);
                 }
+
+                fragmentTransaction.show(tomorrowFragment);
+                fragmentTransaction.commitAllowingStateLoss();
                 break;
             case ID_CALENDAR:
-                if (!(fragment instanceof CalendarFragment)) {
-                    if (fragment != null) {
-                        fragmentTransaction.hide(fragment);
-                    }
+                Fragment calendarFragment = fragmentManager.findFragmentByTag(TAG_CALENDAR_FRAGMENT);
+                if (calendarFragment == null) {
                     if (mCalendarFragment == null) {
                         mCalendarFragment = new CalendarFragment();
                     }
-                    Fragment calendarFragment = fragmentManager.findFragmentByTag(TAG_CALENDAR_FRAGMENT);
-                    if (calendarFragment != mCalendarFragment) {
-                        if (calendarFragment != null) {
-                            fragmentTransaction.remove(calendarFragment);
-                        }
-                        fragmentTransaction.add(R.id.content_frame_layout, mCalendarFragment, TAG_CALENDAR_FRAGMENT);
-                    }
-                    fragmentTransaction.show(mCalendarFragment);
-                    fragmentTransaction.commitAllowingStateLoss();
+                    calendarFragment = mCalendarFragment;
+                    fragmentTransaction.add(R.id.content_frame_layout, mCalendarFragment, TAG_CALENDAR_FRAGMENT);
                 }
+
+                fragmentTransaction.show(calendarFragment);
+                fragmentTransaction.commitAllowingStateLoss();
                 break;
             case ID_FINISHED:
-                if (!(fragment instanceof FinishedFragment)) {
-                    if (fragment != null) {
-                        fragmentTransaction.hide(fragment);
-                    }
+                Fragment finishedFragment = fragmentManager.findFragmentByTag(TAG_FINISHED_FRAGMENT);
+                if (finishedFragment == null) {
                     if (mFinishedFragment == null) {
                         mFinishedFragment = new FinishedFragment();
                     }
-
-                    Fragment finishedFragment = fragmentManager.findFragmentByTag(TAG_FINISHED_FRAGMENT);
-                    if (finishedFragment != mFinishedFragment) {
-                        if (finishedFragment != null) {
-                            fragmentTransaction.remove(finishedFragment);
-                        }
-                        fragmentTransaction.add(R.id.content_frame_layout, mFinishedFragment, TAG_FINISHED_FRAGMENT);
-                    }
-                    fragmentTransaction.show(mFinishedFragment);
-                    fragmentTransaction.commitAllowingStateLoss();
+                    finishedFragment = mFinishedFragment;
+                    fragmentTransaction.add(R.id.content_frame_layout, mFinishedFragment, TAG_FINISHED_FRAGMENT);
                 }
+
+                fragmentTransaction.show(finishedFragment);
+                fragmentTransaction.commitAllowingStateLoss();
                 break;
         }
         mUIHandler.removeMessages(MSG_CLOSE_DRAWER);
-        mUIHandler.sendEmptyMessageDelayed(MSG_CLOSE_DRAWER, 50);
+        mUIHandler.sendEmptyMessageDelayed(MSG_CLOSE_DRAWER, 100);
+    }
+
+    private String getFragmentTagBySideId(int id) {
+        switch (id) {
+            case ID_ALL:
+                return TAG_ALL_FRAGMENT;
+            case ID_TODAY:
+                return TAG_TODAY_FRAGMENT;
+            case ID_TOMORROW:
+                return TAG_TOMORROW_FRAGMENT;
+            case ID_CALENDAR:
+                return TAG_CALENDAR_FRAGMENT;
+            case ID_FINISHED:
+                return TAG_FINISHED_FRAGMENT;
+        }
+        return null;
     }
 
     protected Uri getLocalUri(int resId) {
@@ -557,7 +540,7 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
 
     @Override
     public void onSideItemClick(SideItem sideItem) {
-        changeMainView(sideItem.id);
+        changeMainView(sideItem.id, false);
     }
 
     @Override
