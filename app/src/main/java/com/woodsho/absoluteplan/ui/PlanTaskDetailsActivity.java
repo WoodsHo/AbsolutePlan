@@ -12,16 +12,20 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.hubert.library.Controller;
@@ -47,6 +51,8 @@ import com.woodsho.absoluteplan.widget.FloatingActionMenu;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by hewuzhao on 17/12/14.
@@ -84,6 +90,15 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
     private FloatingActionButton mSaveFab;
     private FloatingActionButton mSaveAndExitFab;
     private FloatingActionButton mExitFab;
+
+    public static final String TAG_LIST = ". ";
+    public static final String TAG_LIST_123 = "1. ";
+    public static final String TAG_SPLIT = "\\.";
+
+    private boolean flag = false;
+    private Editable mEditable;
+
+    private LinearLayout mEditTypeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +201,9 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
                 return true;
             }
         });
+        mEditTypeLayout = (LinearLayout) findViewById(R.id.edit_type_plantskdetails);
         mDescribe = (EditText) findViewById(R.id.describe_plantaskdetails);
+        mEditable = mDescribe.getText();
         mDescribe.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -198,6 +215,35 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
                 return true;
             }
         });
+        mDescribe.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    mEditTypeLayout.setVisibility(View.VISIBLE);
+                } else {
+                    mEditTypeLayout.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        mDescribe.addTextChangedListener(new Watcher());
+
+        ImageButton list = (ImageButton) findViewById(R.id.edit_type_list);
+        list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performList(TAG_LIST);
+            }
+        });
+
+        ImageButton list_123 = (ImageButton) findViewById(R.id.edit_type_list_123);
+        list_123.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performList(TAG_LIST_123);
+            }
+        });
+
         mBack = (ImageView) findViewById(R.id.back_plantaskdetails);
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -485,4 +531,178 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
         }
     }
 
+    private class Watcher implements TextWatcher {
+
+        /**
+         * Before text changed.
+         *
+         * @param s     the s
+         * @param start the start 起始光标
+         * @param count the count 选择数量
+         * @param after the after 替换增加的文字数
+         */
+        @Override
+        public final void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            if (flag) return;
+            int end = start + count;
+            if (end > start && end <= s.length()) {
+                CharSequence charSequence = s.subSequence(start, end);
+                if (charSequence.length() > 0) {
+                    onSubText(s, charSequence, start);
+
+                }
+            }
+        }
+
+        /**
+         * On text changed.
+         *
+         * @param s      the s
+         * @param start  the start 起始光标
+         * @param before the before 选择数量
+         * @param count  the count 添加的数量
+         */
+        @Override
+        public final void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (flag) return;
+            int end = start + count;
+            if (end > start) {
+                CharSequence charSequence = s.subSequence(start, end);
+                if (charSequence.length() > 0) {
+                    onAddText(s, charSequence, start);
+                }
+            }
+        }
+
+        @Override
+        public final void afterTextChanged(Editable s) {
+
+        }
+
+    }
+
+    private void onAddText(CharSequence source, CharSequence charSequence, int start) {
+        flag = true;
+        if ("\n".equals(charSequence.toString())) {
+            //用户输入回车
+            performAddEnter(mEditable, source, start);
+        }
+        flag = false;
+    }
+
+    private void onSubText(CharSequence source, CharSequence charSequence, int start) {
+        flag = true;
+        //操作代码
+
+        flag = false;
+    }
+
+    /**
+     * 处理回车操作
+     *
+     * @param editable
+     * @param source
+     * @param start
+     */
+    private void performAddEnter(Editable editable, CharSequence source, int start) {
+        //获取回车之前的字符
+        String tempStr = source.subSequence(0, start).toString();
+        //查找最后一个回车
+        int lastEnter = tempStr.lastIndexOf(10);
+        if (lastEnter > 0) {
+            //最后一个回车到输入回车之间的字符
+            tempStr = tempStr.substring(lastEnter + 1, start);
+        }
+
+        String mString = tempStr.trim();
+        String startSpace = getStartChar(tempStr, ' ');
+
+        String[] split = mString.split(TAG_SPLIT);
+
+        if ((split == null || split.length <= 0) && mString.length() > 1) {
+            editable.insert(start + 1, startSpace);
+        } else {
+            String firstStr = split[0];
+            if (!TextUtils.isEmpty(firstStr) && mString.startsWith(firstStr) && mString.length() > 3) {
+                if (isNumeric(firstStr)) {
+                    editable.insert(start + 1, startSpace + (Integer.parseInt(firstStr) + 1) + ". ");
+                }
+            } else if (mString.startsWith(TAG_LIST) && mString.length() > 2) {
+                editable.insert(start + 1, startSpace + TAG_LIST);
+            } else if (mString.length() > 1) {
+                editable.insert(start + 1, startSpace);
+            }
+        }
+    }
+
+    public boolean isNumeric(String str) {
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher isNum = pattern.matcher(str);
+        if (!isNum.matches()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 获取开头的字符
+     *
+     * @param target
+     * @param startChar
+     * @return
+     */
+    private String getStartChar(String target, char startChar) {
+        StringBuilder sb = new StringBuilder();
+        char[] chars = target.toCharArray();
+        for (char aChar : chars) {
+            if (aChar == startChar) {
+                sb.append(startChar);
+            } else {
+                break;
+            }
+        }
+        return sb.toString();
+
+    }
+
+    private void performList(String tag) {
+        String source = mDescribe.getText().toString();
+        int selectionStart = mDescribe.getSelectionStart();
+        int selectionEnd = mDescribe.getSelectionEnd();
+        String substring = source.substring(0, selectionStart);
+        int line = substring.lastIndexOf(10);
+
+
+        if (line != -1) {
+            selectionStart = line + 1;
+        } else {
+            selectionStart = 0;
+        }
+        substring = source.substring(selectionStart, selectionEnd);
+
+        String[] split = substring.split("\n");
+        StringBuffer stringBuffer = new StringBuffer();
+
+        if (split != null && split.length > 0)
+            for (String s : split) {
+                if (s.length() == 0 && stringBuffer.length() != 0) {
+                    stringBuffer.append("\n");
+                    continue;
+                }
+                if (!s.trim().startsWith(tag)) {
+                    //不是 空行或者已经是序号开头
+                    if (stringBuffer.length() > 0) stringBuffer.append("\n");
+                    stringBuffer.append(tag).append(s);
+                } else {
+                    if (stringBuffer.length() > 0) stringBuffer.append("\n");
+                    stringBuffer.append(s);
+                }
+            }
+
+        if (stringBuffer.length() == 0) {
+            stringBuffer.append(tag);
+        }
+        mDescribe.getText().replace(selectionStart, selectionEnd, stringBuffer.toString());
+        mDescribe.setSelection(stringBuffer.length() + selectionStart);
+    }
 }

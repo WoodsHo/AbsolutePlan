@@ -33,7 +33,6 @@
             android:textStyle="bold" />
 
     <!--</android.support.design.widget.TextInputLayout>-->
-、
 
     <View
         android:id="@+id/divide_plantaskdetails_2"
@@ -95,4 +94,28 @@
         <include layout="@layout/item_save_exit_float_action_menu" />
 
     </com.woodsho.absoluteplan.widget.FloatingActionMenu>
+
+    <LinearLayout
+        android:id="@+id/edit_type_plantskdetails"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible">
+
+        <ImageButton
+            android:id="@+id/edit_type_list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/black_20"
+            android:src="@drawable/ic_edit_type_list" />
+
+        <ImageButton
+            android:id="@+id/edit_type_list_123"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/black_40"
+            android:src="@drawable/ic_edit_type_list_123" />
+    </LinearLayout>
 </RelativeLayout>
