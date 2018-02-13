@@ -96,7 +96,6 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
     public static final String TAG_SPLIT = "\\.";
 
     private boolean flag = false;
-    private Editable mEditable;
 
     private LinearLayout mEditTypeLayout;
 
@@ -203,7 +202,6 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
         });
         mEditTypeLayout = (LinearLayout) findViewById(R.id.edit_type_plantskdetails);
         mDescribe = (EditText) findViewById(R.id.describe_plantaskdetails);
-        mEditable = mDescribe.getText();
         mDescribe.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -585,7 +583,7 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
         flag = true;
         if ("\n".equals(charSequence.toString())) {
             //用户输入回车
-            performAddEnter(mEditable, source, start);
+            performAddEnter(mDescribe.getText(), source, start);
         }
         flag = false;
     }

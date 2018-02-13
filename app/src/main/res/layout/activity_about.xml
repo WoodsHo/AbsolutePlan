@@ -23,7 +23,7 @@
         android:layout_below="@id/logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
-        android:text="AbsPlan(绝对计划)"
+        android:text="Abs计划(绝对计划)"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_16" />
 

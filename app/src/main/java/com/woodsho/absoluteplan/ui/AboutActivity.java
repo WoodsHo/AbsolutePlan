@@ -83,9 +83,9 @@ public class AboutActivity extends SkinBaseActivity {
             }
         });
         TextView textView = (TextView) findViewById(R.id.github_title);
-        SpannableString githubTitle = new SpannableString("AbsPlan开源GitHub, 欢迎star！");
-        githubTitle.setSpan(new AbsoluteSizeSpan(20, true), 9, 16, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        githubTitle.setSpan(new ForegroundColorSpan(SkinManager.getInstance().getColor(R.color.colorPrimary)), 9, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableString githubTitle = new SpannableString("Abs计划开源GitHub, 欢迎star！");
+        githubTitle.setSpan(new AbsoluteSizeSpan(25, true), 7, 13, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        githubTitle.setSpan(new ForegroundColorSpan(SkinManager.getInstance().getColor(R.color.colorPrimary)), 7, 13, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         textView.setText(githubTitle);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
