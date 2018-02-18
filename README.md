@@ -16,7 +16,6 @@ APP功能专一、操作简单、界面优美，记录只保存在本地，不�
 
 * yannecer：https://github.com/yannecer/NCalendar
 * mcxtzhang：https://github.com/mcxtzhang/SwipeDelMenuLayout
-* r0adkll：https://github.com/r0adkll/Slidr
 * huburt-Hu：https://github.com/huburt-Hu/NewbieGuide
 * wdullaer：https://github.com/wdullaer/MaterialDateTimePicker
 * Yalantis：https://github.com/Yalantis/uCrop
@@ -25,18 +24,12 @@ APP功能专一、操作简单、界面优美，记录只保存在本地，不�
 ### 1. 第一次使用引导提示
 <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide1.jpg"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide2.jpg"/>
 
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide3.jpg"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide4.jpg"/>
-
-动态演示：
-
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide.gif"/>
-
 ### 2. 侧边栏 
 * 显示头像
 * 有5个tab分别对应今天的、明天的、所有的、已完成的计划任务以及以日历显示的形式
 * 设置
 
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/side.jpg"/>
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/side.png"/>
 
 ### 3. 今天
 只显示时间，不显示日期
@@ -53,7 +46,7 @@ APP功能专一、操作简单、界面优美，记录只保存在本地，不�
 
 2. 新建任务，可以自主选择日期和时间。
 
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail1.jpg"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail2.jpg"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail3.jpg"/>
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail1.png"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail2.jpg"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail3.jpg"/>
 
 ### 6. 日历模式
 可以以日历的模式查看计划任务，日历上的红点标记该日期有计划任务。
@@ -77,6 +70,11 @@ APP功能专一、操作简单、界面优美，记录只保存在本地，不�
 模仿酷安，自定义头像
 
 <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/avatar.jpg"/>
+
+### 10. 分享
+以图片形式分享到微信和朋友圈
+
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/share1.png"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/share2.png"/>
 
 ## 结尾
 拥抱开源，学习开源，为社会献上自己的微薄之力。
