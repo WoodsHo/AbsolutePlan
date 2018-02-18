@@ -14,9 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.r0adkll.slidr.Slidr;
-import com.r0adkll.slidr.model.SlidrConfig;
-import com.r0adkll.slidr.model.SlidrPosition;
 import com.woodsho.absoluteplan.AbsolutePlanApplication;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.skinloader.SkinBaseActivity;
@@ -31,14 +28,6 @@ public class AboutActivity extends SkinBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        SlidrConfig mConfig = new SlidrConfig.Builder()
-                .position(SlidrPosition.LEFT)
-                .velocityThreshold(2400)
-                .distanceThreshold(.25f)
-                .edge(true)
-                .touchSize(CommonUtil.dp2px(this, 32))
-                .build();
-        Slidr.attach(this, mConfig);
         setupActionBar();
         StatusBarUtil.setColor(this, SkinManager.getInstance().getColor(R.color.colorPrimary), 0);
         init();
@@ -69,8 +58,6 @@ public class AboutActivity extends SkinBaseActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
     }
-
-
 
     private void init() {
         TextView versionName = (TextView) findViewById(R.id.version_name);

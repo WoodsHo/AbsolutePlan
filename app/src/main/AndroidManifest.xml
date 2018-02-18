@@ -6,6 +6,15 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <!-- for mta statistics -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:name=".AbsolutePlanApplication"
         android:allowBackup="true"
@@ -38,34 +47,34 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity
-            android:name=".ui.PlanTaskDetailsActivity"
-            android:theme="@style/Theme.Slidr.Slidable"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
-        <activity
-            android:name=".ui.SettingsActivity"
-            android:theme="@style/Theme.Slidr.Slidable" />
-        <activity
-            android:name=".ui.FeedbackSuggestionActivity"
-            android:theme="@style/Theme.Slidr.Slidable" />
-        <activity
-            android:name=".ui.AboutActivity"
-            android:theme="@style/Theme.Slidr.Slidable" />
-        <activity
-            android:name=".ui.OpenSourceActivity"
-            android:theme="@style/Theme.Slidr.Slidable" />
-        <activity
-            android:name=".ui.SkinActivity"
-            android:theme="@style/Theme.Slidr.Slidable" />
+        <activity android:name=".ui.PlanTaskDetailsActivity" />
 
-        <activity
-            android:name=".ui.AvatarActivity"
-            android:theme="@style/Theme.Slidr.Slidable" />
+        <activity android:name=".ui.SettingsActivity" />
+
+        <activity android:name=".ui.FeedbackSuggestionActivity" />
+
+        <activity android:name=".ui.AboutActivity" />
+
+        <activity android:name=".ui.OpenSourceActivity" />
+
+        <activity android:name=".ui.SkinActivity" />
+
+        <activity android:name=".ui.AvatarActivity" />
 
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <activity android:name=".ui.ShareActivity" />
+
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Fullscreen.Translucent" />
+
+        <activity android:name=".ui.SideTitleActivity" />
     </application>
 
 </manifest>

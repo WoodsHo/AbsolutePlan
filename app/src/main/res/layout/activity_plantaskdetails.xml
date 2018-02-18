@@ -2,37 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:focusable="true"
-    android:focusableInTouchMode="true" >
+    android:focusableInTouchMode="true">
 
-    <!--<android.support.design.widget.TextInputLayout-->
-        <!--android:id="@+id/time_plantaskdetails_textinputlayout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:paddingEnd="10dp"-->
-        <!--android:paddingStart="10dp"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:textColorHint="@color/black_30">-->
-
-        <EditText
-            android:id="@+id/title_plantaskdetails"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@null"
-            android:gravity="center_vertical"
-            android:hint="标题"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/black_50"
-            android:textColorHint="@color/black_30"
-            android:textCursorDrawable="@drawable/color_cursor"
-            android:textSize="@dimen/text_size_17"
-            android:textStyle="bold" />
-
-    <!--</android.support.design.widget.TextInputLayout>-->
+    <EditText
+        android:id="@+id/title_plantaskdetails"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:gravity="center_vertical"
+        android:hint="标题"
+        android:lines="1"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black_30"
+        android:textCursorDrawable="@drawable/color_cursor"
+        android:textSize="@dimen/text_size_17" />
 
     <View
         android:id="@+id/divide_plantaskdetails_2"
@@ -45,77 +33,26 @@
         android:layout_marginTop="2dp"
         android:background="@color/black_10" />
 
-    <EditText
-        android:id="@+id/describe_plantaskdetails"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/divide_plantaskdetails_2"
-        android:layout_marginTop="5dp"
-        android:background="@null"
-        android:gravity="top|start"
-        android:hint="具体描述一下..."
-        android:paddingEnd="10dp"
-        android:paddingStart="10dp"
-        android:textColor="@color/black_50"
-        android:textCursorDrawable="@drawable/color_cursor"
-        android:textColorHint="@color/black_30"
-        android:textSize="@dimen/text_size_17"
-        android:textStyle="bold" />
+        android:layout_below="@id/divide_plantaskdetails_2">
 
-    <com.woodsho.absoluteplan.widget.FloatingActionMenu
-        android:id="@+id/float_action_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:clipChildren="false"
-        android:layout_marginBottom="40dp"
-        android:layout_marginEnd="@dimen/float_action_button_margin_end" >
+        <com.woodsho.absoluteplan.widget.AbsPlanEditText
+            android:id="@+id/describe_plantaskdetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@null"
+            android:inputType="textMultiLine"
+            android:hint="具体描述一下..."
+            android:paddingEnd="10dp"
+            android:lineSpacingMultiplier="1.5"
+            android:paddingStart="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black_30"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textSize="@dimen/text_size_15" />
+    </ScrollView>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/main_float_action_menu"
-            android:layout_width="@dimen/main_float_action_menu_width"
-            android:layout_height="55dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="45dp"
-            android:layout_marginEnd="@dimen/float_action_button_margin_end"
-            android:src="@drawable/ic_fab_menu_modify"
-            app:backgroundTint="@color/colorPrimary"
-            app:borderWidth="0dp"
-            app:elevation="6dp"
-            app:fabSize="normal"
-            app:rippleColor="@color/fab_rippleColor" />
-
-        <include layout="@layout/item_exit_float_action_menu" />
-
-        <include layout="@layout/item_save_float_action_menu" />
-
-        <include layout="@layout/item_save_exit_float_action_menu" />
-
-    </com.woodsho.absoluteplan.widget.FloatingActionMenu>
-
-    <LinearLayout
-        android:id="@+id/edit_type_plantskdetails"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentBottom="true"
-        android:visibility="invisible">
-
-        <ImageButton
-            android:id="@+id/edit_type_list"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/black_20"
-            android:src="@drawable/ic_edit_type_list" />
-
-        <ImageButton
-            android:id="@+id/edit_type_list_123"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/black_40"
-            android:src="@drawable/ic_edit_type_list_123" />
-    </LinearLayout>
 </RelativeLayout>

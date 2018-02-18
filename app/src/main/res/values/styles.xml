@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -7,22 +7,19 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorSwitchThumbNormal">@color/switch_thumb_normal_color</item>
+        <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
+    </style>
+
+    <style name="AnimationActivity" parent="@android:style/Animation.Activity" >
+        <item name="android:activityOpenEnterAnimation">@anim/up_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/up_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/down_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/down_out</item>
     </style>
 
     <style name="MyCheckBoxStyle" parent="@android:style/Widget.Material.CompoundButton.CheckBox">
         <item name="android:colorControlActivated">@color/colorAccent</item>
         <item name="android:colorControlNormal">@color/black_80</item>
-    </style>
-
-    <style name="Theme.Slidr.Slidable" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-
-        <!-- These values must be set for this mechanism to work -->
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
@@ -38,5 +35,58 @@
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/white</item>
         <item name="android:colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <style name="BottomShareDialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+        <item name="android:gravity">bottom</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
+
+    <style name="AppTheme.Fullscreen" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
+    </style>
+
+    <style name="AppTheme.Fullscreen.Translucent">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+    </style>
+
+
+    <style name="NormalDialogStyle">
+        <!--对话框背景 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!--没有标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 是否浮现在Activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!--背景透明 -->
+        <item name="android:windowIsTranslucent">false</item>
+        <!-- 是否有覆盖 -->
+        <item name="android:windowContentOverlay">@null</item>
+        <!--进出的显示动画 -->
+        <item name="android:windowAnimationStyle">@style/normalDialogAnim</item>
+        <!--背景变暗-->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    <!--对话框动画-->
+    <style name="normalDialogAnim" parent="android:Animation">
+        <item name="@android:windowEnterAnimation">@anim/up_in</item>
+        <item name="@android:windowExitAnimation">@anim/up_out</item>
     </style>
 </resources>

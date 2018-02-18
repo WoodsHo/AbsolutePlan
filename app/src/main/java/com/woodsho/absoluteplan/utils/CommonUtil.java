@@ -30,6 +30,7 @@ import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.common.AbsPSharedPreference;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -686,5 +687,47 @@ public class CommonUtil {
                 Log.e(TAG, "ex: " + ex);
             }
         }
+    }
+
+    public static byte[] bmpToByteArray(Bitmap bitmap, int maxkb) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
+        int options = 100;
+        while (output.toByteArray().length > maxkb && options != 10) {
+            output.reset(); //清空output
+            bitmap.compress(Bitmap.CompressFormat.JPEG, options, output);//这里压缩options%，把压缩后的数据存放到output中
+            options -= 10;
+        }
+        bitmap.recycle();
+
+        byte[] result = output.toByteArray();
+        try {
+            output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    /**
+     * 检测是否安装微信
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isWxInstall(Context context) {
+        final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                if (pn.equals("com.tencent.mm")) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

@@ -1,4 +1,9 @@
 <resources>
+    <dimen name="text_size_3">3sp</dimen>
+    <dimen name="text_size_4">4sp</dimen>
+    <dimen name="text_size_5">5sp</dimen>
+    <dimen name="text_size_6">6sp</dimen>
+    <dimen name="text_size_7">7sp</dimen>
     <dimen name="text_size_8">8sp</dimen>
     <dimen name="text_size_9">9sp</dimen>
     <dimen name="text_size_10">10sp</dimen>
@@ -26,6 +31,11 @@
     <dimen name="pointSize">3dp</dimen>//指示圆点大小
     <!-- 日历 -->
 
-    <dimen name="button_item_float_action_menu_width">42dp</dimen>
-    <dimen name="main_float_action_menu_width">55dp</dimen>
+    <!-- 分享dialog相关 -->
+    <dimen name="share_dialog_normal_margin">15dp</dimen>
+    <dimen name="share_dialog_tiny_margin">4dp</dimen>
+    <dimen name="share_dialog_top_icon">38dp</dimen>
+    <!-- -->
+
+
 </resources>

@@ -1,6 +1,7 @@
 package com.woodsho.absoluteplan.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,32 +10,34 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.hubert.library.Controller;
 import com.app.hubert.library.HighLight;
 import com.app.hubert.library.NewbieGuide;
 import com.app.hubert.library.OnGuideChangedListener;
-import com.r0adkll.slidr.Slidr;
-import com.r0adkll.slidr.model.SlidrConfig;
-import com.r0adkll.slidr.model.SlidrPosition;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import com.woodsho.absoluteplan.R;
@@ -45,8 +48,8 @@ import com.woodsho.absoluteplan.skinloader.SkinBaseActivity;
 import com.woodsho.absoluteplan.skinloader.SkinManager;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
+import com.woodsho.absoluteplan.widget.AbsPlanEditText;
 import com.woodsho.absoluteplan.widget.CenteredImageSpan;
-import com.woodsho.absoluteplan.widget.FloatingActionMenu;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -76,7 +79,7 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
     public Runnable mHideKeyboardRunnable, mShowKeyboardRunnable;
     public TextView mToolbarTitle;
     public EditText mTitle;
-    public EditText mDescribe;
+    public AbsPlanEditText mDescribe;
     public ImageView mBack;
     public TextView mToolbarDate;
     public TextView mToolbarTime;
@@ -85,32 +88,25 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
 
     private Calendar mCalendar = Calendar.getInstance(Locale.CHINA);
 
-    private FloatingActionMenu mFloatingActionMenu;
-    private FloatingActionButton mMainFab;
-    private FloatingActionButton mSaveFab;
-    private FloatingActionButton mSaveAndExitFab;
-    private FloatingActionButton mExitFab;
+    private ImageView mSave;
+    private ImageView mShare;
+    private ImageView mList;
+    private ImageView mList123;
 
-    public static final String TAG_LIST = ". ";
+    public static final String TAG_LIST = "● ";
     public static final String TAG_LIST_123 = "1. ";
-    public static final String TAG_SPLIT = "\\.";
+    public static final String TAG_LIST_SIGN = "●";
 
     private boolean flag = false;
 
-    private LinearLayout mEditTypeLayout;
+    private String mOriginTitle = "";
+    private String mOriginContent = "";
+    private long mOriginTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantaskdetails);
-        SlidrConfig mConfig = new SlidrConfig.Builder()
-                .position(SlidrPosition.LEFT)
-                .velocityThreshold(2400)
-                .distanceThreshold(.25f)
-                .edge(true)
-                .touchSize(CommonUtil.dp2px(this, 32))
-                .build();
-        Slidr.attach(this, mConfig);
         setupActionBar();
         StatusBarUtil.setColor(this, SkinManager.getInstance().getColor(R.color.colorPrimary), 0);
         init();
@@ -178,7 +174,7 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
                 .setEveryWhereCancelable(true)
                 .setLayoutRes(R.layout.guide_save_plantask_view_layout)
                 .alwaysShow(false)
-                .addHighLight(mMainFab, HighLight.Type.CIRCLE)
+                .addHighLight(mSave, HighLight.Type.CIRCLE)
                 .setLabel(KEY_GUIDE_SAVE_PLANTASK)
                 .build();
         controller.show();
@@ -200,8 +196,7 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
                 return true;
             }
         });
-        mEditTypeLayout = (LinearLayout) findViewById(R.id.edit_type_plantskdetails);
-        mDescribe = (EditText) findViewById(R.id.describe_plantaskdetails);
+        mDescribe = (AbsPlanEditText) findViewById(R.id.describe_plantaskdetails);
         mDescribe.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -217,36 +212,49 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    mEditTypeLayout.setVisibility(View.VISIBLE);
+                    mList.setClickable(true);
+                    mList123.setClickable(true);
+                    mList.setAlpha(1f);
+                    mList123.setAlpha(1f);
                 } else {
-                    mEditTypeLayout.setVisibility(View.INVISIBLE);
+                    mList.setClickable(false);
+                    mList123.setClickable(false);
+                    mList.setAlpha(0.5f);
+                    mList123.setAlpha(0.5f);
                 }
             }
         });
 
         mDescribe.addTextChangedListener(new Watcher());
 
-        ImageButton list = (ImageButton) findViewById(R.id.edit_type_list);
-        list.setOnClickListener(new View.OnClickListener() {
+        mList = (ImageView) findViewById(R.id.list_plantaskdetails);
+        mList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 performList(TAG_LIST);
             }
         });
 
-        ImageButton list_123 = (ImageButton) findViewById(R.id.edit_type_list_123);
-        list_123.setOnClickListener(new View.OnClickListener() {
+        mList123 = (ImageView) findViewById(R.id.list_123_plantaskdetails);
+        mList123.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 performList(TAG_LIST_123);
             }
         });
 
+        mList.setClickable(false);
+        mList123.setClickable(false);
+        mList.setAlpha(0.5f);
+        mList123.setAlpha(0.5f);
+
+        mSave = (ImageView) findViewById(R.id.save_plantaskdetails);
+
         mBack = (ImageView) findViewById(R.id.back_plantaskdetails);
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                showSaveDialog();
             }
         });
         mToolbarDate = (TextView) findViewById(R.id.date_plantaskdetails);
@@ -319,59 +327,65 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
 
         Intent intent = getIntent();
         mShowType = intent.getIntExtra(KEY_SHOW_TYPE, TYPE_NEW_BUILD);
-        mFloatingActionMenu = (FloatingActionMenu) findViewById(R.id.float_action_menu);
-        mMainFab = (FloatingActionButton) findViewById(R.id.main_float_action_menu);
-        mMainFab.setOnClickListener(new View.OnClickListener() {
+
+        mSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mShowType == TYPE_MODIFY) {
                     mShowType = TYPE_NEW_BUILD;
                     mToolbarTitle.setText("修改计划");
-                    mMainFab.setImageDrawable(res.getDrawable(R.drawable.ic_fab_menu_normal));
+                    mSave.setImageDrawable(res.getDrawable(R.drawable.ic_save_plantaskdetails));
                     mTitle.setFocusable(true);
                     mDescribe.setFocusable(true);
                     mToolbarDate.setClickable(true);
                     mToolbarTime.setClickable(true);
                 } else {
-                    mMainFab.setImageDrawable(res.getDrawable(R.drawable.ic_fab_menu_normal));
-                    mFloatingActionMenu.toggle();
+                    savePlanTask();
+                    finish();
                 }
             }
         });
-        mSaveFab = (FloatingActionButton) findViewById(R.id.button_item_save_float_action_menu);
-        mSaveFab.setOnClickListener(new View.OnClickListener() {
+
+        mShare = (ImageView) findViewById(R.id.share_plantaskdetails);
+        mShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFloatingActionMenu.toggle();
-                savePlanTask();
-            }
-        });
-        mSaveAndExitFab = (FloatingActionButton) findViewById(R.id.button_item_save_exit_float_action_menu);
-        mSaveAndExitFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                savePlanTask();
-                finish();
-            }
-        });
-        mExitFab = (FloatingActionButton) findViewById(R.id.button_item_exit_float_action_menu);
-        mExitFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+                boolean hasTitle = false;
+                boolean hasDescribe = false;
+                Intent intent = new Intent();
+                intent.setClass(PlanTaskDetailsActivity.this, ShareActivity.class);
+                if (mTitle != null) {
+                    String title = mTitle.getText().toString();
+                    if (!TextUtils.isEmpty(title) && !TextUtils.equals(title, "\"标题\"")) {
+                        intent.putExtra(ShareActivity.KEY_TITLE, title);
+                        hasTitle = true;
+                    }
+                }
+                if (mDescribe != null) {
+                    String describe = mDescribe.getText().toString();
+                    if (!TextUtils.isEmpty(describe) && !TextUtils.equals(describe, "\"描述\"")) {
+                        intent.putExtra(ShareActivity.KEY_CONTENT, describe);
+                        hasDescribe = true;
+                    }
+                }
+                if (!hasTitle && !hasDescribe) {
+                    Toast.makeText(getApplicationContext(), "没有内容可分享呢，添加内容先吧！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                startActivity(intent);
             }
         });
 
         if (mShowType == TYPE_MODIFY) {
             mToolbarTitle.setText("查看计划");
-            mMainFab.setImageDrawable(res.getDrawable(R.drawable.ic_fab_menu_modify));
+            mSave.setImageDrawable(res.getDrawable(R.drawable.ic_modify_plantaskdetails));
             mTitle.setFocusable(false);
             mDescribe.setFocusable(false);
             mToolbarDate.setClickable(false);
             mToolbarTime.setClickable(false);
         } else {
             mToolbarTitle.setText("新建计划");
-            mMainFab.setImageDrawable(res.getDrawable(R.drawable.ic_fab_menu_normal));
+            mSave.setImageDrawable(res.getDrawable(R.drawable.ic_save_plantaskdetails));
             mTitle.setFocusable(true);
             mDescribe.setFocusable(true);
             mToolbarDate.setClickable(true);
@@ -381,13 +395,17 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
         mIntentPlanTask = task;
         if (task != null) {
             mTitle.setText(task.title);
+            mOriginTitle = task.title;
             mDescribe.setText(task.describe);
+            mOriginContent = task.describe;
             mCalendar.setTime(new Date(task.time));
+            mOriginTime = task.time;
         } else {
             boolean isTomorrow = intent.getBooleanExtra(KEY_IS_TOMORROW, false);
             if (isTomorrow) {
                 mCalendar.setTime(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24));
             }
+            mOriginTime = mCalendar.getTimeInMillis();
         }
         setYearMonthDay();
         setHourMinute();
@@ -613,54 +631,20 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
         }
 
         String mString = tempStr.trim();
-        String startSpace = getStartChar(tempStr, ' ');
+        String firstStr = null;
+        if (mString.length() > 0) {
+            firstStr = String.valueOf(mString.charAt(0));
+        }
 
-        String[] split = mString.split(TAG_SPLIT);
-
-        if ((split == null || split.length <= 0) && mString.length() > 1) {
-            editable.insert(start + 1, startSpace);
+        if (TextUtils.equals(firstStr, TAG_LIST_SIGN)) {
+            editable.insert(start + 1, TAG_LIST);
         } else {
-            String firstStr = split[0];
-            if (!TextUtils.isEmpty(firstStr) && mString.startsWith(firstStr) && mString.length() > 3) {
-                if (isNumeric(firstStr)) {
-                    editable.insert(start + 1, startSpace + (Integer.parseInt(firstStr) + 1) + ". ");
-                }
-            } else if (mString.startsWith(TAG_LIST) && mString.length() > 2) {
-                editable.insert(start + 1, startSpace + TAG_LIST);
-            } else if (mString.length() > 1) {
-                editable.insert(start + 1, startSpace);
+            Pattern pattern = Pattern.compile("^(\\d+)(.*)");
+            Matcher matchers = pattern.matcher(mString);
+            if (matchers.matches()) {//数字开头
+                editable.insert(start + 1, (Integer.parseInt(matchers.group(1)) + 1) + ". ");
             }
         }
-    }
-
-    public boolean isNumeric(String str) {
-        Pattern pattern = Pattern.compile("[0-9]*");
-        Matcher isNum = pattern.matcher(str);
-        if (!isNum.matches()) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 获取开头的字符
-     *
-     * @param target
-     * @param startChar
-     * @return
-     */
-    private String getStartChar(String target, char startChar) {
-        StringBuilder sb = new StringBuilder();
-        char[] chars = target.toCharArray();
-        for (char aChar : chars) {
-            if (aChar == startChar) {
-                sb.append(startChar);
-            } else {
-                break;
-            }
-        }
-        return sb.toString();
-
     }
 
     private void performList(String tag) {
@@ -702,5 +686,117 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
         }
         mDescribe.getText().replace(selectionStart, selectionEnd, stringBuffer.toString());
         mDescribe.setSelection(stringBuffer.length() + selectionStart);
+    }
+
+    @Override
+    public void onBackPressed() {
+        showSaveDialog();
+    }
+
+    private void showSaveDialog() {
+        boolean titleChanged = false;
+        boolean contentChanged = false;
+        boolean timeChanged = false;
+        if (!TextUtils.equals(mOriginTitle, mTitle.getText().toString())) {
+            titleChanged = true;
+        }
+        if (!TextUtils.equals(mOriginContent, mDescribe.getText().toString())) {
+            contentChanged = true;
+        }
+
+        if (mOriginTime != mCalendar.getTimeInMillis()) {
+            timeChanged = true;
+        }
+
+        if (titleChanged || contentChanged || timeChanged) {
+            final Dialog dialog = new Dialog(this, R.style.NormalDialogStyle);
+            View view = View.inflate(this, R.layout.plantaskdetails_dialog_layout, null);
+            TextView subTitle = (TextView) view.findViewById(R.id.dialog_subtitle);
+            subTitle.setText(getDialogSubTitle(titleChanged, contentChanged, timeChanged));
+            TextView save = (TextView) view.findViewById(R.id.dialog_save);
+            TextView confirm = (TextView) view.findViewById(R.id.dialog_confirm);
+            dialog.setContentView(view);
+            //使得点击对话框外部不消失对话框
+            dialog.setCanceledOnTouchOutside(true);
+            //设置对话框的大小
+            Window dialogWindow = dialog.getWindow();
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            Resources resources = this.getResources();
+            DisplayMetrics dm = resources.getDisplayMetrics();
+            int width = dm.widthPixels;
+            view.setMinimumHeight((int) (width * 0.23f));
+            lp.width = (int) (width * 0.75f);
+            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            lp.gravity = Gravity.CENTER;
+            dialogWindow.setAttributes(lp);
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    savePlanTask();
+                    Toast.makeText(getApplicationContext(), "保存成功", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
+            confirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+            dialog.show();
+        } else {
+            finish();
+        }
+    }
+
+    private SpannableString getDialogSubTitle(boolean titleChanged, boolean contentChanged, boolean timeChanged) {
+        StringBuilder str = new StringBuilder("修改了");
+        if (titleChanged) {
+            str.append("标题");
+        }
+        if (contentChanged) {
+            if (titleChanged) {
+                str.append("、");
+            }
+            str.append("内容");
+        }
+        if (timeChanged) {
+            if (titleChanged || contentChanged) {
+                str.append("、");
+            }
+            str.append("时间");
+        }
+        str.append("还没保存呢");
+
+        int size = 16;
+
+        SpannableString dialogSubTitle = new SpannableString(str.toString());
+        dialogSubTitle.setSpan(new AbsoluteSizeSpan(size, true), 3, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        dialogSubTitle.setSpan(new ForegroundColorSpan(SkinManager.getInstance().getColor(R.color.colorPrimary)), 3, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (titleChanged) {
+            if (contentChanged) {
+                dialogSubTitle.setSpan(new AbsoluteSizeSpan(size, true), 6, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                dialogSubTitle.setSpan(new ForegroundColorSpan(SkinManager.getInstance().getColor(R.color.colorPrimary)), 6, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                if (timeChanged) {
+                    dialogSubTitle.setSpan(new AbsoluteSizeSpan(size, true), 9, 11, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    dialogSubTitle.setSpan(new ForegroundColorSpan(SkinManager.getInstance().getColor(R.color.colorPrimary)), 9, 11, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+            } else {
+                if (timeChanged) {
+                    dialogSubTitle.setSpan(new AbsoluteSizeSpan(size, true), 6, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    dialogSubTitle.setSpan(new ForegroundColorSpan(SkinManager.getInstance().getColor(R.color.colorPrimary)), 6, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+            }
+        } else if (contentChanged) {
+            if (timeChanged) {
+                dialogSubTitle.setSpan(new AbsoluteSizeSpan(size, true), 6, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                dialogSubTitle.setSpan(new ForegroundColorSpan(SkinManager.getInstance().getColor(R.color.colorPrimary)), 6, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+
+        return dialogSubTitle;
     }
 }

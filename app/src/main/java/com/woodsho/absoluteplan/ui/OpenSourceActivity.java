@@ -10,15 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.r0adkll.slidr.Slidr;
-import com.r0adkll.slidr.model.SlidrConfig;
-import com.r0adkll.slidr.model.SlidrPosition;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.adapter.OpenSourceAdapter;
 import com.woodsho.absoluteplan.bean.OpenSource;
 import com.woodsho.absoluteplan.skinloader.SkinBaseActivity;
 import com.woodsho.absoluteplan.skinloader.SkinManager;
-import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 
 import java.util.ArrayList;
@@ -30,14 +26,6 @@ public class OpenSourceActivity extends SkinBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_open_source);
-        SlidrConfig mConfig = new SlidrConfig.Builder()
-                .position(SlidrPosition.LEFT)
-                .velocityThreshold(2400)
-                .distanceThreshold(.25f)
-                .edge(true)
-                .touchSize(CommonUtil.dp2px(this, 32))
-                .build();
-        Slidr.attach(this, mConfig);
         setupActionBar();
         StatusBarUtil.setColor(this, SkinManager.getInstance().getColor(R.color.colorPrimary), 0);
         init();
@@ -81,7 +69,6 @@ public class OpenSourceActivity extends SkinBaseActivity {
         List<OpenSource> list = new ArrayList<>();
         list.add(new OpenSource("NCalendar", "yannecer", "一款仿miui，仿小米，日历，周日历，月日历，月视图、周视图滑动切换，农历,Andriod Calendar , MIUI Calendar,小米日历", "https://github.com/yannecer/NCalendar"));
         list.add(new OpenSource("SwipeDelMenuLayout", "mcxtzhang", "The most simple SwipeMenu in the history, 0 coupling, support any ViewGroup. Step integration swipe (delete) menu, high imitation QQ, iOS.", "https://github.com/mcxtzhang/SwipeDelMenuLayout"));
-        list.add(new OpenSource("Slidr", "r0adkll", "Easily add slide to dismiss functionality to an Activity", "https://github.com/r0adkll/Slidr"));
         list.add(new OpenSource("NewbieGuide", "huburt-Hu", "Android 快速实现新手引导层的库", "https://github.com/huburt-Hu/NewbieGuide"));
         list.add(new OpenSource("MaterialDateTimePicker", "wdullaer", "Pick a date or time on Android in style", "https://github.com/wdullaer/MaterialDateTimePicker"));
         list.add(new OpenSource("uCrop", "Yalantis", "Image Cropping Library for Android", "https://github.com/Yalantis/uCrop"));

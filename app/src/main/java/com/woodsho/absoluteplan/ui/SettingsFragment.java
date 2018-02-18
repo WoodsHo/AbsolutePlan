@@ -11,10 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.woodsho.absoluteplan.R;
-import com.woodsho.absoluteplan.skinloader.AttrFactory;
 import com.woodsho.absoluteplan.skinloader.DynamicAttr;
 import com.woodsho.absoluteplan.skinloader.IDynamicNewView;
 import com.woodsho.absoluteplan.skinloader.ISkinUpdate;

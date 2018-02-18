@@ -2,9 +2,11 @@ package com.woodsho.absoluteplan.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.text.TextUtils;
 
 import com.woodsho.absoluteplan.AbsolutePlanApplication;
+import com.woodsho.absoluteplan.R;
 
 /**
  * Created by hewuzhao on 17/12/10.
@@ -14,14 +16,17 @@ public class AbsPSharedPreference {
     private static final String NAME_SP = "absoluteplann_sp";
     private static final String NAME_LAST_SELECTED_SIDE_ID = "last_selected_side_id";
     private static final String NAME_SELECTED_WALLPAPER_BG = "selected_wallpaper_bg";
+    private static final String NAME_SIDE_TITLE = "side_title";
 
     private volatile static AbsPSharedPreference sSPInstance = null;
     private SharedPreferences mSharedPreferences;
 
     private int mLastSelectedSideId;
     private boolean mSelectedWallpaperBg;
+    private String mSideTitle;
 
     private AbsPSharedPreference(Context context) {
+        Resources res = context.getResources();
         mSharedPreferences = context.getSharedPreferences(NAME_SP, Context.MODE_PRIVATE);
         String id = mSharedPreferences.getString(NAME_LAST_SELECTED_SIDE_ID, String.valueOf(0));
         if (TextUtils.isEmpty(id)) {
@@ -35,6 +40,14 @@ public class AbsPSharedPreference {
             mSelectedWallpaperBg = true;
         } else {
             mSelectedWallpaperBg = Boolean.parseBoolean(bg);
+        }
+
+        String defaultTitle = res.getString(R.string.wisdom);
+        String title = mSharedPreferences.getString(NAME_SIDE_TITLE, defaultTitle);
+        if (TextUtils.isEmpty(title)) {
+            mSideTitle = defaultTitle;
+        } else {
+            mSideTitle = title;
         }
     }
 
@@ -65,5 +78,13 @@ public class AbsPSharedPreference {
 
     public boolean getSelectedWallpaperBg() {
         return mSelectedWallpaperBg;
+    }
+
+    public void saveSideTitle(String title) {
+        mSideTitle = title;
+        mSharedPreferences.edit().putString(NAME_SIDE_TITLE, title).apply();
+    }
+    public String getSideTitle() {
+        return mSideTitle;
     }
 }

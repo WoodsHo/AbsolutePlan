@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.hubert.library.Controller;
 import com.app.hubert.library.HighLight;
@@ -49,6 +50,7 @@ import com.woodsho.absoluteplan.ui.CalendarFragment;
 import com.woodsho.absoluteplan.ui.FinishedFragment;
 import com.woodsho.absoluteplan.ui.PlanTaskDetailsActivity;
 import com.woodsho.absoluteplan.ui.SettingsActivity;
+import com.woodsho.absoluteplan.ui.SideTitleActivity;
 import com.woodsho.absoluteplan.ui.TodayFragment;
 import com.woodsho.absoluteplan.ui.TomorrowFragment;
 import com.woodsho.absoluteplan.utils.CommonUtil;
@@ -104,6 +106,7 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
     public static final String KEY_GUIDE_SIDE = "guide_side";
 
     public static final int REQUEST_CODE_AVATAR_ACTIVITY = 10;
+    public static final int REQUEST_CODE_SIDE_TITLE = 11;
 
     public static final int MSG_CLOSE_DRAWER = 0;
 
@@ -117,6 +120,7 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
 
     private RelativeLayout mSideRelativeLayout;
     private LinearLayout mSideBottomLayout;
+    private TextView mSideTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,12 +212,8 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(MainActivity.this, AvatarActivity.class), REQUEST_CODE_AVATAR_ACTIVITY);
-                mUIHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mDrawerLayout.closeDrawer(mSideLayout);
-                    }
-                }, 200);
+                mUIHandler.removeMessages(MSG_CLOSE_DRAWER);
+                mUIHandler.sendEmptyMessageDelayed(MSG_CLOSE_DRAWER, 200);
             }
         });
         File externalFilesDir = getExternalFilesDir(null);
@@ -224,6 +224,19 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
         } else {
             mAvatar.setImageURI(getLocalUri(R.drawable.default_avatar));
         }
+
+        mSideTitle = (TextView) view.findViewById(R.id.side_title);
+        mSideTitle.setText(AbsPSharedPreference.getInstanc().getSideTitle());
+
+        ImageView modifyTitle = (ImageView) view.findViewById(R.id.title_modify);
+        modifyTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(MainActivity.this, SideTitleActivity.class), REQUEST_CODE_SIDE_TITLE);
+                mUIHandler.removeMessages(MSG_CLOSE_DRAWER);
+                mUIHandler.sendEmptyMessageDelayed(MSG_CLOSE_DRAWER, 200);
+            }
+        });
 
         mSideRelativeLayout = (RelativeLayout) view.findViewById(R.id.side_layout_relativelayout);
         Drawable wallpaperDrawable = CommonUtil.getWallpaperDrawable();
@@ -300,6 +313,11 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
                             mAvatar.setImageURI(url);
                         }
                     }
+                }
+                break;
+            case REQUEST_CODE_SIDE_TITLE:
+                if (resultCode == RESULT_OK) {
+                    mSideTitle.setText(AbsPSharedPreference.getInstanc().getSideTitle());
                 }
                 break;
         }

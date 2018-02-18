@@ -19,9 +19,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.r0adkll.slidr.Slidr;
-import com.r0adkll.slidr.model.SlidrConfig;
-import com.r0adkll.slidr.model.SlidrPosition;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.listener.PermissionListener;
 import com.woodsho.absoluteplan.skinloader.SkinManager;
@@ -51,14 +48,6 @@ public class AvatarActivity extends AppCompatActivity implements PermissionListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_avatar);
-        SlidrConfig mConfig = new SlidrConfig.Builder()
-                .position(SlidrPosition.LEFT)
-                .velocityThreshold(2400)
-                .distanceThreshold(.25f)
-                .edge(true)
-                .touchSize(CommonUtil.dp2px(this, 32))
-                .build();
-        Slidr.attach(this, mConfig);
         setupActionBar();
         StatusBarUtil.setColor(this, SkinManager.getInstance().getColor(R.color.colorPrimary), 0);
         init();

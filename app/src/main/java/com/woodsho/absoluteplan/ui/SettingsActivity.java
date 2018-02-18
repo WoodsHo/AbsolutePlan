@@ -1,7 +1,6 @@
 package com.woodsho.absoluteplan.ui;
 
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -9,16 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.r0adkll.slidr.Slidr;
-import com.r0adkll.slidr.model.SlidrConfig;
-import com.r0adkll.slidr.model.SlidrPosition;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.skinloader.DynamicAttr;
 import com.woodsho.absoluteplan.skinloader.IDynamicNewView;
 import com.woodsho.absoluteplan.skinloader.ISkinUpdate;
 import com.woodsho.absoluteplan.skinloader.SkinInflaterFactory;
 import com.woodsho.absoluteplan.skinloader.SkinManager;
-import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 
 import java.util.List;
@@ -39,14 +34,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements ISk
         getLayoutInflater().setFactory(mSkinInflaterFactory);
         super.onCreate(savedInstanceState);
         SkinManager.getInstance().attach(this);
-        SlidrConfig mConfig = new SlidrConfig.Builder()
-                .position(SlidrPosition.LEFT)
-                .velocityThreshold(2400)
-                .distanceThreshold(.25f)
-                .edge(true)
-                .touchSize(CommonUtil.dp2px(this, 32))
-                .build();
-        Slidr.attach(this, mConfig);
         setupActionBar();
         StatusBarUtil.setColor(this, SkinManager.getInstance().getColor(R.color.colorPrimary), 0);
         getFragmentManager().beginTransaction().replace(android.R.id.content,

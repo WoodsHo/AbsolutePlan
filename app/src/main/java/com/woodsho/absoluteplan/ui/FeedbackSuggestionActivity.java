@@ -14,13 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.r0adkll.slidr.Slidr;
-import com.r0adkll.slidr.model.SlidrConfig;
-import com.r0adkll.slidr.model.SlidrPosition;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.skinloader.SkinBaseActivity;
 import com.woodsho.absoluteplan.skinloader.SkinManager;
-import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 
 public class FeedbackSuggestionActivity extends SkinBaseActivity {
@@ -29,14 +25,6 @@ public class FeedbackSuggestionActivity extends SkinBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback_suggestion);
-        SlidrConfig mConfig = new SlidrConfig.Builder()
-                .position(SlidrPosition.LEFT)
-                .velocityThreshold(2400)
-                .distanceThreshold(.25f)
-                .edge(true)
-                .touchSize(CommonUtil.dp2px(this, 32))
-                .build();
-        Slidr.attach(this, mConfig);
         setupActionBar();
         StatusBarUtil.setColor(this, SkinManager.getInstance().getColor(R.color.colorPrimary), 0);
         init();

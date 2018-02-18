@@ -69,4 +69,6 @@
     <color name="skin_red_color">#db4437</color>
 
     <color name="switch_thumb_unchecked_color">#838383</color>
+    <color name="share_bg_color">#f9f3e7</color>
+    <color name="share_other_color">#411d0d</color>
 </resources>
