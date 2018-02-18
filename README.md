@@ -22,7 +22,7 @@ APP功能专一、操作简单、界面优美，记录只保存在本地，不�
 
 ## APP展示
 ### 1. 第一次使用引导提示
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide1.jpg"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide2.jpg"/>
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/guide.png"/>
 
 ### 2. 侧边栏 
 * 显示头像
@@ -34,24 +34,24 @@ APP功能专一、操作简单、界面优美，记录只保存在本地，不�
 ### 3. 今天
 只显示时间，不显示日期
 
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/today.jpg"/>
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/today.png"/>
 
 ### 4. 所有
 显示时间和日期，今年的只显示月日，去年的显示年月日
 
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/all.jpg"/>
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/all.png"/>
 
 ### 5. 详情页(新建)
 1. 查看详情时，如果需要修改，可点击右下角修改按钮。
 
 2. 新建任务，可以自主选择日期和时间。
 
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail1.png"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail2.jpg"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail3.jpg"/>
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail1.png"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail2.png"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/detail3.png"/>
 
 ### 6. 日历模式
 可以以日历的模式查看计划任务，日历上的红点标记该日期有计划任务。
 
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/calendar1.jpg"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/calendar2.jpg"/>
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/calendar1.png"/> <img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/calendar2.png"/>
 
 ### 7. 设置
 1. 换肤功能
@@ -59,17 +59,17 @@ APP功能专一、操作简单、界面优美，记录只保存在本地，不�
 3. 关于：介绍APP当前版本，以及使用到的相关开源库
 4. 反馈与建议：可以QQ或Email给我反馈和提改进建议
 
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/setting.jpg"/>
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/setting.png"/>
 
 ### 8. 换肤
 自由选择动态换肤，不需要退出APP
 
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/skin.jpg"/>
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/skin.png"/>
 
 ### 9. 更改头像
 模仿酷安，自定义头像
 
-<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/avatar.jpg"/>
+<img width="216" height="384" src="https://github.com/WoodsHo/AbsolutePlan/raw/master/readme/avatar.png"/>
 
 ### 10. 分享
 以图片形式分享到微信和朋友圈
