@@ -39,7 +39,6 @@ public class SettingsFragment extends PreferenceFragment implements IDynamicNewV
     public AbsPlanPreferenceCategory mPreferencePreferenceCategory;
     public AbsPlanPreferenceCategory mServiceSupportPreferenceCategory;
     public AbsPlanSwitchPreference mWallpaperBgPreference;
-    public int mOrder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,29 +56,9 @@ public class SettingsFragment extends PreferenceFragment implements IDynamicNewV
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(getActivity().getLayoutInflater(), container, savedInstanceState);
         if (view != null) {
-            view.setBackgroundColor(SkinManager.getInstance().getColor(R.color.settings_bg_color));
             dynamicAddView(view, "background", R.color.settings_bg_color, true);
         }
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        PreferenceScreen prefScreen = getPreferenceScreen();
-        prefScreen.removeAll();
-        mSkinPreference.setOrder(mOrder++);
-        mWallpaperBgPreference.setOrder(mOrder++);
-        mPreferencePreferenceCategory.addPreference(mSkinPreference);
-        mPreferencePreferenceCategory.addPreference(mWallpaperBgPreference);
-        mPreferencePreferenceCategory.setOrder(mOrder++);
-        prefScreen.addPreference(mPreferencePreferenceCategory);
-        mAboutPreference.setOrder(mOrder++);
-        mFeedbackSuggestionPreference.setOrder(mOrder++);
-        mServiceSupportPreferenceCategory.addPreference(mAboutPreference);
-        mServiceSupportPreferenceCategory.addPreference(mFeedbackSuggestionPreference);
-        mServiceSupportPreferenceCategory.setOrder(mOrder++);
-        prefScreen.addPreference(mServiceSupportPreferenceCategory);
     }
 
     @Override

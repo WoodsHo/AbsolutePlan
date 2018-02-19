@@ -8,6 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorSwitchThumbNormal">@color/switch_thumb_normal_color</item>
         <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
+
+        <!-- 为了设置界面去掉分隔线 -->
+        <item name="android:listDivider">@color/white</item>
+        <!-- 为了设置界面去掉分隔线 -->
+
     </style>
 
     <style name="AnimationActivity" parent="@android:style/Animation.Activity" >

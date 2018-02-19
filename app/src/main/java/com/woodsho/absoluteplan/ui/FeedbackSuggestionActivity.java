@@ -3,15 +3,14 @@ package com.woodsho.absoluteplan.ui;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.woodsho.absoluteplan.R;
@@ -56,10 +55,8 @@ public class FeedbackSuggestionActivity extends SkinBaseActivity {
     }
 
     private void init() {
-        Resources res = getResources();
-        CardView qqCadView = (CardView) findViewById(R.id.qq_cardview);
-        qqCadView.setBackground(res.getDrawable(R.drawable.item_feedback_suggestion_bg_selector));
-        qqCadView.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout qqView = (RelativeLayout) findViewById(R.id.qq_relativelayout);
+        qqView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -67,9 +64,8 @@ public class FeedbackSuggestionActivity extends SkinBaseActivity {
                 Toast.makeText(getApplicationContext(), "复制成功", Toast.LENGTH_SHORT).show();
             }
         });
-        CardView emailCardView = (CardView) findViewById(R.id.email_cardview);
-        emailCardView.setBackground(res.getDrawable(R.drawable.item_feedback_suggestion_bg_selector));
-        emailCardView.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout emailView = (RelativeLayout) findViewById(R.id.email_relativelayout);
+        emailView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Uri uri = Uri.parse("mailto:woodsho@163.com");

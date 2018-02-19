@@ -4,32 +4,38 @@
 
     <com.woodsho.absoluteplan.widget.AbsPlanPreferenceCategory
         android:key="@string/key_settings_preference"
-        settings_preference:title="偏好"
-        android:persistent="false" />
+        android:persistent="false"
+        settings_preference:title="偏好">
+
+        <com.woodsho.absoluteplan.widget.AbsPlanPreference
+            android:key="@string/key_settings_skin"
+            settings_preference:image="@drawable/ic_settings_skin"
+            settings_preference:title="换肤" />
+
+        <com.woodsho.absoluteplan.widget.AbsPlanSwitchPreference
+            android:key="@string/key_settings_wallpaper_bg"
+            settings_preference:image="@drawable/ic_settings_wallpaper_bg"
+            settings_preference:summary="使用桌面壁纸作背景"
+            settings_preference:title="桌面壁纸" />
+
+    </com.woodsho.absoluteplan.widget.AbsPlanPreferenceCategory>
 
     <com.woodsho.absoluteplan.widget.AbsPlanPreferenceCategory
         android:key="@string/key_settings_service_support"
-        settings_preference:title="服务支持"
-        android:persistent="false" />
+        android:persistent="false"
+        settings_preference:title="服务支持">
 
-    <com.woodsho.absoluteplan.widget.AbsPlanPreference
-        android:key="@string/key_settings_about"
-        settings_preference:image="@drawable/ic_settings_about"
-        settings_preference:title="关于" />
+        <com.woodsho.absoluteplan.widget.AbsPlanPreference
+            android:key="@string/key_settings_about"
+            settings_preference:image="@drawable/ic_settings_about"
+            settings_preference:title="关于" />
 
-    <com.woodsho.absoluteplan.widget.AbsPlanPreference
-        android:key="@string/key_settings_skin"
-        settings_preference:image="@drawable/ic_settings_skin"
-        settings_preference:title="换肤" />
 
-    <com.woodsho.absoluteplan.widget.AbsPlanPreference
-        android:key="@string/key_settings_feedback_suggestion"
-        settings_preference:image="@drawable/ic_settings_feedback_suggestion"
-        settings_preference:title="反馈与建议" />
+        <com.woodsho.absoluteplan.widget.AbsPlanPreference
+            android:key="@string/key_settings_feedback_suggestion"
+            settings_preference:image="@drawable/ic_settings_feedback_suggestion"
+            settings_preference:title="反馈与建议" />
 
-    <com.woodsho.absoluteplan.widget.AbsPlanSwitchPreference
-        android:key="@string/key_settings_wallpaper_bg"
-        settings_preference:image="@drawable/ic_settings_wallpaper_bg"
-        settings_preference:summary="使用桌面壁纸作背景"
-        settings_preference:title="桌面壁纸" />
+    </com.woodsho.absoluteplan.widget.AbsPlanPreferenceCategory>
+
 </PreferenceScreen>
