@@ -1,13 +1,20 @@
 package com.woodsho.absoluteplan.data;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.woodsho.absoluteplan.AbsolutePlanApplication;
 import com.woodsho.absoluteplan.bean.PlanTask;
+import com.woodsho.absoluteplan.common.PlanTaskState;
 import com.woodsho.absoluteplan.service.UserActionService;
+import com.woodsho.absoluteplan.ui.AbsPlanWidgetProvider;
+import com.woodsho.absoluteplan.ui.AbsPlanWidgetProvider4x3;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -56,11 +63,51 @@ public class CachePlanTaskStore {
         synchronized (mCachePlanTaskStoreLock) {
             reset();
             mCachePlanTaskList = list;
+            Log.d(TAG, "plantask init finished");
             mIsPlanTaskInitFinished = true;
             if (needNotify) {
                 notifyPlanTaskChanged();
             }
         }
+    }
+
+    private void notifyAppWidgetWhenDataChanged() {
+        if (AbsolutePlanApplication.isAppInitialized()) {
+            Log.w(TAG, "app is not initialized");
+            AbsolutePlanApplication.checkAppInitializedBlock();
+        }
+        Context context = AbsolutePlanApplication.sAppContext;
+        updateWidget(context);
+    }
+
+    //发送广播，使appWidget更新
+    private void updateWidget(Context context) {
+        Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        AppWidgetManager manager = AppWidgetManager.getInstance(context);
+        ComponentName provider = new ComponentName(context, AbsPlanWidgetProvider.class);
+        ComponentName provideer_4x3 = new ComponentName(context, AbsPlanWidgetProvider4x3.class);
+        int[] ids_4x3 = manager.getAppWidgetIds(provideer_4x3);
+        int length_4x3 = ids_4x3.length;
+        int[] ids = manager.getAppWidgetIds(provider);
+        int length = ids.length;
+        int[] allIds;
+        if (length_4x3 <= 0) {
+            allIds = ids;
+        } else if (length <= 0) {
+            allIds = ids_4x3;
+        } else {
+            allIds = concat(ids, ids_4x3);
+        }
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, allIds);
+        context.sendBroadcast(intent);
+    }
+
+    private int[] concat(int[] first, int[] second) {
+        int firstLen = first.length;
+        int secondLen = second.length;
+        int[] result = Arrays.copyOf(first, firstLen + secondLen);
+        System.arraycopy(second, 0, result, firstLen, secondLen);
+        return result;
     }
 
     public List<PlanTask> getCachePlanTaskList() {
@@ -70,6 +117,21 @@ public class CachePlanTaskStore {
                 return planTaskList;
 
             return mCachePlanTaskList;
+        }
+    }
+
+    public List<PlanTask> getCacheNormalPlanTaskList() {
+        synchronized (mCachePlanTaskStoreLock) {
+            List<PlanTask> planTaskList = new ArrayList<>();
+            if (mCachePlanTaskList == null || mCachePlanTaskList.size() <= 0)
+                return planTaskList;
+
+            for (PlanTask task : mCachePlanTaskList) {
+                if (task.state == PlanTaskState.STATE_NORMAL) {
+                    planTaskList.add(task);
+                }
+            }
+            return planTaskList;
         }
     }
 
@@ -120,8 +182,7 @@ public class CachePlanTaskStore {
             if (mCachePlanTaskList == null || mCachePlanTaskList.size() <= 0)
                 return;
 
-            for (int i = 0; i < mCachePlanTaskList.size(); i++) {
-                PlanTask planTask = mCachePlanTaskList.get(i);
+            for (PlanTask planTask : mCachePlanTaskList) {
                 if (planTask.id.equals(task.id)) {
                     planTask.state = task.state;
                     break;
@@ -144,6 +205,7 @@ public class CachePlanTaskStore {
     }
 
     public void notifyPlanTaskChanged() {
+        notifyAppWidgetWhenDataChanged();
         if (mOnPlanTaskChangedListeners == null || mOnPlanTaskChangedListeners.size() <= 0)
             return;
 

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +14,6 @@ import com.woodsho.absoluteplan.AbsolutePlanApplication;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.adapter.AllAdapter;
 import com.woodsho.absoluteplan.bean.PlanTask;
-import com.woodsho.absoluteplan.common.WallpaperBgManager;
-import com.woodsho.absoluteplan.listener.IWallpaperBgUpdate;
 import com.woodsho.absoluteplan.presenter.AllPresenter;
 import com.woodsho.absoluteplan.widget.CommonRecyclerView;
 
@@ -26,7 +23,7 @@ import java.util.List;
  * Created by hewuzhao on 17/12/10.
  */
 
-public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickListener, IWallpaperBgUpdate {
+public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickListener {
     public static final String TAG = "AllFragment";
     public AllAdapter mAllAdapter;
     public AllPresenter mAllPresenter;
@@ -50,12 +47,6 @@ public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickL
         LinearLayoutManager manager = new LinearLayoutManager(context);
         mRecyclerView.setLayoutManager(manager);
         mAllPresenter = new AllPresenter(this);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        WallpaperBgManager.getInstance().attach(this);
     }
 
     @Override
@@ -85,12 +76,11 @@ public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickL
             mAllAdapter.removeOnItemClickListener();
             mAllAdapter.releaseActivity();
         }
-        WallpaperBgManager.getInstance().detach(this);
     }
 
     @Override
     public void onDeleteItemClick(final PlanTask task) {
-        mAllAdapter.removeItem(task);
+
     }
 
     @Override
@@ -99,13 +89,5 @@ public class AllFragment extends BaseFragment implements AllAdapter.OnItemClickL
         intent.putExtra(PlanTaskDetailsActivity.KEY_PLANTASK, task);
         intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_MODIFY);
         startActivity(intent);
-    }
-
-    @Override
-    public void onWallpaperBgUpdate() {
-        Log.d(TAG, "all fragment, recycl: " + mRecyclerView);
-        if (mRecyclerView != null) {
-            mRecyclerView.updateBackground();
-        }
     }
 }

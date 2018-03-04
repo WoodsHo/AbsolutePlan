@@ -2,7 +2,6 @@ package com.woodsho.absoluteplan;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -22,13 +21,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.app.hubert.library.Controller;
 import com.app.hubert.library.HighLight;
@@ -36,12 +33,9 @@ import com.app.hubert.library.NewbieGuide;
 import com.app.hubert.library.OnGuideChangedListener;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.woodsho.absoluteplan.adapter.SideAdapter;
-import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.bean.SideItem;
 import com.woodsho.absoluteplan.common.AbsPSharedPreference;
-import com.woodsho.absoluteplan.common.WallpaperBgManager;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
-import com.woodsho.absoluteplan.listener.IWallpaperBgUpdate;
 import com.woodsho.absoluteplan.skinloader.SkinBaseActivity;
 import com.woodsho.absoluteplan.skinloader.SkinManager;
 import com.woodsho.absoluteplan.ui.AllFragment;
@@ -66,7 +60,7 @@ import java.util.List;
 import static com.woodsho.absoluteplan.ui.AvatarActivity.NAME_AVATAR;
 
 public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSideItemClickListener,
-        CachePlanTaskStore.OnPlanTaskChangedListener, IWallpaperBgUpdate {
+        CachePlanTaskStore.OnPlanTaskChangedListener {
     public static final String TAG = "MainActivity";
 
     public DrawerLayout mDrawerLayout;
@@ -198,7 +192,6 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
         initSideView();
         changeMainView(mLastSelectedSideId, true);
         showGuideSide();
-        WallpaperBgManager.getInstance().attach(this);
     }
 
     public void getLastSelectedSideId() {
@@ -216,6 +209,8 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
                 mUIHandler.sendEmptyMessageDelayed(MSG_CLOSE_DRAWER, 200);
             }
         });
+        RelativeLayout topRelativeLayout = (RelativeLayout) view.findViewById(R.id.side_layout_top);
+        dynamicAddView(topRelativeLayout, "background", R.color.colorPrimary, true);
         File externalFilesDir = getExternalFilesDir(null);
         File imageFile = new File(externalFilesDir.getPath(), NAME_AVATAR);
         if (imageFile.exists()) {
@@ -239,47 +234,24 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
         });
 
         mSideRelativeLayout = (RelativeLayout) view.findViewById(R.id.side_layout_relativelayout);
-        Drawable wallpaperDrawable = CommonUtil.getWallpaperDrawable();
-        if (wallpaperDrawable != null) {
-            mSideRelativeLayout.setBackground(wallpaperDrawable);
-        } else {
-            mSideRelativeLayout.setBackgroundResource(R.drawable.common_bg);
-        }
         mSideBottomLayout = (LinearLayout) view.findViewById(R.id.bottom_side_layout);
         mSideRecyclerView = (RecyclerView) view.findViewById(R.id.side_layout_recyclerview);
         mSideItemList = getAllSideItems();
         mSideAdapter = new SideAdapter(AbsolutePlanApplication.sAppContext, mSideItemList, mLastSelectedSideId);
         mSideAdapter.setOnSideItemClickListener(this);
         mSideRecyclerView.setAdapter(mSideAdapter);
-        mSideRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mSideRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mSideRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
                 int pos = parent.getChildAdapterPosition(view);
-                //if (pos == 3) {
                 outRect.bottom = 20;
-                //}
-            }
-        });
-
-        ViewTreeObserver vto = mSideRelativeLayout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                // 保证只调用一次
-                mSideRelativeLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                // 组件生成cache（组件显示内容）
-                mSideRelativeLayout.buildDrawingCache();
-                // 得到组件显示内容
-                Bitmap bitmap = CommonUtil.drawableToBitmap(mSideRelativeLayout.getBackground());
-                // 局部模糊处理
-                CommonUtil.blur(AbsolutePlanApplication.sAppContext, bitmap, mSideBottomLayout, 18);
             }
         });
 
         mSettingBt = (TextView) view.findViewById(R.id.setting_side_layout);
-        mSettingBt.setText(createStringWithLeftPicture(R.drawable.ic_side_setting2, "  设置"));
+        mSettingBt.setText(createStringWithLeftPicture(R.drawable.ic_side_setting, "  设置"));
         mSettingBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -342,12 +314,12 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
         int finishedCount = 0;
         CachePlanTaskStore planTaskStore = CachePlanTaskStore.getInstance();
         if (planTaskStore.isPlanTaskInitializedFinished()) {
-            allCount = planTaskStore.getCachePlanTaskList().size();
+            allCount = planTaskStore.getCacheNormalPlanTaskList().size();
             if (allCount > 0) {
                 todayCount = CommonUtil.getTodayPlanTaskList().size();
                 tomorrowCount = CommonUtil.getTomorrowPlanTaskList().size();
-                finishedCount = CommonUtil.getFinishedPlanTaskList().size();
             }
+            finishedCount = CommonUtil.getFinishedPlanTaskList().size();
         }
 
         sideItemList.add(new SideItem(ID_TODAY, R.drawable.ic_side_today, "今天", todayCount));
@@ -497,34 +469,6 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
         return Uri.parse(strBuilder.toString());
     }
 
-    @Override
-    public void onWallpaperBgUpdate() {
-        if (mSideRelativeLayout == null || mSideBottomLayout == null)
-            return;
-
-        Log.d(TAG, "main activity, mSidelayou and side bottom layout is not null");
-        Drawable wallpaperDrawable = CommonUtil.getWallpaperDrawable();
-        if (wallpaperDrawable != null) {
-            mSideRelativeLayout.setBackground(wallpaperDrawable);
-        } else {
-            mSideRelativeLayout.setBackgroundResource(R.drawable.common_bg);
-        }
-        ViewTreeObserver vto = mSideRelativeLayout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                // 保证只调用一次
-                mSideRelativeLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                // 组件生成cache（组件显示内容）
-                mSideRelativeLayout.buildDrawingCache();
-                // 得到组件显示内容
-                Bitmap bitmap = CommonUtil.drawableToBitmap(mSideRelativeLayout.getBackground());
-                // 局部模糊处理
-                CommonUtil.blur(AbsolutePlanApplication.sAppContext, bitmap, mSideBottomLayout, 18);
-            }
-        });
-    }
-
     private static class UIHandler extends Handler {
         private WeakReference<MainActivity> mWRef;
 
@@ -557,6 +501,11 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onSideItemClick(SideItem sideItem) {
         changeMainView(sideItem.id, false);
     }
@@ -566,10 +515,7 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
         mUIHandler.post(new Runnable() {
             @Override
             public void run() {
-                CachePlanTaskStore planTaskStore = CachePlanTaskStore.getInstance();
-                List<PlanTask> allTask = planTaskStore.getCachePlanTaskList();
-                updateSideItemOfAll(allTask.size());
-
+                updateSideItemOfAll(CommonUtil.getNormalPlanTaskList().size());
                 updateSideItemOfToday(CommonUtil.getTodayPlanTaskList().size());
                 updateSideItemOfTomorrow(CommonUtil.getTomorrowPlanTaskList().size());
                 updateSideItemOfFinished(CommonUtil.getFinishedPlanTaskList().size());
@@ -662,7 +608,6 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
             mUIHandler = null;
         }
         CachePlanTaskStore.getInstance().removePlanTaskChangedListener(this);
-        WallpaperBgManager.getInstance().detach(this);
     }
 
     @Override

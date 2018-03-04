@@ -2,27 +2,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/calendar_empty_view"
+    <ImageView
+        android:id="@+id/empty_ic"
+        android:layout_width="73dp"
+        android:layout_height="73dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/ic_empty" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/empty_ic"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="80dp"
-        android:foreground="?android:attr/selectableItemBackground"
-        card_view:cardBackgroundColor="#80838181"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="0dp"
-        card_view:cardUseCompatPadding="true">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="没有任务呢，点击右下角添加任务吧!"
-            android:textColor="@color/white" />
-
-    </android.support.v7.widget.CardView>
+        android:layout_marginTop="25dp"
+        android:text="没有任务呢，点击右下角添加任务吧!"
+        android:textColor="#a7a7a7"
+        android:textStyle="bold" />
 </RelativeLayout>

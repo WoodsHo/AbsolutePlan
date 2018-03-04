@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/slide_content_item_plantask_finished"
     android:layout_width="match_parent"
     android:layout_height="100dp">
@@ -14,7 +13,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_toEndOf="@+id/item_plantask_priority_view"
-        app:buttonTint="@color/colorPrimary" />
+        android:buttonTint="@color/colorPrimary" />
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -15,14 +15,12 @@ import com.woodsho.absoluteplan.R;
 public class AbsPSharedPreference {
     private static final String NAME_SP = "absoluteplann_sp";
     private static final String NAME_LAST_SELECTED_SIDE_ID = "last_selected_side_id";
-    private static final String NAME_SELECTED_WALLPAPER_BG = "selected_wallpaper_bg";
     private static final String NAME_SIDE_TITLE = "side_title";
 
     private volatile static AbsPSharedPreference sSPInstance = null;
     private SharedPreferences mSharedPreferences;
 
     private int mLastSelectedSideId;
-    private boolean mSelectedWallpaperBg;
     private String mSideTitle;
 
     private AbsPSharedPreference(Context context) {
@@ -33,13 +31,6 @@ public class AbsPSharedPreference {
             mLastSelectedSideId = 0;
         } else {
             mLastSelectedSideId = Integer.parseInt(id);
-        }
-
-        String bg = mSharedPreferences.getString(NAME_SELECTED_WALLPAPER_BG, String.valueOf(true));
-        if (TextUtils.isEmpty(bg)) {
-            mSelectedWallpaperBg = true;
-        } else {
-            mSelectedWallpaperBg = Boolean.parseBoolean(bg);
         }
 
         String defaultTitle = res.getString(R.string.wisdom);
@@ -69,15 +60,6 @@ public class AbsPSharedPreference {
 
     public int getLastSelectedSideId(int defaultValue) {
         return mLastSelectedSideId;
-    }
-
-    public void saveSelectedWallpaperBg(boolean value) {
-        mSelectedWallpaperBg = value;
-        mSharedPreferences.edit().putString(NAME_SELECTED_WALLPAPER_BG, String.valueOf(value)).apply();
-    }
-
-    public boolean getSelectedWallpaperBg() {
-        return mSelectedWallpaperBg;
     }
 
     public void saveSideTitle(String title) {

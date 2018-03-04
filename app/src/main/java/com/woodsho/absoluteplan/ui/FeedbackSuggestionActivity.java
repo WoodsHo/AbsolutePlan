@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.skinloader.SkinBaseActivity;
 import com.woodsho.absoluteplan.skinloader.SkinManager;
+import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.utils.StatusBarUtil;
 
 public class FeedbackSuggestionActivity extends SkinBaseActivity {
@@ -70,6 +71,8 @@ public class FeedbackSuggestionActivity extends SkinBaseActivity {
             public void onClick(View v) {
                 Uri uri = Uri.parse("mailto:woodsho@163.com");
                 Intent it = new Intent(Intent.ACTION_SENDTO, uri);
+                String text = "APP名字: " + getResources().getString(R.string.app_name) + "\n" + "版本号：" + CommonUtil.getVersionName(getApplicationContext()) + "\n";
+                it.putExtra(Intent.EXTRA_TEXT, text); // 正文
                 startActivity(it);
             }
         });

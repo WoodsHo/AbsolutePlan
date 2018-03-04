@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +15,6 @@ import com.woodsho.absoluteplan.MainActivity;
 import com.woodsho.absoluteplan.R;
 import com.woodsho.absoluteplan.adapter.TomorrowAdapter;
 import com.woodsho.absoluteplan.bean.PlanTask;
-import com.woodsho.absoluteplan.common.WallpaperBgManager;
-import com.woodsho.absoluteplan.listener.IWallpaperBgUpdate;
 import com.woodsho.absoluteplan.presenter.TomorrowPresenter;
 import com.woodsho.absoluteplan.utils.CommonUtil;
 import com.woodsho.absoluteplan.widget.CommonRecyclerView;
@@ -28,7 +25,7 @@ import java.util.List;
  * Created by hewuzhao on 17/12/10.
  */
 
-public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.OnItemClickListener, IWallpaperBgUpdate {
+public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.OnItemClickListener {
     public TomorrowAdapter mTomorrowAdapter;
     public TomorrowPresenter mTomorrowPresenter;
     private CommonRecyclerView mRecyclerView;
@@ -72,12 +69,6 @@ public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.On
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        WallpaperBgManager.getInstance().attach(this);
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         if (mTomorrowPresenter != null) {
@@ -88,12 +79,11 @@ public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.On
             mTomorrowAdapter.removeOnItemClickListener();
             mTomorrowAdapter.releaseActivity();
         }
-        WallpaperBgManager.getInstance().detach(this);
     }
 
     @Override
     public void onDeleteItemClick(PlanTask task) {
-        mTomorrowAdapter.removeItem(task);
+
     }
 
     @Override
@@ -102,13 +92,5 @@ public class TomorrowFragment extends BaseFragment implements TomorrowAdapter.On
         intent.putExtra(PlanTaskDetailsActivity.KEY_PLANTASK, task);
         intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_MODIFY);
         startActivity(intent);
-    }
-
-    @Override
-    public void onWallpaperBgUpdate() {
-        Log.d(TAG, "tomorrow fragment, recycl: " + mRecyclerView);
-        if (mRecyclerView != null) {
-            mRecyclerView.updateBackground();
-        }
     }
 }

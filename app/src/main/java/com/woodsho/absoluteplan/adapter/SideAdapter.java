@@ -65,12 +65,12 @@ public class SideAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View v) {
                 if (mLastClickedViewHolder != null && mLastClickedSideItem != null) {
-                    //mLastClickedViewHolder.itemView.setBackground(mContext.getDrawable(R.color.black_10));
-                    mLastClickedViewHolder.mTitle.setTextColor(skinManager.getColor(R.color.white));
-                    mLastClickedViewHolder.mCount.setTextColor(skinManager.getColor(R.color.white));
+//                    mLastClickedViewHolder.itemView.setBackground(mContext.getDrawable(R.color.transparent));
+                    mLastClickedViewHolder.mTitle.setTextColor(skinManager.getColor(R.color.black));
+                    mLastClickedViewHolder.mCount.setTextColor(skinManager.getColor(R.color.black));
                     mLastClickedViewHolder.mIcon.setImageResource(mLastClickedSideItem.iconId);
                 }
-                //v.setBackground(mContext.getDrawable(R.color.side_selected_item_bg_color));
+//                v.setBackground(mContext.getDrawable(R.color.side_selected_item_bg_color));
                 sideViewHolder.mTitle.setTextColor(skinManager.getColor(R.color.colorPrimary));
                 sideViewHolder.mCount.setTextColor(skinManager.getColor(R.color.colorPrimary));
                 sideViewHolder.mIcon.setImageDrawable(skinManager.getDrawable(getSelectedDrawableResId(sideItem.iconId, res)));
@@ -83,16 +83,16 @@ public class SideAdapter extends RecyclerView.Adapter {
             }
         });
         if (sideItem.id == mInitSelectedSideId) {
-            //sideViewHolder.itemView.setBackground(mContext.getDrawable(R.color.side_selected_item_bg_color));
+//            sideViewHolder.itemView.setBackground(mContext.getDrawable(R.color.side_selected_item_bg_color));
             mLastClickedViewHolder = sideViewHolder;
             mLastClickedSideItem = sideItem;
             sideViewHolder.mTitle.setTextColor(skinManager.getColor(R.color.colorPrimary));
             sideViewHolder.mCount.setTextColor(skinManager.getColor(R.color.colorPrimary));
             sideViewHolder.mIcon.setImageDrawable(skinManager.getDrawable(getSelectedDrawableResId(sideItem.iconId, res)));
         } else {
-            //sideViewHolder.itemView.setBackground(mContext.getDrawable(R.color.black_10));
-            sideViewHolder.mTitle.setTextColor(skinManager.getColor(R.color.white));
-            sideViewHolder.mCount.setTextColor(skinManager.getColor(R.color.white));
+//            sideViewHolder.itemView.setBackground(mContext.getDrawable(R.color.transparent));
+            sideViewHolder.mTitle.setTextColor(skinManager.getColor(R.color.black));
+            sideViewHolder.mCount.setTextColor(skinManager.getColor(R.color.black));
             sideViewHolder.mIcon.setImageResource(sideItem.iconId);
         }
         sideViewHolder.mTitle.setText(sideItem.title);

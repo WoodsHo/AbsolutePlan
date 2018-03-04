@@ -5,15 +5,12 @@ import android.content.res.TypedArray;
 import android.preference.SwitchPreference;
 import android.support.v7.widget.SwitchCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.woodsho.absoluteplan.R;
-import com.woodsho.absoluteplan.common.AbsPSharedPreference;
-import com.woodsho.absoluteplan.common.WallpaperBgManager;
 
 /**
  * Created by hewuzhao on 17/12/21.
@@ -63,14 +60,11 @@ public class AbsPlanSwitchPreference extends SwitchPreference {
             public void onClick(View v) {
                 boolean newValue = !mSwitchCompat.isChecked();
                 mSwitchCompat.setChecked(newValue);
-                AbsPSharedPreference.getInstanc().saveSelectedWallpaperBg(newValue);
-                WallpaperBgManager.getInstance().notifyWallpaperBgUpdate();
-                Log.d(TAG, "reset new value: " + newValue);
             }
         });
         TextView title = (TextView) view.findViewById(R.id.settings_switchpreference_title);
         mSwitchCompat = (SwitchCompat) view.findViewById(R.id.settings_switchpreference_switch);
-        mSwitchCompat.setChecked(AbsPSharedPreference.getInstanc().getSelectedWallpaperBg());
+        mSwitchCompat.setChecked(true);
         title.setText(mTitle);
         TextView summary = (TextView) view.findViewById(R.id.settings_switchpreference_summary);
         summary.setText(mSummary);

@@ -34,7 +34,7 @@ import com.woodsho.absoluteplan.utils.CommonUtil;
 public class WXShare {
     public static final String TAG = "WXShare";
 
-    public static final String APP_ID = "wx1fbcf4791a36d519";
+    public static final String APP_ID = "your_weixin_app_key";
     public static final String ACTION_SHARE_RESPONSE = "action_wx_share_response";
     public static final String EXTRA_RESULT = "result";
     private static final int TIMELINE_SUPPORTED_VERSION = 0x21020001;
@@ -165,8 +165,6 @@ public class WXShare {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(2);
 
-        float offset = 6;
-
         //外圈
         paper.drawRect(new Rect(
                 (int) (padding),
@@ -174,35 +172,6 @@ public class WXShare {
                 (int) (bitmapWidth - padding),
                 (int) (bitmapHeight - padding * 4)), mPaint);
 
-        //左上角小正方形
-//        paper.drawRect(new Rect(
-//                (int) (padding - offset),
-//                (int) (padding * 2 - offset),
-//                (int) (padding),
-//                (int) (padding * 2)), mPaint);
-//
-//        //右上角小正方形
-//        paper.drawRect(new Rect((int) (bitmapWidth - padding),
-//                        (int) (padding * 2 - offset),
-//                        (int) (bitmapWidth - padding + offset), (int) (padding * 2)),
-//                mPaint);
-//
-//        //左下角小正方形
-//        paper.drawRect(new Rect((int) (padding - offset),
-//                (int) (bitmapHeight - padding * 4), (int) (padding),
-//                (int) (bitmapHeight - padding * 4 + offset)), mPaint);
-//
-//        //右下角小正方形
-//        paper.drawRect(new Rect((int) (bitmapWidth - padding),
-//                (int) (bitmapHeight - padding * 4), (int) (bitmapWidth
-//                - padding + offset),
-//                (int) (bitmapHeight - padding * 4 + offset)), mPaint);
-//
-//        //内圈
-//        paper.drawRect(new Rect((int) (padding + offset),
-//                (int) (padding * 2 + offset),
-//                (int) (bitmapWidth - padding - offset), (int) (bitmapHeight
-//                - padding * 4 - offset)), mPaint);
         int rectSize = 35;
         int rectPadding = 15;
 
@@ -235,13 +204,11 @@ public class WXShare {
         fromTextPaint.setTextSize(res.getDimensionPixelSize(R.dimen.text_size_10));
         fromTextPaint.setStyle(Paint.Style.FILL);
         fromTextPaint.setAntiAlias(true);
-        StaticLayout fromLayout = new StaticLayout("来自：Abs计划",
+        StaticLayout fromLayout = new StaticLayout("来自：记下",
                 fromTextPaint, (int) (bitmapWidth - padding * 2),
                 Layout.Alignment.ALIGN_OPPOSITE, 1.0F, 0.0F, true);
         paper.translate(padding, bitmapHeight - padding * 3);
         fromLayout.draw(paper);
-
-
 
         return bitmap;
     }

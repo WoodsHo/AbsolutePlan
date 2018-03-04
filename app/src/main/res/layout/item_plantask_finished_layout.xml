@@ -9,7 +9,7 @@
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardBackgroundColor="@color/item_bg_finished"
     card_view:cardCornerRadius="4dp"
-    card_view:cardElevation="0dp"
+    card_view:cardElevation="2dp"
     card_view:cardUseCompatPadding="true">
 
     <com.mcxtzhang.swipemenulib.SwipeMenuLayout

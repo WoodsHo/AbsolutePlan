@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignWithParentIfMissing="true"
-    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -104,7 +103,9 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            android:background="@color/common_bg_color"
+            android:paddingTop="10dp" />
 
     </com.necer.ncalendar.calendar.NCalendar>
 

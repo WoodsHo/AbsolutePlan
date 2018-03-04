@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/settings_bg_color"
+    android:background="@color/about_activity_bg_color"
     android:fitsSystemWindows="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
@@ -23,7 +23,7 @@
         android:layout_below="@id/logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
-        android:text="Abs计划(绝对计划)"
+        android:text="@string/app_name"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_16" />
 

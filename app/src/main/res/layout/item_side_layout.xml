@@ -5,25 +5,24 @@
     android:layout_marginTop="10dp"
     android:background="@drawable/item_side_bg_selector"
     android:paddingEnd="7dp"
-    android:paddingStart="10dp">
+    android:paddingStart="20dp">
 
     <ImageView
         android:id="@+id/side_item_icon"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:scaleType="center"
-        android:layout_centerVertical="true" />
+        android:layout_width="17dp"
+        android:layout_height="17dp"
+        android:layout_centerVertical="true"
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/side_item_title"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginStart="26dp"
+        android:layout_marginStart="22dp"
         android:layout_toEndOf="@+id/side_item_icon"
         android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_14"
-        android:textStyle="bold" />
+        android:textColor="@color/side_text_normal_color"
+        android:textSize="@dimen/text_size_14" />
 
     <TextView
         android:id="@+id/side_item_count"
@@ -31,7 +30,6 @@
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_12"
-        android:textStyle="bold" />
+        android:textColor="@color/side_text_normal_color"
+        android:textSize="@dimen/text_size_12" />
 </RelativeLayout>

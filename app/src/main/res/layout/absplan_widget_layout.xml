@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/widget_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/widget_title_bg">
+
+        <TextView
+            android:id="@+id/widget_name_app"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:layout_marginStart="18dp"
+            android:text="记下"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16" />
+
+        <ImageView
+            android:id="@+id/widget_add_plantask"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="15dp"
+            android:scaleType="fitCenter"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_widget_add" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/widget_listview"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/widget_title" />
+
+    <RelativeLayout
+        android:id="@+id/widget_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/widget_title"
+        android:visibility="invisible"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/empty_ic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_empty" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/empty_ic"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="没有任务呢，点击右上角添加任务吧!"
+            android:textColor="#a7a7a7"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</RelativeLayout>

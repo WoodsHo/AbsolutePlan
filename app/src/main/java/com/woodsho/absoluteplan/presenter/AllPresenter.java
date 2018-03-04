@@ -6,6 +6,7 @@ import android.os.Looper;
 import com.woodsho.absoluteplan.bean.PlanTask;
 import com.woodsho.absoluteplan.data.CachePlanTaskStore;
 import com.woodsho.absoluteplan.ui.AllFragment;
+import com.woodsho.absoluteplan.utils.CommonUtil;
 
 import java.util.List;
 
@@ -29,8 +30,7 @@ public class AllPresenter implements CachePlanTaskStore.OnPlanTaskChangedListene
         CachePlanTaskStore planTaskStore = CachePlanTaskStore.getInstance();
         if (planTaskStore.isPlanTaskInitializedFinished()) {
             mIsDataInited = true;
-            List<PlanTask> planTaskList = planTaskStore.getCachePlanTaskList();
-            mAllFragment.loadDataSuccess(planTaskList);
+            mAllFragment.loadDataSuccess(CommonUtil.getNormalPlanTaskList());
         } else {
             mIsDataInited = false;
         }
@@ -43,7 +43,7 @@ public class AllPresenter implements CachePlanTaskStore.OnPlanTaskChangedListene
             public void run() {
                 if (mAllFragment != null && mAllFragment.isAdded()) {
                     //if (!mIsDataInited) {
-                    mAllFragment.loadDataSuccess(CachePlanTaskStore.getInstance().getCachePlanTaskList());
+                    mAllFragment.loadDataSuccess(CommonUtil.getNormalPlanTaskList());
                     //}
                 }
             }

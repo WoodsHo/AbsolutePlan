@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/settings_bg_color"
+    android:background="@color/skin_activity_bg_color"
     android:fitsSystemWindows="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
@@ -11,6 +11,6 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/skin_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

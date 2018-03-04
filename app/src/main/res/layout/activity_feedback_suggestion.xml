@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/settings_bg_color"
+    android:background="@color/feedback_suggestion_activity_bg_color"
     android:fitsSystemWindows="true"
     android:paddingEnd="10dp"
     android:paddingStart="10dp"
@@ -71,7 +71,7 @@
             android:layout_marginStart="15dp"
             android:layout_toEndOf="@id/email_divide"
             android:gravity="center"
-            android:text="WoodsHo@163.com (点击跳转邮箱)"
+            android:text="woodsho@163.com (点击跳转邮箱)"
             android:textColor="@color/black" />
     </RelativeLayout>
 

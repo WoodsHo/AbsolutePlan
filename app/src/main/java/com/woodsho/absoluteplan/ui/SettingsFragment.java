@@ -20,7 +20,6 @@ import com.woodsho.absoluteplan.skinloader.SkinInflaterFactory;
 import com.woodsho.absoluteplan.skinloader.SkinManager;
 import com.woodsho.absoluteplan.widget.AbsPlanPreference;
 import com.woodsho.absoluteplan.widget.AbsPlanPreferenceCategory;
-import com.woodsho.absoluteplan.widget.AbsPlanSwitchPreference;
 
 import java.util.List;
 
@@ -38,7 +37,6 @@ public class SettingsFragment extends PreferenceFragment implements IDynamicNewV
     public AbsPlanPreference mFeedbackSuggestionPreference;
     public AbsPlanPreferenceCategory mPreferencePreferenceCategory;
     public AbsPlanPreferenceCategory mServiceSupportPreferenceCategory;
-    public AbsPlanSwitchPreference mWallpaperBgPreference;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,14 +47,13 @@ public class SettingsFragment extends PreferenceFragment implements IDynamicNewV
         mAboutPreference = (AbsPlanPreference) findPreference(getString(R.string.key_settings_about));
         mSkinPreference = (AbsPlanPreference) findPreference(getString(R.string.key_settings_skin));
         mFeedbackSuggestionPreference = (AbsPlanPreference) findPreference(getString(R.string.key_settings_feedback_suggestion));
-        mWallpaperBgPreference = (AbsPlanSwitchPreference) findPreference(getString(R.string.key_settings_wallpaper_bg));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(getActivity().getLayoutInflater(), container, savedInstanceState);
         if (view != null) {
-            dynamicAddView(view, "background", R.color.settings_bg_color, true);
+            dynamicAddView(view, "background", R.color.setting_activity_bg_color, true);
         }
         return view;
     }

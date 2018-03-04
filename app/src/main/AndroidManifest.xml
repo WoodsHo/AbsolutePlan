@@ -47,8 +47,19 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".ui.PlanTaskDetailsActivity" />
+        <service
+            android:name=".service.WidgetRemoteViewServiceImp"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
+        <activity
+            android:name=".ui.PlanTaskDetailsActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.woodsho.absoluteplan.action.PLANTASKDETAILSACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.SettingsActivity" />
 
         <activity android:name=".ui.FeedbackSuggestionActivity" />
@@ -75,6 +86,33 @@
             android:theme="@style/AppTheme.Fullscreen.Translucent" />
 
         <activity android:name=".ui.SideTitleActivity" />
+
+        <receiver
+            android:name=".ui.AbsPlanWidgetProvider"
+            android:exported="true">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/absplan_widget_provider" />
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.woodsho.absoluteplan.action.APPWIDGET.ADD_PLANTASK_CLICK" />
+                <action android:name="com.woodsho.absoluteplan.action.APPWIDGET.LISTVIEW_ITEM_CLICK" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".ui.AbsPlanWidgetProvider4x3"
+            android:exported="true">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/absplan_widget_provider_4x3" />
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.woodsho.absoluteplan.action.APPWIDGET.ADD_PLANTASK_CLICK_4x3" />
+                <action android:name="com.woodsho.absoluteplan.action.APPWIDGET.LISTVIEW_ITEM_CLICK_4x3" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

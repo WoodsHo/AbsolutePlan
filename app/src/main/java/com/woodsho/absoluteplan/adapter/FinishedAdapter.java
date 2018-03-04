@@ -43,6 +43,8 @@ public class FinishedAdapter extends RecyclerView.Adapter {
     private static final int PLANTASK_TYPE_EMPTY = 1;
     private static final int PLANTASK_TYPE_HEADER = 2;
 
+    private boolean mIsDeleteAble = true;
+
     private Context mContext;
     private List<PlanTask> mFinishedPlanTaskList;
     private FinishedAdapter.OnItemClickListener mOnItemClickListener;
@@ -58,6 +60,7 @@ public class FinishedAdapter extends RecyclerView.Adapter {
 
     public interface OnItemClickListener {
         void onDeleteItemClick(PlanTask task);
+
         void onContentItemClick(PlanTask task);
     }
 
@@ -80,9 +83,9 @@ public class FinishedAdapter extends RecyclerView.Adapter {
         }
         if (viewType == PLANTASK_TYPE_FINISHED) {
             return new PlanTaskFinishedViewHolder(inflater.inflate(R.layout.item_plantask_finished_layout, parent, false));
-        } else if (viewType == PLANTASK_TYPE_EMPTY){
+        } else if (viewType == PLANTASK_TYPE_EMPTY) {
             return new PlanTaskEmptyViewHolder(inflater.inflate(R.layout.empty_layout, parent, false));
-        } else if (viewType == PLANTASK_TYPE_HEADER){
+        } else if (viewType == PLANTASK_TYPE_HEADER) {
             return new PlanTaskHeaderViewHolder(inflater.inflate(R.layout.item_plantask_header_layout, parent, false));
         } else {
             Log.e(TAG, "error viewType: " + viewType);
@@ -91,11 +94,12 @@ public class FinishedAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         Resources res = mContext.getResources();
         if (holder instanceof PlanTaskFinishedViewHolder) {
             final PlanTaskFinishedViewHolder viewHolder = (PlanTaskFinishedViewHolder) holder;
-            final PlanTask planTask = mFinishedPlanTaskList.get(getRealPos().get(position));
+            final int realPos = getRealPos().get(position);
+            final PlanTask planTask = mFinishedPlanTaskList.get(realPos);
             viewHolder.mContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -110,8 +114,8 @@ public class FinishedAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     if (mOnItemClickListener != null) {
+                        removeItem(planTask, holder);
                         mOnItemClickListener.onDeleteItemClick(planTask);
-                        notifyItemRemoved(position);
                     }
                 }
             });
@@ -136,20 +140,19 @@ public class FinishedAdapter extends RecyclerView.Adapter {
             viewHolder.mCheckBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    updatePlanTaskState(planTask);
+                    updatePlanTaskState(planTask, holder);
                 }
             });
-        } else if (holder instanceof PlanTaskBottomViewHolder){
+        } else if (holder instanceof PlanTaskBottomViewHolder) {
 
         } else if (holder instanceof PlanTaskHeaderViewHolder) {
             PlanTaskHeaderViewHolder viewHolder = (PlanTaskHeaderViewHolder) holder;
             List<String> headers = getHeaders();
             int pso = getRealPos().get(position);
             String header = headers.get(pso);
-            String str = header.substring(0, header.length() - 1);
-            Spannable spanStrikethroughTitel = new SpannableString(str);
+            Spannable spanStrikethroughTitel = new SpannableString(header);
             StrikethroughSpan stSpan = new StrikethroughSpan();
-            spanStrikethroughTitel.setSpan(stSpan, 0, str.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            spanStrikethroughTitel.setSpan(stSpan, 0, header.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             viewHolder.mCardView.setCardBackgroundColor(res.getColor(R.color.item_bg_finished));
             viewHolder.mTextView.setTextColor(res.getColor(R.color.black_50));
             viewHolder.mTextView.setText(spanStrikethroughTitel);
@@ -299,58 +302,110 @@ public class FinishedAdapter extends RecyclerView.Adapter {
         distinguishData(planTasks);
     }
 
-    public void removeItem(PlanTask planTask) {
-        if (mFinishedPlanTaskList.remove(planTask)) {
-//            notifyDataSetChanged();
-        } else {
-            return;
+    public void removeItem(PlanTask planTask, RecyclerView.ViewHolder holder) {
+        if (mIsDeleteAble) {//此时为增加动画效果，刷新部分数据源，防止删除错乱
+            mIsDeleteAble = false;//初始值为true,当点击删除按钮以后，休息0.5秒钟再让他为
+
+            int pos = holder.getAdapterPosition();
+            int preViewType = getItemViewType(pos - 1);
+            int posViewType = -1;
+            if (pos < getItemCount() - 1) {
+                posViewType = getItemViewType(pos + 1);
+            }
+            mFinishedPlanTaskList.remove(planTask);//删除数据源
+
+            if (preViewType == PLANTASK_TYPE_FINISHED) {
+                notifyItemRemoved(pos);//刷新被删除的地方
+                notifyItemRangeChanged(pos, getItemCount()); //刷新被删除数据，以及其后面的数据
+            } else {
+                if (posViewType == -1) {
+                    notifyItemRangeRemoved(pos - 1, 2);//刷新被删除的地方
+                } else if (posViewType == PLANTASK_TYPE_FINISHED) {
+                    notifyItemRemoved(pos);//刷新被删除的地方
+                    notifyItemRangeChanged(pos, getItemCount()); //刷新被删除数据，以及其后面的数据
+                } else if (posViewType == PLANTASK_TYPE_HEADER) {
+                    notifyItemRangeRemoved(pos - 1, 2);//刷新被删除的地方
+                    notifyItemRangeChanged(pos - 1, getItemCount()); //刷新被删除数据，以及其后面的数据
+                }
+            }
+
+            CachePlanTaskStore planTaskStore = CachePlanTaskStore.getInstance();
+            planTaskStore.removePlanTask(planTask, true);
+
+            Intent intent = new Intent(mContext, UserActionService.class);
+            intent.setAction(UserActionService.INTENT_ACTION_REMOVE_ONE_PLANTASK);
+            intent.putExtra(UserActionService.EXTRA_PLANTASK, planTask);
+            Log.d(TAG, "removeItem , start intent service: UserActionService");
+            mContext.startService(intent);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(120);//休息
+                        mIsDeleteAble = true;//可点击按钮
+                    } catch (Exception ex) {
+                        Log.e(TAG, "ex: " + ex);
+                    }
+                }
+            }).start();
         }
-        CachePlanTaskStore.getInstance().removePlanTask(planTask, true);
-        Intent intent = new Intent(mContext, UserActionService.class);
-        intent.setAction(UserActionService.INTENT_ACTION_REMOVE_ONE_PLANTASK);
-        intent.putExtra(UserActionService.EXTRA_PLANTASK, planTask);
-        Log.d(TAG, "removeItem , start intent service: UserActionService");
-        mContext.startService(intent);
     }
 
-    private void updatePlanTaskState(final PlanTask planTask) {
-        CachePlanTaskStore planTaskStore = CachePlanTaskStore.getInstance();
-        switch (planTask.state) {
-            case PlanTaskState.STATE_FINISHED:
-                planTask.state = PlanTaskState.STATE_NORMAL;
-                mFinishedPlanTaskList.remove(planTask);
-                break;
-            default:
-                Log.e(TAG, "error state: " + planTask.state);
-                return;
-        }
+    private void updatePlanTaskState(final PlanTask planTask, RecyclerView.ViewHolder holder) {
+        if (mIsDeleteAble) {//此时为增加动画效果，刷新部分数据源，防止删除错乱
+            mIsDeleteAble = false;//初始值为true,当点击删除按钮以后，休息0.5秒钟再让他为
 
-        if (mFinishedPlanTaskList.size() > 0) {
-            Collections.sort(mFinishedPlanTaskList,  new Comparator<Object>() {
-                @Override
-                public int compare(Object o1, Object o2) {
-                    if (o1 instanceof PlanTask && o2 instanceof PlanTask) {
-                        PlanTask task1 = (PlanTask) o1;
-                        PlanTask task2 = (PlanTask) o2;
-                        return task1.time > task2.time ? 1 : -1;
-                    }
-                    return 0;
+            int pos = holder.getAdapterPosition();
+            int preViewType = getItemViewType(pos - 1);
+            int posViewType = -1;
+            if (pos < getItemCount() - 1) {
+                posViewType = getItemViewType(pos + 1);
+            }
+            mFinishedPlanTaskList.remove(planTask);//删除数据源
+            planTask.state = PlanTaskState.STATE_NORMAL;
+
+            if (preViewType == PLANTASK_TYPE_FINISHED) {
+                notifyItemRemoved(pos);//刷新被删除的地方
+                notifyItemRangeChanged(pos, getItemCount()); //刷新被删除数据，以及其后面的数据
+            } else {
+                if (posViewType == -1) {
+                    notifyItemRangeRemoved(pos - 1, 2);//刷新被删除的地方
+                } else if (posViewType == PLANTASK_TYPE_FINISHED) {
+                    notifyItemRemoved(pos);//刷新被删除的地方
+                    notifyItemRangeChanged(pos, getItemCount()); //刷新被删除数据，以及其后面的数据
+                } else if (posViewType == PLANTASK_TYPE_HEADER) {
+                    notifyItemRangeRemoved(pos - 1, 2);//刷新被删除的地方
+                    notifyItemRangeChanged(pos - 1, getItemCount()); //刷新被删除数据，以及其后面的数据
                 }
-            });
-        }
-        notifyDataSetChanged();
+            }
 
-        planTaskStore.updatePlanTaskState(planTask, true);
-        Intent intent = new Intent(mContext, UserActionService.class);
-        intent.setAction(UserActionService.INTENT_ACTION_UPDATE_ONE_PLANTASK_STATE);
-        intent.putExtra(UserActionService.EXTRA_PLANTASK, planTask);
-        Log.d(TAG, "updatePlanTaskState , start intent service: UserActionService");
-        mContext.startService(intent);
+            CachePlanTaskStore planTaskStore = CachePlanTaskStore.getInstance();
+            planTaskStore.updatePlanTaskState(planTask, true);
+            Intent intent = new Intent(mContext, UserActionService.class);
+            intent.setAction(UserActionService.INTENT_ACTION_UPDATE_ONE_PLANTASK_STATE);
+            intent.putExtra(UserActionService.EXTRA_PLANTASK, planTask);
+            Log.d(TAG, "updatePlanTaskState , start intent service: UserActionService");
+            mContext.startService(intent);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(120);//休息
+                        mIsDeleteAble = true;//可点击按钮
+                    } catch (Exception ex) {
+                        Log.e(TAG, "ex: " + ex);
+                    }
+                }
+            }).start();
+        }
     }
 
     private void distinguishData(List<PlanTask> planTasks) {
-        mFinishedPlanTaskList.clear();
+
         if (planTasks == null || planTasks.size() <= 0) {
+            mFinishedPlanTaskList.clear();
             notifyDataSetChanged();
             return;
         }
@@ -358,21 +413,45 @@ public class FinishedAdapter extends RecyclerView.Adapter {
         Collections.sort(planTasks, new Comparator<Object>() {
             @Override
             public int compare(Object o1, Object o2) {
-                if (o1 instanceof PlanTask && o2 instanceof PlanTask) {
-                    PlanTask task1 = (PlanTask) o1;
-                    PlanTask task2 = (PlanTask) o2;
-                    return task1.time < task2.time ? 1 : -1;
-                }
-                return 0;
+                return sortByTime(o1, o2);
             }
         });
 
-        for (int i = 0; i < planTasks.size(); i++) {
-            PlanTask planTask = planTasks.get(i);
-            if (planTask.state == PlanTaskState.STATE_FINISHED) {
-                mFinishedPlanTaskList.add(planTask);
+        if (CommonUtil.isTheSame(planTasks, mFinishedPlanTaskList)) {
+            return;
+        }
+        mFinishedPlanTaskList.clear();
+
+        mFinishedPlanTaskList = planTasks;
+        notifyDataSetChanged();
+    }
+
+    private int sortByTime(Object o1, Object o2) {
+        if (o1 instanceof PlanTask && o2 instanceof PlanTask) {
+            PlanTask task1 = (PlanTask) o1;
+            PlanTask task2 = (PlanTask) o2;
+            if (CommonUtil.isToday(task1.time)) {
+                if (CommonUtil.isToday(task2.time)) {
+                    return task1.time < task2.time ? 1 : -1;
+                } else {
+                    return -1;
+                }
+            } else if (CommonUtil.isTomorrow(task1.time)) {
+                if (CommonUtil.isToday(task2.time)) {
+                    return 1;
+                } else if (CommonUtil.isTomorrow(task2.time)) {
+                    return task1.time < task2.time ? 1 : -1;
+                } else {
+                    return -1;
+                }
+            } else {
+                if (CommonUtil.isToday(task2.time) || CommonUtil.isTomorrow(task2.time)) {
+                    return 1;
+                } else {
+                    return task1.time < task2.time ? 1 : -1;
+                }
             }
         }
-        notifyDataSetChanged();
+        return 0;
     }
 }
