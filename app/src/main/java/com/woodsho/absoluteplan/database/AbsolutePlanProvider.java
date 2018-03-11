@@ -107,15 +107,21 @@ public class AbsolutePlanProvider extends ContentProvider {
     private Uri insertValues(Uri uri, String table, ContentValues values) {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         long id = -1;
+        Uri newUri = null;
+        db.beginTransaction();
         try {
             id = db.insert(table, null, values);
+            if (id > 0) {
+                newUri = ContentUris.withAppendedId(uri, id);
+                resolver.notifyChange(newUri, null);
+            }
+            db.setTransactionSuccessful();
         } catch (Exception ex) {
             throw new SQLiteException("Failed to insert row into: " + ex);
+        } finally {
+            db.endTransaction();
         }
-
-        if (id > 0) {
-            Uri newUri = ContentUris.withAppendedId(uri, id);
-            resolver.notifyChange(newUri, null);
+        if (newUri != null) {
             return newUri;
         }
         throw new SQLiteException("Failed to insert row into " + uri);
@@ -132,7 +138,7 @@ public class AbsolutePlanProvider extends ContentProvider {
             results = super.applyBatch(operations);
             db.setTransactionSuccessful();
         } catch (Exception ex) {
-            Log.e(TAG, "" + ex);
+            Log.e(TAG, "ex: " + ex);
         } finally {
             db.endTransaction();
         }
@@ -146,22 +152,31 @@ public class AbsolutePlanProvider extends ContentProvider {
         long id = 0;
         String newSelection = null;
 
-        switch (uriMatcher.match(uri)) {
-            case MATCH_PLANTASK:
-                count = db.delete(AbsolutePlanDBHelper.DB_TABLE_PLANTASK, selection, selectionArgs);
-                break;
-            case MATCH_PLANTASK_ID:
-                id = ContentUris.parseId(uri);
-                newSelection = AbsolutePlanContract.PlanTask.TASK_ID + "=" + id;
-                if (selection != null && !selection.equals("")) {
-                    newSelection = newSelection + " and " + selection;
-                }
-                count = db.delete(AbsolutePlanDBHelper.DB_TABLE_PLANTASK, newSelection, selectionArgs);
-                break;
-            default:
-                throw new IllegalArgumentException("Error Uri: " + uri);
+        db.beginTransaction();
+        try {
+            switch (uriMatcher.match(uri)) {
+                case MATCH_PLANTASK:
+                    count = db.delete(AbsolutePlanDBHelper.DB_TABLE_PLANTASK, selection, selectionArgs);
+                    break;
+                case MATCH_PLANTASK_ID:
+                    id = ContentUris.parseId(uri);
+                    newSelection = AbsolutePlanContract.PlanTask.TASK_ID + "=" + id;
+                    if (selection != null && !selection.equals("")) {
+                        newSelection = newSelection + " and " + selection;
+                    }
+                    count = db.delete(AbsolutePlanDBHelper.DB_TABLE_PLANTASK, newSelection, selectionArgs);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Error Uri: " + uri);
+            }
+            resolver.notifyChange(uri, null);
+            db.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Log.e(TAG, "ex: " + ex);
+        } finally {
+            db.endTransaction();
         }
-        resolver.notifyChange(uri, null);
+
         return count;
     }
 
@@ -172,22 +187,31 @@ public class AbsolutePlanProvider extends ContentProvider {
         long id = 0;
         String newSelection = null;
 
-        switch (uriMatcher.match(uri)) {
-            case MATCH_PLANTASK:
-                count = db.update(AbsolutePlanDBHelper.DB_TABLE_PLANTASK, values, selection, selectionArgs);
-                break;
-            case MATCH_PLANTASK_ID:
-                id = ContentUris.parseId(uri);
-                newSelection = AbsolutePlanContract.PlanTask.TASK_ID + " = " + id;
-                if (selection != null && !selection.equals("")) {
-                    newSelection = newSelection + " and " + selection;
-                }
-                count = db.update(AbsolutePlanDBHelper.DB_TABLE_PLANTASK, values, newSelection, selectionArgs);
-                break;
-            default:
-                throw new IllegalArgumentException("Error Uri:" + uri);
+        db.beginTransaction();
+        try {
+            switch (uriMatcher.match(uri)) {
+                case MATCH_PLANTASK:
+                    count = db.update(AbsolutePlanDBHelper.DB_TABLE_PLANTASK, values, selection, selectionArgs);
+                    break;
+                case MATCH_PLANTASK_ID:
+                    id = ContentUris.parseId(uri);
+                    newSelection = AbsolutePlanContract.PlanTask.TASK_ID + " = " + id;
+                    if (selection != null && !selection.equals("")) {
+                        newSelection = newSelection + " and " + selection;
+                    }
+                    count = db.update(AbsolutePlanDBHelper.DB_TABLE_PLANTASK, values, newSelection, selectionArgs);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Error Uri:" + uri);
+            }
+            resolver.notifyChange(uri, null);
+            db.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Log.e(TAG, "ex: " + ex);
+        } finally {
+            db.endTransaction();
         }
-        resolver.notifyChange(uri, null);
+
         return count;
     }
 }

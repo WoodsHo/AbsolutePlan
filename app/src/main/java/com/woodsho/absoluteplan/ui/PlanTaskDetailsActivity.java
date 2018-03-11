@@ -61,13 +61,15 @@ import java.util.regex.Pattern;
  * Created by hewuzhao on 17/12/14.
  */
 
-public class PlanTaskDetailsActivity extends SkinBaseActivity {
+@SuppressLint("LongLogTag")
+public class PlanTaskDetailsActivity extends SkinBaseActivity implements View.OnClickListener {
     public static final String TAG = "PlanTaskDetailsActivity";
-    public static final String KEY_PLANTASK = "key_plantask";
+    public static final String KEY_EXTRA_PLANTASK = "key_extra_plantask";
+    public static final String KEY_EXTRA_SHOW_TYPE = "show_extra_type";
+    public static final String KEY_EXTRA_IS_TOMORROW = "key_extra_is_tomorrow";
+
     public static final String KEY_GUIDE_TIME = "guide_time";
     public static final String KEY_GUIDE_SAVE_PLANTASK = "guide_save_plantask";
-    public static final String KEY_SHOW_TYPE = "show_type";
-    public static final String KEY_IS_TOMORROW = "key_is_tomorrow";
 
     public static final String TAG_DATEPICKERDIALOG = "Datepickerdialog";
     public static final String TAG_TIMEPICKERDIALOG = "Timepickerdialog";
@@ -89,7 +91,6 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
     private Calendar mCalendar = Calendar.getInstance(Locale.CHINA);
 
     private ImageView mSave;
-    private ImageView mShare;
     private ImageView mList;
     private ImageView mList123;
 
@@ -97,11 +98,19 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
     public static final String TAG_LIST_123 = "1. ";
     public static final String TAG_LIST_SIGN = "●";
 
-    private boolean flag = false;
+    private boolean mFlag = false;
 
     private String mOriginTitle = "";
     private String mOriginContent = "";
     private long mOriginTime;
+
+    public static void startActivity(Context context, PlanTask planTask, boolean isTomorrow, int type) {
+        Intent intent = new Intent(context, PlanTaskDetailsActivity.class);
+        intent.putExtra(KEY_EXTRA_PLANTASK, planTask);
+        intent.putExtra(KEY_EXTRA_IS_TOMORROW, isTomorrow);
+        intent.putExtra(KEY_EXTRA_SHOW_TYPE, type);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +145,7 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
                 .setOnGuideChangedListener(new OnGuideChangedListener() {//add listener
                     @Override
                     public void onShowed(Controller controller) {
-                        //引导层显示
+
                     }
 
                     @Override
@@ -144,17 +153,15 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
                         mToolbarDate.callOnClick();
                     }
                 })
-                .setBackgroundColor(getResources().getColor(R.color.guide_bg_color))//设置引导层背景色，建议有透明度，默认背景色为：0xb2000000
-                .setEveryWhereCancelable(true)//设置点击任何区域消失，默认为true
-                .setLayoutRes(R.layout.guide_time_view_layout)//自定义的提示layout,第二个可变参数为点击隐藏引导层view的id
-                .alwaysShow(false)//是否每次都显示引导层，默认false
+                .setBackgroundColor(getResources().getColor(R.color.guide_bg_color))
+                .setEveryWhereCancelable(true)
+                .setLayoutRes(R.layout.guide_time_view_layout)
+                .alwaysShow(false)
                 .addHighLight(mToolbarDate)
                 .addHighLight(mToolbarTime)
                 .setLabel(KEY_GUIDE_TIME)
-                .build();//构建引导层的控制器
-        //controller.resetLabel(KEY_GUIDE_TIME);//重置该引导层为未显示过
-        //controller.remove();//移除引导层
-        controller.show();//显示引导层
+                .build();
+        controller.show();
     }
 
     private void showGuideSave() {
@@ -162,12 +169,12 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
                 .setOnGuideChangedListener(new OnGuideChangedListener() {
                     @Override
                     public void onShowed(Controller controller) {
-                        //when guide layer display
+
                     }
 
                     @Override
                     public void onRemoved(Controller controller) {
-                        //when guide layer dismiss
+
                     }
                 })
                 .setBackgroundColor(getResources().getColor(R.color.guide_bg_color))
@@ -181,7 +188,10 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
     }
 
     private void init() {
-        final Resources res = getResources();
+        Intent intent = getIntent();
+        mShowType = intent.getIntExtra(KEY_EXTRA_SHOW_TYPE, TYPE_NEW_BUILD);
+        mIntentPlanTask = intent.getParcelableExtra(KEY_EXTRA_PLANTASK);
+
         mHandler = new Handler();
         mToolbarTitle = (TextView) findViewById(R.id.head_plantaskdetails);
         mTitle = (EditText) findViewById(R.id.title_plantaskdetails);
@@ -211,197 +221,43 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
         mDescribe.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    mList.setClickable(true);
-                    mList123.setClickable(true);
-                    mList.setAlpha(1f);
-                    mList123.setAlpha(1f);
-                } else {
-                    mList.setClickable(false);
-                    mList123.setClickable(false);
-                    mList.setAlpha(0.5f);
-                    mList123.setAlpha(0.5f);
-                }
+                updateListBtState(hasFocus);
             }
         });
 
-        mDescribe.addTextChangedListener(new Watcher());
+        mDescribe.addTextChangedListener(new PlanTaskWatcher());
 
         mList = (ImageView) findViewById(R.id.list_plantaskdetails);
-        mList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                performList(TAG_LIST);
-            }
-        });
-
+        mList.setOnClickListener(this);
         mList123 = (ImageView) findViewById(R.id.list_123_plantaskdetails);
-        mList123.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                performList(TAG_LIST_123);
-            }
-        });
-
-        mList.setClickable(false);
-        mList123.setClickable(false);
-        mList.setAlpha(0.5f);
-        mList123.setAlpha(0.5f);
-
+        mList123.setOnClickListener(this);
+        updateListBtState(false);
         mSave = (ImageView) findViewById(R.id.save_plantaskdetails);
-
+        mSave.setOnClickListener(this);
         mBack = (ImageView) findViewById(R.id.back_plantaskdetails);
-        mBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSaveDialog();
-            }
-        });
+        mBack.setOnClickListener(this);
         mToolbarDate = (TextView) findViewById(R.id.date_plantaskdetails);
+        mToolbarDate.setOnClickListener(this);
         mToolbarTime = (TextView) findViewById(R.id.time_plantaskdetails);
-
-        mToolbarDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog dpd = DatePickerDialog.newInstance(
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int dayOfMonth) {
-                                mCalendar.set(Calendar.YEAR, year);
-                                mCalendar.set(Calendar.MONTH, month);
-                                mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                                setYearMonthDay();
-                                showGuideSave();
-                            }
-                        },
-                        mCalendar.get(Calendar.YEAR),
-                        mCalendar.get(Calendar.MONTH),
-                        mCalendar.get(Calendar.DAY_OF_MONTH)
-                );
-                dpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        showGuideSave();
-                    }
-                });
-                dpd.setThemeDark(false);
-                dpd.vibrate(false);
-                dpd.dismissOnPause(true);
-                dpd.showYearPickerFirst(false);
-                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
-                dpd.setAccentColor(SkinManager.getInstance().getColor(R.color.colorPrimary));
-                dpd.show(getFragmentManager(), TAG_DATEPICKERDIALOG);
-            }
-        });
-        mToolbarTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerDialog tpd = TimePickerDialog.newInstance(
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePickerDialog timePickerDialog, int hourOfDay, int minute, int second) {
-                                mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                                mCalendar.set(Calendar.MINUTE, minute);
-                                setHourMinute();
-                            }
-                        },
-                        mCalendar.get(Calendar.HOUR_OF_DAY),
-                        mCalendar.get(Calendar.MINUTE),
-                        true //24 hour
-                );
-                tpd.setThemeDark(false);
-                tpd.vibrate(false);
-                tpd.dismissOnPause(true);
-                tpd.enableSeconds(false);
-                tpd.setVersion(TimePickerDialog.Version.VERSION_2);
-                tpd.setAccentColor(SkinManager.getInstance().getColor(R.color.colorPrimary));
-                tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-
-                    }
-                });
-                tpd.show(getFragmentManager(), TAG_TIMEPICKERDIALOG);
-            }
-        });
-
-        Intent intent = getIntent();
-        mShowType = intent.getIntExtra(KEY_SHOW_TYPE, TYPE_NEW_BUILD);
-
-        mSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mShowType == TYPE_MODIFY) {
-                    mShowType = TYPE_NEW_BUILD;
-                    mToolbarTitle.setText("修改计划");
-                    mSave.setImageDrawable(res.getDrawable(R.drawable.ic_save_plantaskdetails));
-                    mTitle.setFocusable(true);
-                    mDescribe.setFocusable(true);
-                    mToolbarDate.setClickable(true);
-                    mToolbarTime.setClickable(true);
-                } else {
-                    savePlanTask();
-                    finish();
-                }
-            }
-        });
-
-        mShare = (ImageView) findViewById(R.id.share_plantaskdetails);
-        mShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean hasTitle = false;
-                boolean hasDescribe = false;
-                Intent intent = new Intent();
-                intent.setClass(PlanTaskDetailsActivity.this, ShareActivity.class);
-                if (mTitle != null) {
-                    String title = mTitle.getText().toString();
-                    if (!TextUtils.isEmpty(title) && !TextUtils.equals(title, "\"标题\"")) {
-                        intent.putExtra(ShareActivity.KEY_TITLE, title);
-                        hasTitle = true;
-                    }
-                }
-                if (mDescribe != null) {
-                    String describe = mDescribe.getText().toString();
-                    if (!TextUtils.isEmpty(describe) && !TextUtils.equals(describe, "\"描述\"")) {
-                        intent.putExtra(ShareActivity.KEY_CONTENT, describe);
-                        hasDescribe = true;
-                    }
-                }
-                if (!hasTitle && !hasDescribe) {
-                    Toast.makeText(getApplicationContext(), "没有内容可分享呢，添加内容先吧！", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                startActivity(intent);
-            }
-        });
+        mToolbarTime.setOnClickListener(this);
+        ImageView share = (ImageView) findViewById(R.id.share_plantaskdetails);
+        share.setOnClickListener(this);
 
         if (mShowType == TYPE_MODIFY) {
-            mToolbarTitle.setText("查看计划");
-            mSave.setImageDrawable(res.getDrawable(R.drawable.ic_modify_plantaskdetails));
-            mTitle.setFocusable(false);
-            mDescribe.setFocusable(false);
-            mToolbarDate.setClickable(false);
-            mToolbarTime.setClickable(false);
+            updateModifyState(false, "查看计划");
         } else {
-            mToolbarTitle.setText("新建计划");
-            mSave.setImageDrawable(res.getDrawable(R.drawable.ic_save_plantaskdetails));
-            mTitle.setFocusable(true);
-            mDescribe.setFocusable(true);
-            mToolbarDate.setClickable(true);
-            mToolbarTime.setClickable(true);
+            updateModifyState(true, "新建计划");
         }
-        PlanTask task = intent.getParcelableExtra(KEY_PLANTASK);
-        mIntentPlanTask = task;
-        if (task != null) {
-            mTitle.setText(task.title);
-            mOriginTitle = task.title;
-            mDescribe.setText(task.describe);
-            mOriginContent = task.describe;
-            mCalendar.setTime(new Date(task.time));
-            mOriginTime = task.time;
+
+        if (mIntentPlanTask != null) {
+            mTitle.setText(mIntentPlanTask.title);
+            mOriginTitle = mIntentPlanTask.title;
+            mDescribe.setText(mIntentPlanTask.describe);
+            mOriginContent = mIntentPlanTask.describe;
+            mCalendar.setTime(new Date(mIntentPlanTask.time));
+            mOriginTime = mIntentPlanTask.time;
         } else {
-            boolean isTomorrow = intent.getBooleanExtra(KEY_IS_TOMORROW, false);
+            boolean isTomorrow = intent.getBooleanExtra(KEY_EXTRA_IS_TOMORROW, false);
             if (isTomorrow) {
                 mCalendar.setTime(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24));
             }
@@ -409,6 +265,30 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
         }
         setYearMonthDay();
         setHourMinute();
+    }
+
+    private void updateModifyState(boolean canModify, String title) {
+        Resources res = getResources();
+        mToolbarTitle.setText(title);
+        mSave.setImageDrawable(canModify ? res.getDrawable(R.drawable.ic_save_plantaskdetails) : res.getDrawable(R.drawable.ic_modify_plantaskdetails));
+        mTitle.setFocusable(canModify);
+        mDescribe.setFocusable(canModify);
+        mToolbarDate.setClickable(canModify);
+        mToolbarTime.setClickable(canModify);
+    }
+
+    private void updateListBtState(boolean hasFocus) {
+        if (hasFocus) {
+            mList.setClickable(true);
+            mList123.setClickable(true);
+            mList.setAlpha(1f);
+            mList123.setAlpha(1f);
+        } else {
+            mList.setClickable(false);
+            mList123.setClickable(false);
+            mList.setAlpha(0.5f);
+            mList123.setAlpha(0.5f);
+        }
     }
 
     private void setYearMonthDay() {
@@ -447,7 +327,6 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
         return spannableString;
     }
 
-    @SuppressLint("LongLogTag")
     private void savePlanTask() {
         String title = mTitle.getText().toString();
         String describe = mDescribe.getText().toString();
@@ -547,40 +426,133 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
         }
     }
 
-    private class Watcher implements TextWatcher {
-
-        /**
-         * Before text changed.
-         *
-         * @param s     the s
-         * @param start the start 起始光标
-         * @param count the count 选择数量
-         * @param after the after 替换增加的文字数
-         */
-        @Override
-        public final void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            if (flag) return;
-            int end = start + count;
-            if (end > start && end <= s.length()) {
-                CharSequence charSequence = s.subSequence(start, end);
-                if (charSequence.length() > 0) {
-                    onSubText(s, charSequence, start);
-
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.list_plantaskdetails: {
+                performList(TAG_LIST);
+                break;
+            }
+            case R.id.list_123_plantaskdetails: {
+                performList(TAG_LIST_123);
+                break;
+            }
+            case R.id.back_plantaskdetails: {
+                showSaveDialog();
+                break;
+            }
+            case R.id.save_plantaskdetails: {
+                if (mShowType == TYPE_MODIFY) {
+                    mShowType = TYPE_NEW_BUILD;
+                    updateModifyState(true, "修改计划");
+                } else {
+                    savePlanTask();
+                    finish();
                 }
+                break;
+            }
+            case R.id.date_plantaskdetails: {
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int dayOfMonth) {
+                                mCalendar.set(Calendar.YEAR, year);
+                                mCalendar.set(Calendar.MONTH, month);
+                                mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                                setYearMonthDay();
+                                showGuideSave();
+                            }
+                        },
+                        mCalendar.get(Calendar.YEAR),
+                        mCalendar.get(Calendar.MONTH),
+                        mCalendar.get(Calendar.DAY_OF_MONTH)
+                );
+                dpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        showGuideSave();
+                    }
+                });
+                dpd.setThemeDark(false);
+                dpd.vibrate(false);
+                dpd.dismissOnPause(true);
+                dpd.showYearPickerFirst(false);
+                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+                dpd.setAccentColor(SkinManager.getInstance().getColor(R.color.colorPrimary));
+                dpd.show(getFragmentManager(), TAG_DATEPICKERDIALOG);
+                break;
+            }
+            case R.id.time_plantaskdetails: {
+                TimePickerDialog tpd = TimePickerDialog.newInstance(
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePickerDialog timePickerDialog, int hourOfDay, int minute, int second) {
+                                mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                mCalendar.set(Calendar.MINUTE, minute);
+                                setHourMinute();
+                            }
+                        },
+                        mCalendar.get(Calendar.HOUR_OF_DAY),
+                        mCalendar.get(Calendar.MINUTE),
+                        true //24 hour
+                );
+                tpd.setThemeDark(false);
+                tpd.vibrate(false);
+                tpd.dismissOnPause(true);
+                tpd.enableSeconds(false);
+                tpd.setVersion(TimePickerDialog.Version.VERSION_2);
+                tpd.setAccentColor(SkinManager.getInstance().getColor(R.color.colorPrimary));
+                tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+
+                    }
+                });
+                tpd.show(getFragmentManager(), TAG_TIMEPICKERDIALOG);
+                break;
+            }
+            case R.id.share_plantaskdetails: {
+                boolean hasTitle = false;
+                boolean hasDescribe = false;
+                Intent intent = new Intent();
+                intent.setClass(PlanTaskDetailsActivity.this, ShareActivity.class);
+                if (mTitle != null) {
+                    String title = mTitle.getText().toString();
+                    if (!TextUtils.isEmpty(title) && !TextUtils.equals(title, "\"标题\"")) {
+                        intent.putExtra(ShareActivity.KEY_TITLE, title);
+                        hasTitle = true;
+                    }
+                }
+                if (mDescribe != null) {
+                    String describe = mDescribe.getText().toString();
+                    if (!TextUtils.isEmpty(describe) && !TextUtils.equals(describe, "\"描述\"")) {
+                        intent.putExtra(ShareActivity.KEY_CONTENT, describe);
+                        hasDescribe = true;
+                    }
+                }
+                if (!hasTitle && !hasDescribe) {
+                    Toast.makeText(getApplicationContext(), "没有内容可分享呢，添加内容先吧！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                startActivity(intent);
+                break;
             }
         }
+    }
 
-        /**
-         * On text changed.
-         *
-         * @param s      the s
-         * @param start  the start 起始光标
-         * @param before the before 选择数量
-         * @param count  the count 添加的数量
-         */
+    private class PlanTaskWatcher implements TextWatcher {
+
+        @Override
+        public final void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
         @Override
         public final void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (flag) return;
+            if (mFlag) {
+                return;
+            }
             int end = start + count;
             if (end > start) {
                 CharSequence charSequence = s.subSequence(start, end);
@@ -598,27 +570,16 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
     }
 
     private void onAddText(CharSequence source, CharSequence charSequence, int start) {
-        flag = true;
-        if ("\n".equals(charSequence.toString())) {
+        mFlag = true;
+        if (TextUtils.equals("\n", charSequence)) {
             //用户输入回车
             performAddEnter(mDescribe.getText(), source, start);
         }
-        flag = false;
-    }
-
-    private void onSubText(CharSequence source, CharSequence charSequence, int start) {
-        flag = true;
-        //操作代码
-
-        flag = false;
+        mFlag = false;
     }
 
     /**
      * 处理回车操作
-     *
-     * @param editable
-     * @param source
-     * @param start
      */
     private void performAddEnter(Editable editable, CharSequence source, int start) {
         //获取回车之前的字符
@@ -653,7 +614,6 @@ public class PlanTaskDetailsActivity extends SkinBaseActivity {
         int selectionEnd = mDescribe.getSelectionEnd();
         String substring = source.substring(0, selectionStart);
         int line = substring.lastIndexOf(10);
-
 
         if (line != -1) {
             selectionStart = line + 1;

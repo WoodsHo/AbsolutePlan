@@ -84,7 +84,7 @@ public class AbsPlanWidgetProvider extends AppWidgetProvider {
             detailIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             detailIntent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
             detailIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            detailIntent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_NEW_BUILD);
+            detailIntent.putExtra(PlanTaskDetailsActivity.KEY_EXTRA_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_NEW_BUILD);
             try {
                 context.startActivity(detailIntent);
             } catch (ActivityNotFoundException e) {
@@ -98,8 +98,8 @@ public class AbsPlanWidgetProvider extends AppWidgetProvider {
             detailIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             detailIntent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
             detailIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            detailIntent.putExtra(PlanTaskDetailsActivity.KEY_PLANTASK, planTask);
-            detailIntent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_MODIFY);
+            detailIntent.putExtra(PlanTaskDetailsActivity.KEY_EXTRA_PLANTASK, planTask);
+            detailIntent.putExtra(PlanTaskDetailsActivity.KEY_EXTRA_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_MODIFY);
             try {
                 context.startActivity(detailIntent);
             } catch (ActivityNotFoundException e) {

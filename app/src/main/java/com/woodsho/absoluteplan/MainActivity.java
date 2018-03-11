@@ -32,6 +32,7 @@ import com.app.hubert.library.HighLight;
 import com.app.hubert.library.NewbieGuide;
 import com.app.hubert.library.OnGuideChangedListener;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipeline;
 import com.woodsho.absoluteplan.adapter.SideAdapter;
 import com.woodsho.absoluteplan.bean.SideItem;
 import com.woodsho.absoluteplan.common.AbsPSharedPreference;
@@ -60,7 +61,7 @@ import java.util.List;
 import static com.woodsho.absoluteplan.ui.AvatarActivity.NAME_AVATAR;
 
 public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSideItemClickListener,
-        CachePlanTaskStore.OnPlanTaskChangedListener {
+        CachePlanTaskStore.OnPlanTaskChangedListener, View.OnClickListener {
     public static final String TAG = "MainActivity";
 
     public DrawerLayout mDrawerLayout;
@@ -157,35 +158,11 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
         mToolbarSubTitleYear = (TextView) findViewById(R.id.toolbar_sub_title_year);
         mToolbarSubTitleDay = (TextView) findViewById(R.id.toolbar_sub_title_day);
         mToolbarToToday = (TextView) findViewById(R.id.toolbar_to_today);
-        mToolbarToToday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mLastSelectedSideId == ID_CALENDAR) {
-                    if (mCalendarFragment != null && mCalendarFragment.isAdded() && mCalendarFragment.isVisible()) {
-                        mCalendarFragment.JumpToToday();
-                    }
-                }
-            }
-        });
+        mToolbarToToday.setOnClickListener(this);
         mFloatActionButton = (FloatingActionButton) findViewById(R.id.main_float_action_button);
-        mFloatActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, PlanTaskDetailsActivity.class);
-                intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_NEW_BUILD);
-                if (mLastSelectedSideId == ID_TOMORROW) {
-                    intent.putExtra(PlanTaskDetailsActivity.KEY_IS_TOMORROW, true);
-                }
-                startActivity(intent);
-            }
-        });
+        mFloatActionButton.setOnClickListener(this);
         mSideNavigationView = (ImageView) findViewById(R.id.toolbar_slide_menu);
-        mSideNavigationView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDrawerLayout.openDrawer(mSideLayout);
-            }
-        });
+        mSideNavigationView.setOnClickListener(this);
 
         mUIHandler = new UIHandler(this);
         getLastSelectedSideId();
@@ -201,14 +178,7 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
     public void initSideView() {
         View view = getLayoutInflater().inflate(R.layout.side_layout, null);
         mAvatar = (SimpleDraweeViewEx) view.findViewById(R.id.avatar);
-        mAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(MainActivity.this, AvatarActivity.class), REQUEST_CODE_AVATAR_ACTIVITY);
-                mUIHandler.removeMessages(MSG_CLOSE_DRAWER);
-                mUIHandler.sendEmptyMessageDelayed(MSG_CLOSE_DRAWER, 200);
-            }
-        });
+        mAvatar.setOnClickListener(this);
         RelativeLayout topRelativeLayout = (RelativeLayout) view.findViewById(R.id.side_layout_top);
         dynamicAddView(topRelativeLayout, "background", R.color.colorPrimary, true);
         File externalFilesDir = getExternalFilesDir(null);
@@ -224,14 +194,7 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
         mSideTitle.setText(AbsPSharedPreference.getInstanc().getSideTitle());
 
         ImageView modifyTitle = (ImageView) view.findViewById(R.id.title_modify);
-        modifyTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(MainActivity.this, SideTitleActivity.class), REQUEST_CODE_SIDE_TITLE);
-                mUIHandler.removeMessages(MSG_CLOSE_DRAWER);
-                mUIHandler.sendEmptyMessageDelayed(MSG_CLOSE_DRAWER, 200);
-            }
-        });
+        modifyTitle.setOnClickListener(this);
 
         mSideRelativeLayout = (RelativeLayout) view.findViewById(R.id.side_layout_relativelayout);
         mSideBottomLayout = (LinearLayout) view.findViewById(R.id.bottom_side_layout);
@@ -252,19 +215,7 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
 
         mSettingBt = (TextView) view.findViewById(R.id.setting_side_layout);
         mSettingBt.setText(createStringWithLeftPicture(R.drawable.ic_side_setting, "  设置"));
-        mSettingBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(intent);
-                mUIHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mDrawerLayout.closeDrawer(mSideLayout);
-                    }
-                }, 200);
-            }
-        });
+        mSettingBt.setOnClickListener(this);
         mSideLayout.addView(view);
     }
 
@@ -279,9 +230,10 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
                         final File imageFile = new File(externalFilesDir.getPath(), NAME_AVATAR);
                         if (imageFile.exists()) {
                             Uri url = Uri.parse("file://" + imageFile.getPath());
-                            Fresco.getImagePipeline().evictFromMemoryCache(url);
-                            Fresco.getImagePipeline().evictFromDiskCache(url);
-                            Fresco.getImagePipeline().evictFromCache(url);
+                            ImagePipeline imagePipeline = Fresco.getImagePipeline();
+                            imagePipeline.evictFromMemoryCache(url);
+                            imagePipeline.evictFromDiskCache(url);
+                            imagePipeline.evictFromCache(url);
                             mAvatar.setImageURI(url);
                         }
                     }
@@ -469,6 +421,52 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
         return Uri.parse(strBuilder.toString());
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.toolbar_to_today: {
+                if (mLastSelectedSideId == ID_CALENDAR) {
+                    if (mCalendarFragment != null && mCalendarFragment.isAdded() && mCalendarFragment.isVisible()) {
+                        mCalendarFragment.JumpToToday();
+                    }
+                }
+                break;
+            }
+            case R.id.main_float_action_button: {
+                PlanTaskDetailsActivity.startActivity(MainActivity.this, null, mLastSelectedSideId == ID_TOMORROW, PlanTaskDetailsActivity.TYPE_NEW_BUILD);
+                break;
+            }
+            case R.id.toolbar_slide_menu: {
+                mDrawerLayout.openDrawer(mSideLayout);
+                break;
+            }
+            case R.id.avatar: {
+                startActivityForResult(new Intent(MainActivity.this, AvatarActivity.class), REQUEST_CODE_AVATAR_ACTIVITY);
+                mUIHandler.removeMessages(MSG_CLOSE_DRAWER);
+                mUIHandler.sendEmptyMessageDelayed(MSG_CLOSE_DRAWER, 200);
+                break;
+            }
+            case R.id.title_modify: {
+                startActivityForResult(new Intent(MainActivity.this, SideTitleActivity.class), REQUEST_CODE_SIDE_TITLE);
+                mUIHandler.removeMessages(MSG_CLOSE_DRAWER);
+                mUIHandler.sendEmptyMessageDelayed(MSG_CLOSE_DRAWER, 200);
+                break;
+            }
+            case R.id.setting_side_layout: {
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                mUIHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDrawerLayout.closeDrawer(mSideLayout);
+                    }
+                }, 200);
+                break;
+            }
+        }
+    }
+
     private static class UIHandler extends Handler {
         private WeakReference<MainActivity> mWRef;
 
@@ -634,9 +632,7 @@ public class MainActivity extends SkinBaseActivity implements SideAdapter.OnSide
 
                     @Override
                     public void onRemoved(Controller controller) {
-                        Intent intent = new Intent(MainActivity.this, PlanTaskDetailsActivity.class);
-                        intent.putExtra(PlanTaskDetailsActivity.KEY_SHOW_TYPE, PlanTaskDetailsActivity.TYPE_NEW_BUILD);
-                        startActivity(intent);
+                        PlanTaskDetailsActivity.startActivity(MainActivity.this, null, false, PlanTaskDetailsActivity.TYPE_NEW_BUILD);
                     }
                 })
                 .setBackgroundColor(SkinManager.getInstance().getColor(R.color.guide_bg_color))

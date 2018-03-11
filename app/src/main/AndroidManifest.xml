@@ -89,7 +89,7 @@
 
         <receiver
             android:name=".ui.AbsPlanWidgetProvider"
-            android:exported="true">
+            android:exported="false">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/absplan_widget_provider" />
@@ -102,7 +102,7 @@
 
         <receiver
             android:name=".ui.AbsPlanWidgetProvider4x3"
-            android:exported="true">
+            android:exported="false">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/absplan_widget_provider_4x3" />
